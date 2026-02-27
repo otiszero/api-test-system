@@ -1,0 +1,3763 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/admin": {
+      "get": {
+        "operationId": "AdminController_getAdmin",
+        "summary": "List admin",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Admin - Manage Admin"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "AdminController_createAdmin",
+        "summary": "Create admin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAdminDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Admin - Manage Admin"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "AdminController_update",
+        "summary": "update admin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAdminDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Admin - Manage Admin"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "operationId": "UserManagerController_getUsers",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Admin - Manage User "
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/markets": {
+      "get": {
+        "operationId": "MarketController_getMarkets",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minAmount",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxAmount",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "minDate",
+            "required": false,
+            "in": "query",
+            "example": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxDate",
+            "required": false,
+            "in": "query",
+            "example": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "isSuggestion",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "isFavorite",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Volume",
+                "Newest",
+                "EndingSoon",
+                "EndingRecently",
+                "Votes"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "ALL",
+                "ADMIN_ACTIVE",
+                "ENDED",
+                "CREATED",
+                "WAITING_FOR_VOTE",
+                "IN_VOTING",
+                "ACTIVE",
+                "CANCELED",
+                "ADD_LIQUIDITY",
+                "PENDING",
+                "REJECTED"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/pending-markets": {
+      "get": {
+        "operationId": "MarketController_getPendingMarkets",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Newest",
+                "Votes"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "IN_VOTING",
+                "PENDING",
+                "REJECTED",
+                "ADD_LIQUIDITY"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/market": {
+      "post": {
+        "operationId": "MarketController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMarketDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/market/{id}/outcomes": {
+      "get": {
+        "operationId": "MarketController_getOutcomeByMarket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/market/{id}/orders": {
+      "get": {
+        "operationId": "MarketController_getOrderByMarket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "graphType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "H_1",
+                "H_6",
+                "D",
+                "W",
+                "M",
+                "ALL"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "address",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "marketId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "outcomeId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Limit",
+                "Market"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "side",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Buy",
+                "Sell"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "MarketOrderReturned",
+                  "SentKafkaFailed",
+                  "Invalid",
+                  "Expired",
+                  "Cancelled",
+                  "Pending",
+                  "Fillable",
+                  "Filling",
+                  "PartialFilled",
+                  "Fullfilled",
+                  "FilledAndCancelled",
+                  "ClaimedAfterCancelled"
+                ]
+              }
+            }
+          },
+          {
+            "name": "outcomeType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Yes",
+                "No"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "minPrice",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxPrice",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "minDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/market/{id}/trades": {
+      "get": {
+        "operationId": "MarketController_getTradeByMarket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "graphType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "H_1",
+                "H_6",
+                "D",
+                "W",
+                "M",
+                "ALL"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "outcomeId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Limit",
+                "Market"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "outcomeType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Yes",
+                "No"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "minPrice",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxPrice",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "minDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "method",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Match",
+                "Mint",
+                "Merge"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/market/{id}": {
+      "get": {
+        "operationId": "MarketController_getMarket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "MarketController_editMarket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMarketDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "MarketController_deleteMarket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/approve-market": {
+      "put": {
+        "operationId": "MarketController_approveMarket",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveMarketDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/reject-market/{id}": {
+      "put": {
+        "operationId": "MarketController_rejectMarket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/approve-pending-market/{id}": {
+      "put": {
+        "operationId": "MarketController_approvePendingMarket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/market-status/{id}": {
+      "put": {
+        "operationId": "MarketController_updateStatusMarket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStatus"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/upload": {
+      "post": {
+        "operationId": "MarketController_uploadFile",
+        "summary": "",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/outcome/{id}/outcome-statistic": {
+      "get": {
+        "operationId": "OutcomeController_getOutcomeByMarket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/outcome/crawling": {
+      "put": {
+        "operationId": "OutcomeController_setOutcomeCrawling",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OutcomeCrawlingDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/outcome/reliableUrl": {
+      "put": {
+        "operationId": "OutcomeController_updateReliableUrl",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OutcomeReliableRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/admin/outcome/add-liquidity": {
+      "post": {
+        "operationId": "OutcomeController_createOrderAddLiquidity",
+        "summary": "Create order add liquidity by admin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderAddLiquidityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created order add liquidity by admin successfully."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/orders": {
+      "get": {
+        "operationId": "OrderController_getListOrders",
+        "summary": "Get User orders",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "market",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "latest",
+                "price",
+                "share",
+                "total"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "action",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [0, 1, 2, 3, 4, "buy",
+                "sell"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "MarketOrderReturned",
+                  "SentKafkaFailed",
+                  "Invalid",
+                  "Expired",
+                  "Cancelled",
+                  "Pending",
+                  "Fillable",
+                  "Filling",
+                  "PartialFilled",
+                  "Fullfilled",
+                  "FilledAndCancelled",
+                  "ClaimedAfterCancelled"
+                ]
+              }
+            }
+          },
+          {
+            "name": "minDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of orders retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "OrderController_createOrder",
+        "summary": "Create a new order",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/orders/{id}/cancelled": {
+      "put": {
+        "operationId": "OrderController_cancelOrder",
+        "summary": "Cancel an order by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Order ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order cancelled successfully."
+          }
+        },
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/orders/{id}/claimed": {
+      "put": {
+        "operationId": "OrderController_claimedOrder",
+        "summary": "Update an order by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Order ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order updated successfully."
+          }
+        },
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/orders/position": {
+      "get": {
+        "operationId": "OrderController_getPosition",
+        "summary": "Get user position",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "market",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "latest",
+                "current_price",
+                "share",
+                "potential_return"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "result",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "won",
+                "lost",
+                "not_resolve"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/orders/position-claims": {
+      "post": {
+        "operationId": "OrderController_SavePositionClaim",
+        "summary": "Save user claims from position",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SavePositionClaimDtos"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "OrderController_getPositionClaim",
+        "summary": "Get user claims from position",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "market",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "latest",
+                "share",
+                "potential_return"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/orders/add-liquidity": {
+      "post": {
+        "operationId": "OrderController_createOrderByAddLiquidity",
+        "summary": "Create order by add liquidity",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderAddLiquidityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created order by add liquidity successfully."
+          }
+        },
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/orders/activity": {
+      "get": {
+        "operationId": "OrderController_getActivity",
+        "summary": "Get activity order",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "only_me",
+                "all"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "outcomeType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [1, 0],
+              "type": "number"
+            }
+          },
+          {
+            "name": "startDate",
+            "required": false,
+            "in": "query",
+            "description": "Date format: 2024-06-22T08:14:15+00:00",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": false,
+            "in": "query",
+            "description": "Date format: 2024-06-22T08:14:15+00:00",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "date",
+                "volume"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/statistic/rank": {
+      "get": {
+        "operationId": "StatisticController_getRank",
+        "summary": "Get Rank",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "reward",
+                "volume"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "skipNumber",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get list Rank"
+          }
+        },
+        "tags": [
+          "Statistic"
+        ]
+      }
+    },
+    "/orderbook": {
+      "get": {
+        "operationId": "OrderbookController_getOrderbook",
+        "parameters": [
+          {
+            "name": "outcomeType",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "enum": [1, 0],
+              "type": "number"
+            }
+          },
+          {
+            "name": "outcomeId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "marketId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Orderbook"
+        ]
+      }
+    },
+    "/markets": {
+      "get": {
+        "operationId": "MarketController_findAll",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "ACTIVE",
+                "ENDED"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Volume",
+                "Newest",
+                "EndingSoon",
+                "EndingRecently"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "minAmount",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxAmount",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "minDate",
+            "required": false,
+            "in": "query",
+            "example": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxDate",
+            "required": false,
+            "in": "query",
+            "example": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "isSuggestion",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "isFavorite",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Markets"
+        ]
+      }
+    },
+    "/markets/proposed": {
+      "get": {
+        "operationId": "MarketController_findPropose",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Newest",
+                "Votes"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "IN_VOTING",
+                "PENDING",
+                "REJECTED",
+                "ADD_LIQUIDITY"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "isVoted",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "UNVOTED",
+                "VOTED"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "proposedBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "ME",
+                "OTHER"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Markets"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/markets/proposed-detail/{id}": {
+      "get": {
+        "operationId": "MarketController_getProposedDetail",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Markets"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/markets/top-holders/{id}": {
+      "get": {
+        "operationId": "MarketController_getTopHolder",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Markets"
+        ]
+      }
+    },
+    "/markets/category": {
+      "get": {
+        "operationId": "MarketController_getCategories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Markets"
+        ]
+      }
+    },
+    "/markets/favorites": {
+      "get": {
+        "operationId": "MarketController_getFavorites",
+        "summary": "Get favorite markets for authenticated user",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "ACTIVE",
+                "ENDED"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Volume",
+                "Newest",
+                "EndingSoon",
+                "EndingRecently"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "minAmount",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxAmount",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "minDate",
+            "required": false,
+            "in": "query",
+            "example": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxDate",
+            "required": false,
+            "in": "query",
+            "example": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "isSuggestion",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "isFavorite",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Markets"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/markets/{marketId}/favorite": {
+      "post": {
+        "operationId": "MarketController_toggleFavorite",
+        "summary": "Toggle favorite status for a market",
+        "parameters": [
+          {
+            "name": "marketId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Markets"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/markets/{id}": {
+      "get": {
+        "operationId": "MarketController_getDetail",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Markets"
+        ]
+      }
+    },
+    "/markets/ipfs/{id}": {
+      "get": {
+        "operationId": "MarketController_getImage",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Markets"
+        ]
+      }
+    },
+    "/markets/market": {
+      "post": {
+        "operationId": "MarketController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMarketDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Markets"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/markets/vote/{id}": {
+      "put": {
+        "operationId": "MarketController_voteMarket",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VoteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Markets"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/markets/add-liquidity/{id}": {
+      "put": {
+        "operationId": "MarketController_addLiquidity",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OutcomeLiquidityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Markets"
+        ]
+      }
+    },
+    "/markets/upload": {
+      "post": {
+        "operationId": "MarketController_uploadFile",
+        "summary": "",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Markets"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/trades": {
+      "get": {
+        "operationId": "TradeController_getListTrades",
+        "summary": "Get list of orders",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "marketId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "outcomeId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "outcomeType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Yes",
+                "No"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderSide",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Buy",
+                "Sell"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Limit",
+                "Market"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "method",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "Match",
+                "Mint",
+                "Merge"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "minPrice",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxPrice",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "minDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of orders retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TradeEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Trades"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/trades/market-trade": {
+      "get": {
+        "operationId": "TradeController_getMarketTrade",
+        "parameters": [
+          {
+            "name": "outcomeType",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "enum": [1, 0],
+              "type": "number"
+            }
+          },
+          {
+            "name": "outcomeId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "marketId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Trades"
+        ]
+      }
+    },
+    "/trades/graph": {
+      "get": {
+        "operationId": "TradeController_getGraphOutcome",
+        "summary": "Outcome graph",
+        "parameters": [
+          {
+            "name": "graphType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "H_1",
+                "H_6",
+                "D",
+                "W",
+                "M",
+                "ALL"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "outcomeId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "minDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-08-19 03:38:22",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-08-19 03:38:22",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Trades"
+        ]
+      }
+    },
+    "/trades/graph-overrall": {
+      "get": {
+        "operationId": "TradeController_getGraphOutcomeOverall",
+        "summary": "Top outcomes overall graph (by shares)",
+        "parameters": [
+          {
+            "name": "graphType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "H_1",
+                "H_6",
+                "D",
+                "W",
+                "M",
+                "ALL"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "marketId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "minDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-08-19 03:38:22",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-08-19 03:38:22",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Trades"
+        ]
+      }
+    },
+    "/trades/history": {
+      "get": {
+        "operationId": "TradeController_getUserTradeHistory",
+        "summary": "Get user history",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "market",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "latest",
+                "price",
+                "share",
+                "total"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "Invalid",
+                  "Failed",
+                  "Created",
+                  "Submitting",
+                  "Successfully"
+                ]
+              }
+            }
+          },
+          {
+            "name": "minDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxDate",
+            "required": false,
+            "in": "query",
+            "description": "2024-07-29T09:59:31.328Z",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User trade history",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Trades"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "summary": "Login.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginBodyReqDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout",
+        "summary": "Logout.",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/refresh-token": {
+      "post": {
+        "operationId": "AuthController_refreshToken",
+        "summary": "Refresh token.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/admin/login": {
+      "post": {
+        "operationId": "AuthController_adminLogin",
+        "summary": "Admin Login.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginBodyReqDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/admin/logout": {
+      "post": {
+        "operationId": "AuthController_adminLogout",
+        "summary": "Admin Logout.",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/admin-refresh-token": {
+      "post": {
+        "operationId": "AuthController_adminRefreshToken",
+        "summary": "Refresh token.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "operationId": "AuthController_getProfile",
+        "summary": "Get user profile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/admin/me": {
+      "get": {
+        "operationId": "AuthController_getAdminProfile",
+        "summary": "Get user profile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/asset": {
+      "get": {
+        "operationId": "AuthController_getUserAssets",
+        "summary": "Get user asset",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/slack/{id}": {
+      "get": {
+        "operationId": "SlackController_testSendMessage",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Slack"
+        ]
+      }
+    },
+    "/comments": {
+      "post": {
+        "operationId": "CommentController_createComment",
+        "summary": "Create a new comment",
+        "description": "Create a new top-level comment on a market (max 300 characters)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Comments"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/comments/reply": {
+      "post": {
+        "operationId": "CommentController_replyComment",
+        "summary": "Reply to a comment",
+        "description": "Reply to an existing comment (max 300 characters)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplyCommentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Comments"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/comments/market/{marketId}": {
+      "get": {
+        "operationId": "CommentController_getComments",
+        "summary": "Get all comments for a market",
+        "description": "Get paginated list of top-level comments for a specific market",
+        "parameters": [
+          {
+            "name": "marketId",
+            "required": true,
+            "in": "path",
+            "description": "Market ID",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Comments"
+        ]
+      }
+    },
+    "/comments/reply/{parentId}": {
+      "get": {
+        "operationId": "CommentController_getReplies",
+        "summary": "Get replies for a comment",
+        "description": "Get paginated list of replies for a specific comment",
+        "parameters": [
+          {
+            "name": "parentId",
+            "required": true,
+            "in": "path",
+            "description": "Parent comment ID",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Comments"
+        ]
+      }
+    },
+    "/comments/{commentId}/like": {
+      "post": {
+        "operationId": "CommentController_likeComment",
+        "summary": "Like/Unlike a comment",
+        "description": "Toggle like status on a comment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "required": true,
+            "in": "path",
+            "description": "Comment ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Comments"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/comments/{commentId}": {
+      "delete": {
+        "operationId": "CommentController_deleteComment",
+        "summary": "Delete a comment",
+        "description": "Delete a comment (only own comments can be deleted)",
+        "parameters": [
+          {
+            "name": "commentId",
+            "required": true,
+            "in": "path",
+            "description": "Comment ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Comments"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Foreon prediction",
+    "description": "Foreon prediction",
+    "version": "1.0.0",
+    "contact": {
+
+    }
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      },
+      "basic": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "CreateAdminDto": {
+        "type": "object",
+        "properties": {
+          "walletAddress": {
+            "type": "string",
+            "example": "0xa47bc1aF9E4b2ee22FF23D506251F4f0592eB8D0"
+          }
+        },
+        "required": [
+          "walletAddress"
+        ]
+      },
+      "UpdateAdminDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "abc@gmail.com"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "OutcomeDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "filePath": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "filePath"
+        ]
+      },
+      "CreateMarketDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "endTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "publishedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "startVoteTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "endVoteTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "marketFilePath": {
+            "type": "string"
+          },
+          "category": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "marketRule": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "SINGLE",
+              "MULTIPLE"
+            ]
+          },
+          "outcomes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OutcomeDto"
+            }
+          },
+          "resoldMethod": {
+            "type": "string",
+            "enum": [
+              "AUTOMATICALLY",
+              "MANUALLY"
+            ]
+          },
+          "email": {
+            "type": "string",
+            "example": "abc@gmail.com"
+          }
+        },
+        "required": [
+          "title",
+          "endTime",
+          "marketFilePath",
+          "category",
+          "marketRule",
+          "type",
+          "resoldMethod"
+        ]
+      },
+      "ApproveMarketDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "endTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "publishedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "startVoteTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "endVoteTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "marketFilePath": {
+            "type": "string"
+          },
+          "category": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "marketRule": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "SINGLE",
+              "MULTIPLE"
+            ]
+          },
+          "outcomes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OutcomeDto"
+            }
+          },
+          "resoldMethod": {
+            "type": "string",
+            "enum": [
+              "AUTOMATICALLY",
+              "MANUALLY"
+            ]
+          },
+          "email": {
+            "type": "string",
+            "example": "abc@gmail.com"
+          },
+          "id": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "title",
+          "endTime",
+          "marketFilePath",
+          "category",
+          "marketRule",
+          "type",
+          "resoldMethod"
+        ]
+      },
+      "UpdateStatus": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "hash": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ids",
+          "hash"
+        ]
+      },
+      "OutcomeCrawlingDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "ids"
+        ]
+      },
+      "ReliableUrlDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "reliableUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "reliableUrl"
+        ]
+      },
+      "OutcomeReliableRequestDto": {
+        "type": "object",
+        "properties": {
+          "reliableUrls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReliableUrlDto"
+            }
+          }
+        },
+        "required": [
+          "reliableUrls"
+        ]
+      },
+      "OrderPerOutcomeDto": {
+        "type": "object",
+        "properties": {
+          "outcomeId": {
+            "type": "number",
+            "example": 1
+          },
+          "outcomeType": {
+            "type": "number",
+            "example": 1
+          },
+          "type": {
+            "type": "number",
+            "example": 1
+          },
+          "side": {
+            "type": "number",
+            "example": 1
+          },
+          "amount": {
+            "type": "number",
+            "example": 50,
+            "description": "Number of Shares order, only with Limit Order"
+          },
+          "price": {
+            "type": "number",
+            "example": 0.5,
+            "description": "Price of order, only with Limit Order"
+          },
+          "total": {
+            "type": "number",
+            "example": 0,
+            "description": "Total of order, only with Market Order"
+          },
+          "maxMatchedTimes": {
+            "type": "number",
+            "example": 1,
+            "description": "Max matched times, only with Limit Order"
+          },
+          "txHash": {
+            "type": "string",
+            "example": "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+            "description": "Transaction hash of order"
+          }
+        },
+        "required": [
+          "outcomeId",
+          "outcomeType",
+          "type",
+          "side",
+          "amount",
+          "price",
+          "total",
+          "maxMatchedTimes",
+          "txHash"
+        ]
+      },
+      "OrderAddLiquidityDto": {
+        "type": "object",
+        "properties": {
+          "marketId": {
+            "type": "number",
+            "example": 1
+          },
+          "email": {
+            "type": "string",
+            "example": "abc@gmail.com"
+          },
+          "orders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderPerOutcomeDto"
+            }
+          }
+        },
+        "required": [
+          "marketId"
+        ]
+      },
+      "OrderEntity": {
+        "type": "object",
+        "properties": {
+
+        }
+      },
+      "OrderDto": {
+        "type": "object",
+        "properties": {
+          "outcomeId": {
+            "type": "number",
+            "example": 1
+          },
+          "outcomeType": {
+            "type": "number",
+            "example": 1
+          },
+          "type": {
+            "type": "number",
+            "example": 1
+          },
+          "side": {
+            "type": "number",
+            "example": 1
+          },
+          "amount": {
+            "type": "number",
+            "example": 50,
+            "description": "Number of Shares order, only with Limit Order"
+          },
+          "price": {
+            "type": "number",
+            "example": 0.5,
+            "description": "Price of order, only with Limit Order"
+          },
+          "total": {
+            "type": "number",
+            "example": 0,
+            "description": "Total of order, only with Market Order"
+          },
+          "maxMatchedTimes": {
+            "type": "number",
+            "example": 1,
+            "description": "Max matched times, only with Limit Order"
+          },
+          "txHash": {
+            "type": "string",
+            "example": "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+            "description": "Transaction hash of order"
+          },
+          "marketId": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "required": [
+          "outcomeId",
+          "outcomeType",
+          "type",
+          "side",
+          "amount",
+          "price",
+          "total",
+          "maxMatchedTimes",
+          "txHash",
+          "marketId"
+        ]
+      },
+      "SavePositionClaimDtos": {
+        "type": "object",
+        "properties": {
+          "marketId": {
+            "type": "number",
+            "example": 1
+          },
+          "outcomeId": {
+            "type": "number",
+            "example": 1
+          },
+          "share": {
+            "type": "number",
+            "example": 10
+          },
+          "outcomeType": {
+            "type": "number",
+            "enum": [1, 0]
+          },
+          "txHash": {
+            "type": "string",
+            "example": "1349884eee70b8c7f070b46681f3f337c7faaf50ae2aef4c8cd356db2b32c69c"
+          }
+        },
+        "required": [
+          "marketId",
+          "outcomeId",
+          "share",
+          "outcomeType",
+          "txHash"
+        ]
+      },
+      "VoteDto": {
+        "type": "object",
+        "properties": {
+          "vote": {
+            "type": "string",
+            "enum": [
+              "YES",
+              "NO"
+            ]
+          }
+        },
+        "required": [
+          "vote"
+        ]
+      },
+      "OutcomeLiquidityDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "yesPrice": {
+            "type": "number"
+          },
+          "noPrice": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "amount",
+          "yesPrice",
+          "noPrice"
+        ]
+      },
+      "TradeEntity": {
+        "type": "object",
+        "properties": {
+
+        }
+      },
+      "LoginBodyReqDto": {
+        "type": "object",
+        "properties": {
+          "signature": {
+            "type": "string",
+            "example": "845846a2012767616464726573735839008eeec0bae662651ba7e22046f0344622a750477d2d709e554ffa946c771f7a38775c6f24256a657fa1bec485029cafcf2545f6b5f5b00e67a166686173686564f44b666f72656f6e2d323032345840e21e3734f8c4e3b321cdd1eb7e9aeaaf331dd5c172690d2627972dfcac684c1427d9a8fb47b803dd9dd7bf51d9523f3a6a8d7c3247920d5eba0bea44c0ce7c05"
+          },
+          "key": {
+            "type": "string",
+            "example": "a401010327200621582098e5710e401305504be47d93a272b786aa76e73d3d38a53578c8dda955642602"
+          },
+          "walletAddress": {
+            "type": "string",
+            "example": "addr_test1qz8was96ue3x2xa8ugsydup5gc32w5z805khp8j4flafgmrhraarsa6udujz26n907sma3y9q2w2lne9ghmttadspense3sl6m"
+          }
+        },
+        "required": [
+          "signature",
+          "key",
+          "walletAddress"
+        ]
+      },
+      "LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "accessToken",
+          "refreshToken"
+        ]
+      },
+      "RefreshTokenDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "example": "0xf98a2a1be4cafd5fedf510725ac366a06bc8e74e40c873c28345a4ae5480a06a6e065d3c8703f96df56ab697caaab8f882521f4d6c3a04777cde696b7db4bbe51b"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "user"
+            ]
+          }
+        },
+        "required": [
+          "refreshToken",
+          "type"
+        ]
+      },
+      "CreateCommentDto": {
+        "type": "object",
+        "properties": {
+          "marketId": {
+            "type": "number",
+            "description": "Market ID",
+            "example": 1
+          },
+          "content": {
+            "type": "string",
+            "description": "Comment content (max 300 characters)",
+            "example": "This is a great market prediction!",
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "marketId",
+          "content"
+        ]
+      },
+      "ReplyCommentDto": {
+        "type": "object",
+        "properties": {
+          "parentId": {
+            "type": "number",
+            "description": "Parent comment ID",
+            "example": 1
+          },
+          "content": {
+            "type": "string",
+            "description": "Reply content (max 300 characters)",
+            "example": "I agree with your analysis!",
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "parentId",
+          "content"
+        ]
+      }
+    }
+  }
+}

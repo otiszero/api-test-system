@@ -1,0 +1,60 @@
+{
+  "_comment": "Cấu hình authentication. Điền đúng type và accounts trước khi chạy tests cần auth.",
+  "type": "bearer_direct",
+  "_type_options": ["bearer", "bearer_direct", "api_key", "basic", "oauth2", "none"],
+
+  "_bearer_comment": "Nếu type = bearer: điền loginEndpoint + credentials cho mỗi account",
+  "loginEndpoint": "/auth/login",
+  "_loginEndpoint_example": "/api/v1/auth/login",
+  "loginBody": {
+    "_comment": "Field names khớp với API của bạn",
+    "usernameField": "email",
+    "passwordField": "password"
+  },
+  "tokenPath": "data.token",
+  "_tokenPath_comment": "JSONPath tới token trong response body. Vd: 'token', 'data.accessToken', 'auth.jwt'",
+
+  "_bearer_direct_comment": "Nếu type = bearer_direct: dùng access token có sẵn (third-party OAuth, manual login). Điền token trực tiếp vào accounts[].token",
+
+  "_api_key_comment": "Nếu type = api_key: điền headerName",
+  "apiKeyHeader": "X-API-Key",
+
+  "roles": ["admin", "user"],
+  "_roles_comment": "Liệt kê tất cả roles trong hệ thống. Thứ tự từ cao xuống thấp.",
+
+  "accounts": {
+    "_comment": "Mỗi role cần ít nhất 1 account. IDOR tests cần 2 accounts cùng role (user_a, user_b).",
+    "_bearer_direct_format": "Nếu type = bearer_direct: thêm field 'token' vào mỗi account, bỏ qua username/password",
+    "admin": [
+      {
+        "username": "admin@example.com",
+        "password": "FILL_ME",
+        "token": "FILL_ME_IF_BEARER_DIRECT",
+        "label": "admin_main",
+        "_comment": "Nếu dùng bearer_direct: chỉ điền token, username/password có thể bỏ trống"
+      }
+    ],
+    "user": [
+      {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzIxNjE1NDIsImV4cCI6MTc3MjE3OTU0Mn0.-D5MDh81eEjHHyf-ZUS_7tdHt8hbRiDSxP0BxxVFC2k",
+        "label": "user_a",
+        "_comment": "user_a và user_b dùng cho IDOR tests"
+      },
+      {
+        "username": "user_b@example.com",
+        "password": "FILL_ME",
+        "token": "FILL_ME_IF_BEARER_DIRECT",
+        "label": "user_b"
+      }
+    ]
+  },
+
+  "accountSetup": {
+    "_comment": "Nếu accounts chưa tồn tại trong DB, AI có thể tự tạo qua API trước khi test.",
+    "autoCreate": false,
+    "createEndpoint": "/auth/register",
+    "createBody": {
+      "_comment": "Template body để tạo account. Dùng {{username}}, {{password}}, {{role}} làm placeholder."
+    }
+  }
+}

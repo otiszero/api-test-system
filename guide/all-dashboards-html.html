@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Test System — Dashboards</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#030712;color:#e5e7eb;min-height:100vh}
+
+/* Tabs */
+.main-tabs{display:flex;gap:4px;padding:16px 16px 0;background:#0a0f1a;border-bottom:1px solid #1f2937;position:sticky;top:0;z-index:100}
+.main-tab{padding:10px 18px;border-radius:8px 8px 0 0;font-size:.85rem;font-weight:600;cursor:pointer;border:1px solid transparent;border-bottom:none;color:#9ca3af;background:transparent;transition:.2s}
+.main-tab:hover{color:#e5e7eb;background:#111827}
+.main-tab.active{color:#fff;background:#111827;border-color:#1f2937}
+.tab-content{display:none;padding:20px}
+.tab-content.active{display:block}
+
+/* Common */
+h2{font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:4px}
+.sub{font-size:.8rem;color:#6b7280;margin-bottom:16px}
+.card{background:#111827;border:1px solid #1f2937;border-radius:10px;overflow:hidden;margin-bottom:8px;transition:.15s}
+.card:hover{border-color:#374151}
+.card-header{padding:12px 14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.card-body{display:none;border-top:1px solid #1f2937;padding:14px;background:rgba(3,7,18,.5)}
+.card.open .card-body{display:block}
+.pill{font-size:.65rem;padding:2px 8px;border-radius:99px;font-weight:600}
+.pill-ai{background:rgba(34,211,238,.12);color:#22d3ee}
+.pill-human{background:rgba(244,114,182,.12);color:#f472b6}
+.pill-ok{background:rgba(34,197,94,.12);color:#4ade80}
+.pill-warn{background:rgba(250,204,21,.12);color:#facc15}
+.pill-block{background:rgba(239,68,68,.12);color:#f87171}
+.mono{font-family:ui-monospace,monospace}
+.text-xs{font-size:.75rem}
+.text-sm{font-size:.85rem}
+.text-cyan{color:#22d3ee}
+.text-pink{color:#f472b6}
+.text-green{color:#4ade80}
+.text-yellow{color:#facc15}
+.text-red{color:#f87171}
+.text-gray{color:#6b7280}
+.text-white{color:#fff}
+.bold{font-weight:700}
+.mt-2{margin-top:8px}
+.mt-3{margin-top:12px}
+.mb-1{margin-bottom:4px}
+.mb-2{margin-bottom:8px}
+.ml-2{margin-left:8px}
+.gap-2{gap:8px}
+.flex{display:flex;align-items:center}
+.flex-wrap{flex-wrap:wrap}
+.gap-1{gap:4px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+
+.bar-track{height:8px;background:#1f2937;border-radius:99px;flex:1;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;transition:width .4s}
+
+.info-box{border-radius:8px;padding:10px;font-size:.75rem;margin-top:10px}
+.info-blue{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2)}
+.info-yellow{background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.15)}
+.info-red{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15)}
+
+/* Filter buttons */
+.filters{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.fbtn{padding:4px 12px;border-radius:99px;font-size:.72rem;font-weight:500;cursor:pointer;border:none;transition:.15s;color:#9ca3af;background:#1f2937}
+.fbtn:hover{background:#374151;color:#e5e7eb}
+.fbtn.active{background:#fff;color:#000}
+
+/* Phase bar */
+.phase-bar{display:flex;gap:4px;margin-bottom:14px;overflow-x:auto}
+.phase-pill{display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:8px;font-size:.72rem;font-weight:700;white-space:nowrap}
+
+/* Cheatsheet */
+.cheat{background:#111827;border:1px solid #1f2937;border-radius:12px;padding:16px;margin-top:16px}
+.cheat h3{font-size:.9rem;color:#fff;margin-bottom:12px}
+.cheat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:768px){.cheat-grid{grid-template-columns:1fr}}
+.cheat-col{background:#030712;border-radius:8px;padding:12px}
+.cheat-col h4{font-size:.75rem;color:#6b7280;margin-bottom:6px}
+.cheat-cmd{font-family:monospace;font-size:.78rem;color:#22d3ee;line-height:1.9}
+.cheat-note{font-size:.72rem;color:#f472b6;margin-left:8px}
+.cheat-comment{font-size:.68rem;color:#4b5563;margin-left:8px}
+
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.stat-box{background:#111827;border:1px solid #1f2937;border-radius:10px;padding:12px;text-align:center}
+.stat-num{font-size:1.5rem;font-weight:700}
+.stat-label{font-size:.7rem;color:#6b7280;margin-top:2px}
+
+/* Table */
+.tbl{width:100%;font-size:.75rem;border-collapse:collapse}
+.tbl th{padding:8px;text-align:center;color:#6b7280;font-weight:500;background:#0f1729}
+.tbl th:first-child{text-align:left}
+.tbl td{padding:6px 8px;text-align:center;border-top:1px solid rgba(31,41,55,.5)}
+.tbl td:first-child{text-align:left;font-weight:500;color:#e5e7eb}
+.tbl tr:hover{background:rgba(255,255,255,.02)}
+
+.detail-item{font-size:.75rem;color:#d1d5db;padding-left:12px;margin-bottom:3px}
+.detail-item .arrow{margin-right:4px}
+.detail-item .arrow-cyan{color:#0e7490}
+.detail-item .arrow-pink{color:#9d174d}
+
+/* Sim toggles */
+.sim-btn{padding:8px 14px;border-radius:8px;font-size:.75rem;font-weight:500;cursor:pointer;border:1px solid #374151;background:#111827;color:#6b7280;transition:.15s}
+.sim-btn.on{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#4ade80}
+
+/* Layer dep cards */
+.ldep{background:#111827;border:1px solid #1f2937;border-radius:8px;padding:12px;margin-bottom:8px}
+.ldep-row{font-size:.75rem;margin-top:4px;margin-left:28px}
+</style>
+</head>
+<body>
+
+<div class="main-tabs" id="mainTabs">
+  <div class="main-tab active" onclick="switchTab('cmd')">🎮 Command Center</div>
+  <div class="main-tab" onclick="switchTab('dep')">🔗 Dependencies</div>
+  <div class="main-tab" onclick="switchTab('rbac')">🔐 RBAC Testing</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 1: COMMAND CENTER                  -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content active" id="tab-cmd">
+<h2>QC Command Center</h2>
+<p class="sub">Slash commands cho toàn bộ workflow test</p>
+
+<div class="phase-bar">
+  <div class="phase-pill" style="background:#6366f122;color:#6366f1;border:1px solid #6366f144">🏗️ 1. SETUP</div>
+  <div class="phase-pill" style="background:#0ea5e922;color:#0ea5e9;border:1px solid #0ea5e944">🔍 2. ANALYZE</div>
+  <div class="phase-pill" style="background:#22c55e22;color:#22c55e;border:1px solid #22c55e44">⚡ 3. GENERATE</div>
+  <div class="phase-pill" style="background:#f59e0b22;color:#f59e0b;border:1px solid #f59e0b44">🏃 4. EXECUTE</div>
+  <div class="phase-pill" style="background:#ef444422;color:#ef4444;border:1px solid #ef444444">📊 5. REPORT</div>
+</div>
+
+<div id="cmdCards"></div>
+
+<div class="cheat">
+  <h3>⚡ Quick Reference — Copy & Paste</h3>
+  <div class="cheat-grid">
+    <div class="cheat-col">
+      <h4>🏗️ Lần đầu (one-time)</h4>
+      <div class="cheat-cmd">/init</div>
+      <div class="cheat-note">&nbsp;&nbsp;→ Điền config ←</div>
+      <div class="cheat-cmd">/assess</div>
+      <div class="cheat-note">&nbsp;&nbsp;→ Fix theo gợi ý ←</div>
+      <div class="cheat-cmd">/analyze</div>
+      <div class="cheat-cmd">/generate-all</div>
+      <div class="cheat-note">&nbsp;&nbsp;→ Review tests ←</div>
+      <div class="cheat-cmd">/run</div>
+      <div class="cheat-cmd">/report</div>
+    </div>
+    <div class="cheat-col">
+      <h4>🔄 Hàng ngày</h4>
+      <div class="cheat-cmd">/run smoke</div>
+      <div class="cheat-comment">(30s, sau mỗi deploy)</div>
+      <h4 style="margin-top:14px">📦 Khi API thay đổi</h4>
+      <div class="cheat-cmd">/analyze</div>
+      <div class="cheat-cmd">/generate-all</div>
+      <div class="cheat-cmd">/run</div>
+      <div class="cheat-cmd">/report</div>
+    </div>
+    <div class="cheat-col">
+      <h4>🚀 Trước release</h4>
+      <div class="cheat-cmd">/run</div>
+      <div class="cheat-cmd">/report</div>
+      <div class="cheat-cmd">/coverage</div>
+      <div class="cheat-note">&nbsp;&nbsp;→ review → sign off ←</div>
+      <h4 style="margin-top:14px">🎯 Debug 1 resource</h4>
+      <div class="cheat-cmd">/generate-single users</div>
+      <div class="cheat-cmd">/run single users</div>
+    </div>
+  </div>
+</div>
+<div class="flex gap-2 mt-3 text-xs text-gray" style="gap:16px">
+  <div><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#22d3ee;vertical-align:middle;margin-right:4px"></span>AI tự chạy</div>
+  <div><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f472b6;vertical-align:middle;margin-right:4px"></span>Human cần làm</div>
+  <div>Tổng: ~4-6h lần đầu, ~30 phút lần chạy lại</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 2: DEPENDENCIES                    -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-dep">
+<h2>Dependencies & Chạy Độc Lập</h2>
+<p class="sub">Hiểu rõ cái nào cần cái nào, cái nào chạy riêng được</p>
+
+<div class="filters" id="depTabs">
+  <button class="fbtn active" onclick="switchDepTab('matrix')">📊 Dependency Matrix</button>
+  <button class="fbtn" onclick="switchDepTab('sim')">🎮 Simulator</button>
+  <button class="fbtn" onclick="switchDepTab('scenarios')">📋 Scenarios</button>
+  <button class="fbtn" onclick="switchDepTab('layers')">🧪 Test Layer Deps</button>
+</div>
+
+<div id="dep-matrix" class="dep-panel">
+  <p class="text-xs text-gray mb-2">🔴 Hard = bắt buộc (thiếu → chặn). 🟡 Soft = optional (thiếu → giảm coverage).</p>
+  <div style="overflow-x:auto;border-radius:8px;border:1px solid #1f2937">
+    <table class="tbl">
+      <thead><tr><th>Command</th><th>📄 OpenAPI</th><th>🌐 API Config</th><th>🔑 Auth Config</th><th>🗄️ DB Config</th><th>📐 DB Schema</th><th>📝 Test Rules</th></tr></thead>
+      <tbody id="depMatrixBody"></tbody>
+    </table>
+  </div>
+  <div class="info-box info-blue mt-3">
+    <div class="bold text-sm" style="color:#60a5fa">💡 Key Insight</div>
+    <div class="mt-2" style="color:#d1d5db">
+      → <strong class="text-white">OpenAPI spec</strong> là dependency duy nhất cho hầu hết commands. Có file này = chạy được 4/6 layers.<br>
+      → <strong class="text-white">test-rules.md</strong> chỉ CHẶN integration test. Các layer khác vẫn chạy (giảm coverage).<br>
+      → <strong class="text-white">db-config</strong> chỉ CHẶN DB integrity test. Các layer khác bỏ qua DB verify nhưng vẫn test API.<br>
+      → <strong class="text-white">Mọi /generate command đều chạy độc lập</strong> — không cần chạy cái khác trước.
+    </div>
+  </div>
+</div>
+
+<div id="dep-sim" class="dep-panel" style="display:none">
+  <p class="text-xs text-gray mb-2">Toggle config files bạn có → xem command nào chạy được:</p>
+  <div class="flex flex-wrap gap-2 mb-2" id="simBtns" style="gap:8px;margin-bottom:14px"></div>
+  <div id="simResults"></div>
+  <div id="simSummary" class="mt-3" style="text-align:center"></div>
+</div>
+
+<div id="dep-scenarios" class="dep-panel" style="display:none">
+  <p class="text-xs text-gray mb-2">3 kịch bản phổ biến — QC chọn theo context:</p>
+  <div id="scenarioCards"></div>
+</div>
+
+<div id="dep-layers" class="dep-panel" style="display:none">
+  <p class="text-xs text-gray mb-2">Các test layers có chạy độc lập được không?</p>
+  <div class="card" style="border-color:#22c55e44;margin-bottom:12px"><div class="card-header" style="cursor:default"><div class="text-sm bold text-white">Kết luận: TẤT CẢ layers đều chạy độc lập được</div></div></div>
+  <div id="layerDepCards"></div>
+  <div class="info-box info-yellow mt-3">
+    <div class="bold text-yellow text-sm">⚠️ Duy nhất 1 dependency ẨN: Test Data</div>
+    <div class="mt-2" style="color:#d1d5db">
+      Mỗi layer tự tạo data riêng (self-contained), NHƯNG có shared concern:<br>
+      → Integration test tạo User + Product + Order → nếu POST /users bị bug → Integration cũng fail<br>
+      → Đây không phải dependency giữa layers, mà là dependency lên API hoạt động đúng<br>
+      <strong class="text-yellow">Giải pháp: Nếu Integration fail, check Single API trước để isolate root cause.</strong>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 3: RBAC                            -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-rbac">
+<h2>🔐 RBAC Testing — 6 Loại</h2>
+<p class="sub">Test cả admin site, user site, và mọi thứ ở giữa</p>
+
+<div class="filters" id="rbacFilters">
+  <button class="fbtn active" onclick="switchRbacFilter('all')">Theo thứ tự</button>
+  <button class="fbtn" onclick="switchRbacFilter('ai')">AI mạnh nhất ↓</button>
+  <button class="fbtn" onclick="switchRbacFilter('human')">Human cần nhất ↓</button>
+</div>
+
+<div class="stats-row">
+  <div class="stat-box"><div class="stat-num text-cyan">~174</div><div class="stat-label">Total RBAC tests</div></div>
+  <div class="stat-box"><div class="stat-num text-green">65%</div><div class="stat-label">AI auto-generate</div></div>
+  <div class="stat-box"><div class="stat-num text-pink">35%</div><div class="stat-label">Cần Human input</div></div>
+</div>
+
+<div id="rbacCards"></div>
+
+<div class="info-box info-blue mt-3">
+  <div class="bold text-sm" style="color:#60a5fa">💡 RBAC Testing Strategy</div>
+  <div class="mt-2" style="color:#d1d5db">
+    <strong class="text-white">Minimum viable (có ngay):</strong> TYPE 1 + TYPE 2 + TYPE 4 = ~140 tests. Chỉ cần OpenAPI spec + auth config với 2+ roles + 2 user accounts. AI auto-generate ~85%. Cover 80% RBAC vulnerabilities.<br><br>
+    <strong class="text-white">Full coverage (cần Human input):</strong> Thêm TYPE 3, 5, 6 = +34 tests. Cần Human viết field permission table + special rules + interaction scenarios. Nhưng đây là nơi bắt được bugs NGUY HIỂM nhất.<br><br>
+    <strong class="text-white">Mẹo:</strong> Điền permission matrix bằng bảng markdown trong test-rules.md. Mỗi dòng = 1 endpoint, mỗi cột = 1 role, ✅/❌/🔒. AI đọc bảng → generate toàn bộ TYPE 1 + TYPE 2.
+  </div>
+</div>
+</div>
+
+<script>
+// ═══════════════════════════════════
+// DATA
+// ═══════════════════════════════════
+
+const cmdData = [
+  {cmd:"/init",icon:"🏗️",name:"Khởi tạo project",who:"ai",time:"1 phút",desc:"Tạo folder structure + config templates",prereq:"None",output:"Config files template, folder structure",next:"Điền config → /assess"},
+  {cmd:"📝 Điền config",icon:"👤",name:"QC điền config files",who:"human",time:"30p-2h",desc:"Điền api.config, auth.config, db.config, test-rules.md",prereq:"/init",output:"Config files đầy đủ",next:"/assess",
+    tips:["api.config: chỉ cần baseUrl + headers","auth.config: chọn type + điền credentials cho 2+ roles","db.config: điền hoặc set enabled=false","test-rules.md: QUAN TRỌNG NHẤT — càng nhiều, AI test càng tốt"]},
+  {cmd:"/assess",icon:"📋",name:"Đánh giá config",who:"ai",time:"30 giây",desc:"Check config completeness, ước lượng coverage, gợi ý cải thiện",prereq:"Config files",output:"Scorecard + coverage estimate + action items",next:"Fix config → /assess lại hoặc /analyze"},
+  {cmd:"/analyze",icon:"🔍",name:"Phân tích OpenAPI",who:"ai",time:"2-5 phút",desc:"Parse spec, build dependency graph, sinh test plan",prereq:"/assess score >= 50",output:"test-plan.md + dependency-graph.json",next:"/generate-all hoặc /generate-smoke"},
+  {cmd:"/generate-all",icon:"⚡",name:"Sinh tất cả tests",who:"ai",time:"10-30 phút",desc:"Sinh smoke → contract → single → integration → rbac → security → db",prereq:"/analyze",output:"Toàn bộ test files trong generated/tests/",next:"/run",
+    subs:[{cmd:"/generate-smoke",icon:"🟢",ai:95},{cmd:"/generate-contract",icon:"🔵",ai:95},{cmd:"/generate-single",icon:"🟡",ai:75},{cmd:"/generate-integration",icon:"🟠",ai:40},{cmd:"/generate-rbac",icon:"🔐",ai:65},{cmd:"/generate-security",icon:"⚫",ai:65},{cmd:"/generate-db",icon:"🟣",ai:50}]},
+  {cmd:"📝 Review tests",icon:"👤",name:"QC review generated tests",who:"human",time:"1-3 giờ",desc:"Review AI output, bổ sung edge cases, sửa business logic sai",prereq:"/generate-all",output:"Tests đã review + bổ sung",next:"/run",
+    tips:["Focus review vào Integration + RBAC + Security (AI yếu nhất)","Smoke + Contract thường không cần sửa","Single API: check business validation rules"]},
+  {cmd:"/run",icon:"🏃",name:"Chạy tests",who:"ai",time:"5-30 phút",desc:"Execute tests theo layer order, fail fast, capture results",prereq:"Generated tests",output:"Test results + failures captured",next:"/report",
+    subs:[{cmd:"/run smoke",icon:"🟢"},{cmd:"/run single users",icon:"🟡"},{cmd:"/run rbac",icon:"🔐"}]},
+  {cmd:"/report",icon:"📊",name:"Sinh báo cáo",who:"ai",time:"1-2 phút",desc:"Overview report + bug reports + AI analysis + coverage matrix",prereq:"/run",output:"4 files trong reports/",next:"/coverage hoặc fix bugs → /run lại"},
+  {cmd:"/coverage",icon:"📈",name:"Xem coverage matrix",who:"ai",time:"10 giây",desc:"Endpoint × Test type matrix, highlight gaps",prereq:"Generated tests",output:"Coverage matrix + gap analysis",next:"Fix gaps → /generate lại layer thiếu"},
+];
+
+const depMatrix = [
+  {cmd:"/generate-smoke",hard:["openapi"],soft:["api","auth"]},
+  {cmd:"/generate-contract",hard:["openapi"],soft:["api","auth"]},
+  {cmd:"/generate-single",hard:["openapi","api"],soft:["auth","rules","db"]},
+  {cmd:"/generate-integration",hard:["openapi","api","rules"],soft:["auth","db","schema"]},
+  {cmd:"/generate-rbac",hard:["openapi","auth"],soft:["rules"]},
+  {cmd:"/generate-security",hard:["openapi","api"],soft:["auth","rules"]},
+  {cmd:"/generate-db",hard:["db"],soft:["openapi","schema","rules"]},
+];
+const cfgCols = ["openapi","api","auth","db","schema","rules"];
+
+const configs = [
+  {id:"openapi",label:"OpenAPI Spec",icon:"📄"},
+  {id:"api",label:"API Config",icon:"🌐"},
+  {id:"auth",label:"Auth Config",icon:"🔑"},
+  {id:"db",label:"DB Config",icon:"🗄️"},
+  {id:"schema",label:"DB Schema",icon:"📐"},
+  {id:"rules",label:"Test Rules",icon:"📝"},
+];
+
+const scenarios = [
+  {name:"🚀 Nhanh nhất — Chỉ có OpenAPI spec",cfgs:["openapi"],coverage:"~45%",time:"15 phút",
+    full:["smoke","contract"],partial:{"single":"70%","security":"40%"},blocked:["integration","db"],
+    steps:["/analyze","/generate-smoke","/generate-contract","/run smoke","/run contract"]},
+  {name:"⚡ Tiêu chuẩn — OpenAPI + API + Auth",cfgs:["openapi","api","auth"],coverage:"~60%",time:"30 phút",
+    full:["smoke","contract","rbac"],partial:{"single":"75%","security":"70%"},blocked:["integration","db"],
+    steps:["/analyze","/generate-all","/run","/report"]},
+  {name:"💪 Đầy đủ — Tất cả config",cfgs:["openapi","api","auth","db","schema","rules"],coverage:"~95%",time:"1-2 giờ",
+    full:["smoke","contract","single","integration","rbac","security","db"],partial:{},blocked:[],
+    steps:["/analyze","/generate-all","→ review ←","/run","/report","/coverage"]},
+];
+
+const layerDeps = [
+  {icon:"🟢",name:"Smoke",reason:"Không phụ thuộc gì. Chỉ ping endpoints.",whyFirst:"Nếu server down thì test gì cũng fail → chạy trước.",canSkip:"Nếu biết chắc server đang chạy.",note:null},
+  {icon:"🔵",name:"Contract",reason:"Chỉ cần gọi API + so sánh response với schema.",whyFirst:"Nếu schema sai thì Single API test fail hàng loạt → phát hiện sớm.",canSkip:"Schema ổn định, không ai sửa API response.",note:null},
+  {icon:"🟡",name:"Single API",reason:"Test từng endpoint riêng lẻ. Tự tạo test data, tự cleanup.",whyFirst:"Nếu CRUD cơ bản fail thì Integration chắc chắn fail.",canSkip:"/run single users — chỉ test 1 resource.",note:"⚡ TỰ TẠO data. VD: test PUT /users → tự POST /users trước để có ID."},
+  {icon:"🟠",name:"Integration",reason:"Tự tạo full data chain (user→product→order) trong setup.",whyFirst:"Không bắt buộc, nhưng nếu Single fail nhiều thì integration sẽ noise.",canSkip:"Chưa viết test-rules.md.",note:"⚡ Self-contained: mỗi scenario tự setup data từ đầu."},
+  {icon:"⚫",name:"Security",reason:"Tự tạo data + gửi malicious payloads. Không cần layer khác.",whyFirst:null,canSkip:"Đang focus fix functional bugs trước.",note:null},
+  {icon:"🟣",name:"DB Integrity",reason:"Tự tạo data qua API → check DB. Hoặc insert trực tiếp.",whyFirst:null,canSkip:"Không có DB access.",note:null},
+];
+
+const rbacData = [
+  {type:"TYPE 1",name:"Endpoint Access Matrix",icon:"🔑",ai:95,human:5,desc:"Mỗi role × mỗi endpoint → allowed hay denied?",
+    example:"admin POST /products → 201, user POST /products → 403",count:"18 ep × 6 roles = 108 tests",
+    hardCfg:["OpenAPI spec","Auth config (2+ roles)"],softCfg:["Permission matrix (nếu không có → AI suy đoán)"],
+    aiCan:["Đọc permission matrix → generate 100% test cases","Không có matrix → suy đoán từ naming convention","Test cả 401 (no token) và 403 (wrong role)"],
+    humanNeed:["Verify permission matrix đúng với ý định thiết kế"],
+    bugs:["Endpoint thiếu auth middleware","Role check sai (user access admin endpoint)","403 vs 404 confusion"]},
+  {type:"TYPE 2",name:"IDOR / Resource Ownership",icon:"👤",ai:85,human:15,desc:"User A access được resource của User B không?",
+    example:"User A GET /orders/{userB_order_id} → 403",count:"8 ep × 3 = 24 tests",
+    hardCfg:["Auth config (2 users cùng role)","OpenAPI spec"],softCfg:["Permission matrix (cột 🔒)"],
+    aiCan:["Tạo resource as User A → access as User B → expect 403","Test view, edit, delete resource người khác","Verify admin CÓ THỂ override"],
+    humanNeed:["Xác định endpoint nào 'own resource only' (🔒)","Edge case: shared resources (team-based)?"],
+    bugs:["IDOR vulnerability","Thiếu ownership check","Admin bypass không hoạt động"]},
+  {type:"TYPE 3",name:"Field-level Permissions",icon:"📋",ai:50,human:50,desc:"Response trả fields khác nhau tùy role?",
+    example:"admin sees cost_price, user chỉ sees sell_price",count:"6 fields × 3 groups = 18 tests",
+    hardCfg:["Field permission table trong test-rules.md"],softCfg:["Auth config (nhiều roles)"],
+    aiCan:["Đọc field permission table → generate assertions","Verify field existence/absence cho mỗi role"],
+    humanNeed:["ĐỊNH NGHĨA field permission table","Business context: field nào sensitive","Conditional: admin all, user own, guest public"],
+    bugs:["Data leak: user thấy password_hash, cost_price","Over-filtering: admin bị ẩn fields","Inconsistency giữa list vs detail endpoint"]},
+  {type:"TYPE 4",name:"Privilege Escalation",icon:"⬆️",ai:75,human:25,desc:"User tự nâng quyền mình lên được không?",
+    example:"user PATCH own role to admin → should fail",count:"~8 tests",
+    hardCfg:["Auth config (role hierarchy)"],softCfg:["Special RBAC rules"],
+    aiCan:["Test tự đổi role qua API","Test access admin endpoints bằng direct URL","Test lower role quản lý higher role"],
+    humanNeed:["Role hierarchy","Hidden admin endpoints không có trong spec","Business-specific escalation vectors"],
+    bugs:["Self-promotion: user set role=admin","Register with role: POST /register {role:'admin'}","Role hierarchy bypass"]},
+  {type:"TYPE 5",name:"Role State Change",icon:"🔄",ai:30,human:70,desc:"Khi role thay đổi mid-session, token cũ còn hoạt động?",
+    example:"User bị ban → token cũ vẫn gọi API → BUG",count:"~6 tests",
+    hardCfg:["Special RBAC rules trong test-rules.md","Auth config (admin + user)"],softCfg:["DB config"],
+    aiCan:["Implement scenario 'login → ban → retry'","Verify DB state","Test re-login sau role change"],
+    humanNeed:["THIẾT KẾ scenarios: ban, downgrade, upgrade","Expected behavior: token reject ngay hay wait expire?","Token invalidation strategy"],
+    bugs:["Banned user vẫn hoạt động","Downgraded user giữ permission cũ","Deleted user token vẫn valid"]},
+  {type:"TYPE 6",name:"Cross-role Interaction",icon:"🔀",ai:25,human:75,desc:"Nhiều roles tương tác trên cùng resource",
+    example:"Editor tạo product → editor khác sửa được không?",count:"~10 tests",
+    hardCfg:["Special RBAC rules","Auth config (nhiều roles)"],softCfg:["DB config"],
+    aiCan:["Implement scenario sau khi Human mô tả","Chain API calls across roles","Verify DB after cross-role ops"],
+    humanNeed:["THIẾT KẾ interaction scenarios","Team/tenant-based rules","Ownership transfer","Approval flows: submit → approve → publish"],
+    bugs:["Cross-editor conflict","Team isolation breach","Approval bypass"]},
+];
+
+// ═══════════════════════════════════
+// TAB SWITCHING
+// ═══════════════════════════════════
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ═══════════════════════════════════
+// TAB 1: COMMAND CENTER
+// ═══════════════════════════════════
+function renderCmds() {
+  const el = document.getElementById('cmdCards');
+  el.innerHTML = cmdData.map((c,i) => {
+    const isH = c.who==='human';
+    const cls = isH?'human':'ai';
+    let body = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:.75rem">
+      <div><span class="text-gray">Prerequisite:</span> <span class="text-yellow">${c.prereq}</span></div>
+      <div><span class="text-gray">Output:</span> <span class="text-green">${c.output}</span></div>
+      <div style="grid-column:span 2"><span class="text-gray">Next:</span> <span class="text-cyan">${c.next}</span></div>
+    </div>`;
+    if(c.tips) body += `<div class="info-box info-yellow mt-2"><div class="bold text-yellow mb-1">💡 Tips:</div>${c.tips.map(t=>`<div style="color:#d1d5db;margin-left:8px">• ${t}</div>`).join('')}</div>`;
+    if(c.subs) body += `<div class="mt-2"><div class="text-xs bold text-gray mb-1">Hoặc chạy từng layer:</div><div class="flex flex-wrap" style="gap:6px">${c.subs.map(s=>`<div style="background:#1f2937;border-radius:6px;padding:4px 10px;display:flex;align-items:center;gap:6px"><span>${s.icon}</span><span class="mono text-xs text-cyan">${s.cmd}</span>${s.ai?`<span class="text-xs text-gray">AI ${s.ai}%</span>`:''}</div>`).join('')}</div></div>`;
+    return `<div class="card" onclick="this.classList.toggle('open')">
+      <div class="card-header">
+        <div class="flex" style="gap:8px"><span style="font-size:1.2rem">${c.icon}</span><div>
+          <span class="mono text-sm bold" style="color:${isH?'#f472b6':'#22d3ee'}">${c.cmd}</span>
+          <span class="text-xs text-gray ml-2">${c.name}</span></div></div>
+        <div class="flex" style="gap:8px"><span class="pill pill-${cls}">${isH?'👤 Human':'🤖 AI'}</span><span class="text-xs text-gray">⏱ ${c.time}</span></div>
+      </div>
+      <div class="card-body"><p class="text-xs text-gray mb-2">${c.desc}</p>${body}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════
+// TAB 2: DEPENDENCIES
+// ═══════════════════════════════════
+function switchDepTab(id) {
+  document.querySelectorAll('.dep-panel').forEach(p=>p.style.display='none');
+  document.getElementById('dep-'+id).style.display='block';
+  document.querySelectorAll('#depTabs .fbtn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function renderDepMatrix() {
+  document.getElementById('depMatrixBody').innerHTML = depMatrix.map(r => {
+    const cells = cfgCols.map(c => {
+      if(r.hard.includes(c)) return `<td><span class="pill pill-block bold">HARD</span></td>`;
+      if(r.soft.includes(c)) return `<td><span class="pill pill-warn">soft</span></td>`;
+      return `<td class="text-gray">—</td>`;
+    }).join('');
+    return `<tr><td class="mono bold text-cyan">${r.cmd}</td>${cells}</tr>`;
+  }).join('');
+}
+
+let simState = new Set(["openapi","api"]);
+function renderSim() {
+  document.getElementById('simBtns').innerHTML = configs.map(c =>
+    `<button class="sim-btn ${simState.has(c.id)?'on':''}" onclick="toggleSim('${c.id}')">${c.icon} ${c.label} ${simState.has(c.id)?'✅':'○'}</button>`
+  ).join('');
+
+  const genCmds = [
+    {id:"smoke",cmd:"/generate-smoke",icon:"🟢",hard:["openapi"],all:["openapi","api","auth"]},
+    {id:"contract",cmd:"/generate-contract",icon:"🔵",hard:["openapi"],all:["openapi","api","auth"]},
+    {id:"single",cmd:"/generate-single",icon:"🟡",hard:["openapi","api"],all:["openapi","api","auth","rules","db"]},
+    {id:"integration",cmd:"/generate-integration",icon:"🟠",hard:["openapi","api","rules"],all:["openapi","api","auth","rules","db","schema"]},
+    {id:"rbac",cmd:"/generate-rbac",icon:"🔐",hard:["openapi","auth"],all:["openapi","auth","rules"]},
+    {id:"security",cmd:"/generate-security",icon:"⚫",hard:["openapi","api"],all:["openapi","api","auth","rules"]},
+    {id:"db",cmd:"/generate-db",icon:"🟣",hard:["db"],all:["openapi","db","schema","rules"]},
+  ];
+
+  document.getElementById('simResults').innerHTML = genCmds.map(c => {
+    const hardOk = c.hard.every(h=>simState.has(h));
+    const allOk = c.all.every(a=>simState.has(a));
+    const st = !hardOk?'blocked':allOk?'ok':'partial';
+    const hardMissing = c.hard.filter(h=>!simState.has(h));
+    const softMissing = c.all.filter(a=>!simState.has(a)&&!c.hard.includes(a));
+    let detail = '';
+    if(st==='blocked') detail = `<div class="text-xs text-red mt-2" style="margin-left:28px">❌ Thiếu bắt buộc: ${hardMissing.map(h=>configs.find(x=>x.id===h).label).join(', ')}</div>`;
+    if(st==='partial') detail = `<div class="text-xs text-yellow mt-2" style="margin-left:28px">⚠️ Thiếu optional: ${softMissing.map(h=>configs.find(x=>x.id===h)?.label||h).join(', ')} → giảm coverage</div>`;
+    if(st==='ok') detail = `<div class="text-xs text-green mt-2" style="margin-left:28px">✅ Đủ config, coverage tối đa</div>`;
+    return `<div class="card" style="cursor:default"><div class="card-header">
+      <div class="flex" style="gap:8px"><span>${c.icon}</span><span class="mono text-sm bold text-white">${c.cmd}</span></div>
+      <span class="pill pill-${st==='ok'?'ok':st==='partial'?'warn':'block'} bold">${st==='ok'?'✅ Full':st==='partial'?'⚠️ Partial':'❌ Blocked'}</span>
+    </div>${detail?`<div style="padding:0 14px 10px">${detail}</div>`:''}</div>`;
+  }).join('');
+
+  const sz = simState.size;
+  const pct = sz<=1?30:sz<=2?45:sz<=3?60:sz<=4?75:sz<=5?85:95;
+  const clr = sz<=2?'#ef4444':sz<=4?'#f59e0b':'#22c55e';
+  document.getElementById('simSummary').innerHTML = `<div class="text-xs text-gray">${sz}/${configs.length} configs</div><div class="text-sm bold mt-2" style="color:${clr}">Coverage estimate: ~${pct}%</div>`;
+}
+function toggleSim(id) { simState.has(id)?simState.delete(id):simState.add(id); renderSim(); }
+
+function renderScenarios() {
+  document.getElementById('scenarioCards').innerHTML = scenarios.map((s,i) => {
+    const cfgPills = configs.map(c => `<span class="pill ${s.cfgs.includes(c.id)?'pill-ok':'pill-block'}" style="margin:2px">${c.icon} ${c.label}</span>`).join('');
+    const fullList = s.full.map(f=>`<span class="pill pill-ok" style="margin:2px">✅ ${f}</span>`).join('');
+    const partialList = Object.entries(s.partial).map(([k,v])=>`<span class="pill pill-warn" style="margin:2px">⚠️ ${k} (${v})</span>`).join('');
+    const blockedList = s.blocked.map(b=>`<span class="pill pill-block" style="margin:2px">❌ ${b}</span>`).join('');
+    const stepsHtml = s.steps.map(st => st.startsWith('/')?`<div class="cheat-cmd">${st}</div>`:`<div class="cheat-note">&nbsp;&nbsp;${st}</div>`).join('');
+    return `<div class="card" onclick="this.classList.toggle('open')">
+      <div class="card-header"><div><div class="bold text-white text-sm">${s.name}</div><div class="flex flex-wrap mt-2">${cfgPills}</div></div>
+      <div style="text-align:right"><div class="text-xs text-gray">⏱ ${s.time}</div><span class="pill pill-ok bold">${s.coverage}</span></div></div>
+      <div class="card-body">
+        ${fullList?`<div class="mb-2"><span class="text-xs bold text-green">✅ Full:</span><div class="flex flex-wrap mt-2">${fullList}</div></div>`:''}
+        ${partialList?`<div class="mb-2"><span class="text-xs bold text-yellow">⚠️ Partial:</span><div class="flex flex-wrap mt-2">${partialList}</div></div>`:''}
+        ${blockedList?`<div class="mb-2"><span class="text-xs bold text-red">❌ Blocked:</span><div class="flex flex-wrap mt-2">${blockedList}</div></div>`:''}
+        <div class="mt-2" style="background:#030712;border-radius:6px;padding:10px"><div class="text-xs bold text-gray mb-1">Commands:</div>${stepsHtml}</div>
+      </div></div>`;
+  }).join('');
+}
+
+function renderLayerDeps() {
+  document.getElementById('layerDepCards').innerHTML = layerDeps.map(l => {
+    let rows = `<div class="ldep-row"><span class="text-gray">Tại sao độc lập:</span> ${l.reason}</div>`;
+    if(l.whyFirst) rows += `<div class="ldep-row"><span class="text-yellow">Nên chạy trước vì:</span> ${l.whyFirst}</div>`;
+    if(l.canSkip) rows += `<div class="ldep-row"><span class="text-cyan">Có thể skip khi:</span> ${l.canSkip}</div>`;
+    if(l.note) rows += `<div class="ldep-row bold text-cyan mt-2">${l.note}</div>`;
+    return `<div class="ldep"><div class="flex" style="justify-content:space-between"><div class="flex" style="gap:8px"><span style="font-size:1.1rem">${l.icon}</span><span class="bold text-white">${l.name}</span></div><span class="pill pill-ok bold">✅ Chạy độc lập được</span></div>${rows}</div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════
+// TAB 3: RBAC
+// ═══════════════════════════════════
+let rbacFilter = 'all';
+function switchRbacFilter(f) {
+  rbacFilter = f;
+  document.querySelectorAll('#rbacFilters .fbtn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderRbac();
+}
+
+function renderRbac() {
+  let items = [...rbacData];
+  if(rbacFilter==='ai') items.sort((a,b)=>b.ai-a.ai);
+  if(rbacFilter==='human') items.sort((a,b)=>b.human-a.human);
+
+  document.getElementById('rbacCards').innerHTML = items.map(r => {
+    const cfgHard = r.hardCfg.map(c=>`<span class="pill pill-block" style="margin:2px">🔴 ${c}</span>`).join('');
+    const cfgSoft = r.softCfg.map(c=>`<span class="pill pill-warn" style="margin:2px">🟡 ${c}</span>`).join('');
+    const aiList = r.aiCan.map(a=>`<div class="detail-item"><span class="arrow arrow-cyan">→</span> ${a}</div>`).join('');
+    const humanList = r.humanNeed.map(h=>`<div class="detail-item"><span class="arrow arrow-pink">→</span> ${h}</div>`).join('');
+    const bugList = r.bugs.map(b=>`<div style="margin-left:8px;font-size:.75rem;color:#d1d5db">• ${b}</div>`).join('');
+
+    return `<div class="card" onclick="this.classList.toggle('open')">
+      <div class="card-header">
+        <div style="flex:1">
+          <div class="flex" style="gap:8px;margin-bottom:6px"><span style="font-size:1.1rem">${r.icon}</span><span class="text-xs bold text-gray">${r.type}</span><span class="bold text-white">${r.name}</span></div>
+          <div class="text-xs text-gray" style="margin-left:30px;margin-bottom:8px">${r.desc}</div>
+          <div style="margin-left:30px">
+            <div class="flex" style="gap:8px;margin-bottom:4px"><span class="text-xs text-cyan" style="width:56px">🤖 AI ${r.ai}%</span><div class="bar-track"><div class="bar-fill" style="width:${r.ai}%;background:#22d3ee"></div></div></div>
+            <div class="flex" style="gap:8px"><span class="text-xs text-pink" style="width:56px">👤 Hu ${r.human}%</span><div class="bar-track"><div class="bar-fill" style="width:${r.human}%;background:#f472b6"></div></div></div>
+          </div>
+        </div>
+        <span class="text-xs text-gray" style="white-space:nowrap;margin-left:12px">${r.count}</span>
+      </div>
+      <div class="card-body">
+        <div style="background:#1f2937;border-radius:6px;padding:8px;margin-bottom:10px"><span class="text-xs text-gray">Ví dụ: </span><span class="text-xs text-yellow mono">${r.example}</span></div>
+        <div class="mb-2"><span class="text-xs bold text-gray">📦 Config cần:</span><div class="flex flex-wrap mt-2">${cfgHard}${cfgSoft}</div></div>
+        <div class="grid-2">
+          <div><div class="text-xs bold text-cyan mb-1">🤖 AI tự làm:</div>${aiList}</div>
+          <div><div class="text-xs bold text-pink mb-1">👤 Human cần:</div>${humanList}</div>
+        </div>
+        <div class="info-box info-red mt-2"><div class="bold text-red text-xs mb-1">🐛 Bắt được bugs:</div>${bugList}</div>
+      </div></div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+renderCmds();
+renderDepMatrix();
+renderSim();
+renderScenarios();
+renderLayerDeps();
+renderRbac();
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "name": "api-test-system",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:smoke": "vitest run generated/tests/01-smoke",
+    "test:contract": "vitest run generated/tests/02-contract",
+    "test:single": "vitest run generated/tests/03-single",
+    "test:integration": "vitest run generated/tests/04-integration",
+    "test:rbac": "vitest run generated/tests/05-rbac",
+    "test:security": "vitest run generated/tests/06-security",
+    "test:db": "vitest run generated/tests/07-db",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@faker-js/faker": "^9.9.0",
+    "@vitest/ui": "^4.0.18",
+    "ajv": "^8.18.0",
+    "ajv-formats": "^3.0.1",
+    "axios": "^1.13.5",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18",
+    "yaml": "^2.8.2"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.1"
+  }
+}

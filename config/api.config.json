@@ -1,0 +1,36 @@
+{
+  "_comment": "Cấu hình base URL và headers mặc định cho API. Điền baseUrl trước khi chạy bất kỳ test nào.",
+  "baseUrl": "https://api.foreon.network",
+  "_baseUrl_example": "https://api.example.com/v1",
+  "timeout": 10000,
+  "_timeout_comment": "Milliseconds. Tăng lên nếu API chậm (vd: 30000 cho môi trường staging).",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  "_headers_comment": "Headers mặc định gửi kèm mọi request. Thêm custom headers nếu cần (vd: X-Api-Version).",
+
+  "endpointFilter": {
+    "_comment": "Lọc endpoints nào được generate tests. Dùng để loại bỏ admin endpoints, deprecated APIs, etc.",
+    "blacklist": [
+      "/admin/*",
+      "*/admin/*"
+    ],
+    "_blacklist_comment": "Regex patterns. Endpoints match bất kỳ pattern nào sẽ bị skip. Dùng * làm wildcard.",
+    "_blacklist_examples": [
+      "/admin/*",
+      "*/admin/*",
+      "/v1/deprecated/*",
+      "/internal/*",
+      "*/debug"
+    ],
+
+    "whitelist": [],
+    "_whitelist_comment": "Nếu không rỗng: CHỈ generate cho endpoints match whitelist. Blacklist bị ignore.",
+    "_whitelist_examples": [
+      "/users/*",
+      "/orders/*",
+      "/markets/*"
+    ]
+  }
+}

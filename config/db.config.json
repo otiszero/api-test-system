@@ -1,0 +1,34 @@
+{
+  "_comment": "Cấu hình kết nối Database. Nếu không cần test DB trực tiếp, đặt enabled = false.",
+  "enabled": false,
+  "_enabled_comment": "true = AI sẽ verify DB state sau mỗi write operation. Cần điền đủ thông tin bên dưới.",
+
+  "type": "pg",
+  "_type_options": ["pg", "mysql2", "mongodb"],
+
+  "host": "localhost",
+  "port": 5432,
+  "_port_defaults": { "pg": 5432, "mysql2": 3306, "mongodb": 27017 },
+
+  "database": "FILL_ME",
+  "_database_example": "myapp_db",
+
+  "username": "FILL_ME",
+  "password": "FILL_ME",
+
+  "ssl": false,
+  "_ssl_comment": "true cho production/staging DB yêu cầu SSL",
+
+  "_mongodb_comment": "Nếu type = mongodb, dùng connectionString thay cho các fields trên",
+  "connectionString": "",
+  "_connectionString_example": "mongodb://username:password@localhost:27017/myapp_db",
+
+  "schema": "public",
+  "_schema_comment": "PostgreSQL only. Schema mặc định là 'public'.",
+
+  "pool": {
+    "min": 1,
+    "max": 5,
+    "_comment": "Connection pool size cho test environment. Giữ nhỏ để tránh quá tải."
+  }
+}
