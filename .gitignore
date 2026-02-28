@@ -1,1 +1,8 @@
 node_modules
+
+# Generated files
+generated/canonical-endpoints.json
+generated/tests/
+generated/helpers/
+generated/test-plan.md
+generated/dependency-graph.json

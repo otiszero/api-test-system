@@ -13,7 +13,8 @@
     "test:rbac": "vitest run generated/tests/05-rbac",
     "test:security": "vitest run generated/tests/06-security",
     "test:db": "vitest run generated/tests/07-db",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "extract-endpoints": "tsx scripts/extract-endpoints.ts"
   },
   "keywords": [],
   "author": "",
@@ -21,10 +22,12 @@
   "description": "",
   "devDependencies": {
     "@faker-js/faker": "^9.9.0",
+    "@types/js-yaml": "^4.0.9",
     "@vitest/ui": "^4.0.18",
     "ajv": "^8.18.0",
     "ajv-formats": "^3.0.1",
     "axios": "^1.13.5",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18",
     "yaml": "^2.8.2"

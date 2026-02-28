@@ -1,5 +1,13 @@
 Sinh RBAC permission tests.
 
+⚠️ STEP 0: MANDATORY PRE-CHECK
+1. Check if generated/canonical-endpoints.json exists
+   - If NOT exists → STOP → tell user: "⚠️ canonical-endpoints.json not found. Please run /analyze first."
+2. Read generated/canonical-endpoints.json
+3. Extract testable endpoints (isTestable = true)
+4. ONLY generate RBAC tests for endpoints in this list
+5. NEVER add endpoints not in canonical list
+
 Pre-check:
 - auth.config phải có 2+ roles VÀ accounts cho mỗi role
 - Nếu chỉ 1 role → cảnh báo: "Cần tối thiểu 2 roles + 2 user accounts cùng role (cho IDOR)"
@@ -10,13 +18,14 @@ Generate: generated/tests/05-rbac/{type}.test.ts
 6 LOẠI RBAC TEST:
 
 TYPE 1 — Endpoint Access Matrix (AI 95%):
-Mỗi endpoint × mỗi role → test allowed (200/201) hoặc denied (403) hoặc unauth (401).
+Mỗi endpoint FROM CANONICAL LIST × mỗi role → test allowed (200/201) hoặc denied (403) hoặc unauth (401).
 Đọc permission matrix từ test-rules.md. Không có → suy đoán từ OpenAPI security + naming convention.
 
 TYPE 2 — IDOR / Resource Ownership (AI 85%):
 Cần 2 user accounts cùng role (user_a, user_b).
 Cho endpoints có 🔒 trong matrix: User A access User B's resource → 403.
 Test: view, edit, delete resource người khác. Admin CÓ THỂ override.
+⚠️ CHỈ test endpoints tồn tại trong canonical list
 
 TYPE 3 — Field-level Permissions (AI 50%):
 CHỈ generate nếu test-rules.md có field-level permission table.

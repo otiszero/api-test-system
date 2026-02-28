@@ -1,9 +1,39 @@
 Sinh single API tests. Argument optional: resource name (vd: /generate-single users).
 
+⚠️ ============================================================
+⚠️ CRITICAL: ANTI-HALLUCINATION VALIDATION
+⚠️ ============================================================
+
+STEP 0: MANDATORY PRE-CHECK
+1. Check if generated/canonical-endpoints.json exists
+   - If NOT exists → STOP → tell user: "⚠️ canonical-endpoints.json not found. Please run /analyze first."
+   - If exists → continue
+
+2. Read generated/canonical-endpoints.json
+3. Extract testable endpoints (isTestable = true)
+4. Filter by resource if argument provided (e.g., /generate-single markets → only Markets tag)
+5. This is your ONLY source of endpoints
+6. NEVER add endpoints not in this list
+7. NEVER assume endpoints exist based on patterns
+
+⚠️ CRITICAL RULE: You MUST ONLY generate tests for endpoints that exist in canonical-endpoints.json with isTestable=true. Any endpoint not in this list is HALLUCINATION and will cause test failures.
+
+Example hallucinations to AVOID:
+- ❌ /markets/new-markets (doesn't exist, should be /markets/proposed)
+- ❌ /markets/popular-markets (doesn't exist, should be /markets/favorites)
+- ❌ /auth/me, /auth/logout (check canonical file first)
+
+If you think an endpoint SHOULD exist but it's not in canonical-endpoints.json:
+- Check if it's blacklisted (blacklistReason field)
+- Check if it's missing from OpenAPI spec (ask user to update spec)
+- DO NOT generate tests for it
+
+⚠️ ============================================================
+
 Pre-check: đọc openapi spec, api.config, auth.config, test-rules, db.config
 Generate: generated/tests/03-single/{resource}.test.ts
 
-Với MỖI endpoint, generate tests theo nhóm:
+Với MỖI endpoint FROM CANONICAL LIST, generate tests theo nhóm:
 
 NHÓM 1 — Happy Path:
 - POST: valid data → 201 + schema valid + DB verify (row exists, values match)

@@ -15,3 +15,9 @@ Execution:
 5. In realtime progress
 6. Cuối: summary table (layer × pass × fail × skip × duration)
 7. Tự động suggest /report nếu có failures
+
+After test execution completes:
+- Display quick summary (passed/failed/skipped counts)
+- Nếu có failures → suggest: "💡 View detailed analysis: /view-report test-results"
+- Suggest: "📊 Generate reports: /report"
+- Suggest: "📋 List all reports: /list-reports"
