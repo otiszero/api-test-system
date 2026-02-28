@@ -27,24 +27,18 @@
     "_bearer_direct_format": "Nếu type = bearer_direct: thêm field 'token' vào mỗi account, bỏ qua username/password",
     "admin": [
       {
-        "username": "admin@example.com",
-        "password": "FILL_ME",
-        "token": "FILL_ME_IF_BEARER_DIRECT",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzIyNDAyOTgsImV4cCI6MTc3MjI1ODI5OH0.YCGChU_OjNnR6wyyXgE3_u6-xOpK4573e0vxRAhAkEE",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzIyNDAyOTgsImV4cCI6MzU0NDY2MDU5Nn0.bZhPz0fN3DSpftu1NReaIiWnMN9nqVWG3i-vMn-t4rI",
         "label": "admin_main",
-        "_comment": "Nếu dùng bearer_direct: chỉ điền token, username/password có thể bỏ trống"
+        "_comment": "Same account as user_a (id:91, isAdmin:true). Only 1 account available."
       }
     ],
     "user": [
       {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzIxNjE1NDIsImV4cCI6MTc3MjE3OTU0Mn0.-D5MDh81eEjHHyf-ZUS_7tdHt8hbRiDSxP0BxxVFC2k",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzIyNDAyOTgsImV4cCI6MTc3MjI1ODI5OH0.YCGChU_OjNnR6wyyXgE3_u6-xOpK4573e0vxRAhAkEE",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzIyNDAyOTgsImV4cCI6MzU0NDY2MDU5Nn0.bZhPz0fN3DSpftu1NReaIiWnMN9nqVWG3i-vMn-t4rI",
         "label": "user_a",
-        "_comment": "user_a và user_b dùng cho IDOR tests"
-      },
-      {
-        "username": "user_b@example.com",
-        "password": "FILL_ME",
-        "token": "FILL_ME_IF_BEARER_DIRECT",
-        "label": "user_b"
+        "_comment": "Same account (id:91, isAdmin:true). Used as user role for tests."
       }
     ]
   },
