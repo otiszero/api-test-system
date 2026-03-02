@@ -26,19 +26,19 @@
     "_comment": "Mỗi role cần ít nhất 1 account. IDOR tests cần 2 accounts cùng role (user_a, user_b).",
     "_bearer_direct_format": "Nếu type = bearer_direct: thêm field 'token' vào mỗi account, bỏ qua username/password",
     "admin": [
-      {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0MjAxMjgsImV4cCI6MTc3MjQzODEyOH0.oLs7tyWUnS1hBxaN5TvvPsuTcpHZ93_nrMrqbod9EwA",
-        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0MjAxMjgsImV4cCI6MzU0NTAyMDI1Nn0.lrKyUkb9LywkJp5I-DHLn1jNoas7iHbj9Evj2jliHwg",
-        "label": "tien",
-        "_comment": "User 1"
-      }
     ],
     "user": [
       {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw",
-        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MzU0NTAyMDUyMn0.plpEbhZSac8AjxymotFvH9A4oGO3WkXgZUhL5kSbMSI",
-        "label": "user_otis",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MzU0NTA1NjgwNH0.KFoaw96_8kjwj8XcuQMYTPVU8SDIixTNz3-W5gjnXU4",
+        "label": "tien",
         "_comment": "User 2"
+      },
+       {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MzgzMjUsImV4cCI6MTc3MjQ1NjMyNX0.NldAcQjgE-C0K-LQTjeFdU9K373dbU1FaLOEebMmsaM",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MzgzMjUsImV4cCI6MzU0NTA1NjY1MH0.C2gHzM7HKdTqLU0PuUwIs5JJN6PnBsJlsaNj9A4Vgxk",
+        "label": "otis",
+        "_comment": "User 1"
       }
     ]
   },

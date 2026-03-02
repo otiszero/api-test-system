@@ -1,0 +1,74 @@
+[
+  {
+    "method": "GET",
+    "url": "https://api.foreon.network/auth/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo"
+    },
+    "responseStatus": 401,
+    "responseBody": {
+      "data": {},
+      "message": "Expired token"
+    },
+    "duration": 600,
+    "curl": "curl -X GET \"https://api.foreon.network/auth/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo\"",
+    "timestamp": "2026-03-02T08:01:42.233Z",
+    "testName": "should match API user data with DB",
+    "testSuite": "Users Table Verification"
+  },
+  {
+    "method": "GET",
+    "url": "https://api.foreon.network/markets?limit=1",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*"
+    },
+    "responseStatus": 200,
+    "responseBody": {
+      "_truncated": true,
+      "_originalLength": 2587,
+      "_preview": "{\"code\":200,\"data\":[{\"id\":529,\"userId\":null,\"imageUrl\":\"https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\",\"title\":\"Will Anyone Be Jailed In February Over Epstein Disclosures?\",\"marketRule\":\"This market will resolve to “Yes” if, by February 28th, 2026, 11:59 PM, any individual serves any time in a federal, state, or local U.S. jail or prison, and the cause of that incarceration is attributed to information contained in files related to Jeffrey Epstein released by the federal government on or after December 19, 2025. Otherwise, this market will resolve to “No.”\\n\\nA qualifying incarceration must be caused by information included in Epstein-related files released on or after December 19, 2025. The cause of incarceration may be established through official charging documents, court rulings, sentencing statements, or through a clear consensus of credible reporting attributing the incarceration to information contained in those released files. Incarceration driven by information that was publicly known before December 19, 2025, or by reasons unrelated to the content of the released Epstein-related files, will not qualify.\\n\\nThe resolution source for this market will be official court records or government statements, however a consensus of credible reporting may also be used.\",\"totalVolume\":100,\"status\":5,\"type\":0,\"resolveMethod\":1,\"resolveStatus\":0,\"isCanceled\":0,\"category\":\"Politics\",\"endedAt\":\"2026-02-28T20:59:00.000Z\",\"startVoteAt\":null,\"endVoteAt\":null,\"totalVoted\":0,\"totalRejectVote\":0,\"totalApproveVote\":0,\"hash\":null,\"publishedAt\":\"2026-02-02T04:49:00.000Z\",\"isSuggestion\":0,\"email\":null,\"createdAt\":\"2026-02-02T04:48:41.000Z\",\"updatedAt\":\"2026-02-02T04:48:41.000Z\",\"cancelledAt\":null,\"outcomes\":[{\"id\":809,\"marketId\":529,\"imageUrl\":\"https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\",\"title\":\"Will Anyone Be Jailed In February Over Epstein Disclosures?\",\"resul..."
+    },
+    "duration": 212,
+    "curl": "curl -X GET \"https://api.foreon.network/markets?limit=1\" \\\n  -H \"Accept: application/json, text/plain, */*\"",
+    "timestamp": "2026-03-02T08:01:42.817Z",
+    "testName": "should match API markets count with DB count",
+    "testSuite": "Markets Table Verification"
+  },
+  {
+    "method": "GET",
+    "url": "https://api.foreon.network/markets?limit=1",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*"
+    },
+    "responseStatus": 200,
+    "responseBody": {
+      "_truncated": true,
+      "_originalLength": 2587,
+      "_preview": "{\"code\":200,\"data\":[{\"id\":529,\"userId\":null,\"imageUrl\":\"https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\",\"title\":\"Will Anyone Be Jailed In February Over Epstein Disclosures?\",\"marketRule\":\"This market will resolve to “Yes” if, by February 28th, 2026, 11:59 PM, any individual serves any time in a federal, state, or local U.S. jail or prison, and the cause of that incarceration is attributed to information contained in files related to Jeffrey Epstein released by the federal government on or after December 19, 2025. Otherwise, this market will resolve to “No.”\\n\\nA qualifying incarceration must be caused by information included in Epstein-related files released on or after December 19, 2025. The cause of incarceration may be established through official charging documents, court rulings, sentencing statements, or through a clear consensus of credible reporting attributing the incarceration to information contained in those released files. Incarceration driven by information that was publicly known before December 19, 2025, or by reasons unrelated to the content of the released Epstein-related files, will not qualify.\\n\\nThe resolution source for this market will be official court records or government statements, however a consensus of credible reporting may also be used.\",\"totalVolume\":100,\"status\":5,\"type\":0,\"resolveMethod\":1,\"resolveStatus\":0,\"isCanceled\":0,\"category\":\"Politics\",\"endedAt\":\"2026-02-28T20:59:00.000Z\",\"startVoteAt\":null,\"endVoteAt\":null,\"totalVoted\":0,\"totalRejectVote\":0,\"totalApproveVote\":0,\"hash\":null,\"publishedAt\":\"2026-02-02T04:49:00.000Z\",\"isSuggestion\":0,\"email\":null,\"createdAt\":\"2026-02-02T04:48:41.000Z\",\"updatedAt\":\"2026-02-02T04:48:41.000Z\",\"cancelledAt\":null,\"outcomes\":[{\"id\":809,\"marketId\":529,\"imageUrl\":\"https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\",\"title\":\"Will Anyone Be Jailed In February Over Epstein Disclosures?\",\"resul..."
+    },
+    "duration": 206,
+    "curl": "curl -X GET \"https://api.foreon.network/markets?limit=1\" \\\n  -H \"Accept: application/json, text/plain, */*\"",
+    "timestamp": "2026-03-02T08:01:43.223Z",
+    "testName": "should verify market detail matches DB",
+    "testSuite": "Markets Table Verification"
+  },
+  {
+    "method": "GET",
+    "url": "https://api.foreon.network/auth/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo"
+    },
+    "responseStatus": 401,
+    "responseBody": {
+      "data": {},
+      "message": "Expired token"
+    },
+    "duration": 188,
+    "curl": "curl -X GET \"https://api.foreon.network/auth/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo\"",
+    "timestamp": "2026-03-02T08:01:44.166Z",
+    "testName": "should verify user orders match DB",
+    "testSuite": "Orders Table Verification"
+  }
+]

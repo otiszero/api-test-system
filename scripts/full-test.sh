@@ -123,6 +123,10 @@ if [ -f "$REPORT_DIR/html/index.html" ]; then
     echo -e "  ${GREEN}✓ HTML Report: $REPORT_DIR/html/index.html${NC}"
 fi
 
+if [ -f "$REPORT_DIR/detailed-evidence.html" ]; then
+    echo -e "  ${GREEN}✓ Detailed Evidence (Request/Response): $REPORT_DIR/detailed-evidence.html${NC}"
+fi
+
 if [ -f "$REPORT_DIR/latest-report.md" ]; then
     echo -e "  ${GREEN}✓ Summary Report: $REPORT_DIR/latest-report.md${NC}"
 fi
@@ -142,7 +146,8 @@ echo "  Finished: $(date)"
 echo "============================================"
 echo ""
 echo "Next steps:"
-echo "  1. View HTML report: npx vite preview --outDir reports/html"
-echo "  2. View summary: cat reports/latest-report.md"
-echo "  3. View bugs: cat reports/bugs-found.md"
+echo "  1. View evidence report: open reports/detailed-evidence.html"
+echo "  2. View HTML report: npx vite preview --outDir reports/html"
+echo "  3. View summary: cat reports/latest-report.md"
+echo "  4. View bugs: cat reports/bugs-found.md"
 echo ""

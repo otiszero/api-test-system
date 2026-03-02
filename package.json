@@ -16,7 +16,8 @@
     "full-test": "bash scripts/full-test.sh",
     "typecheck": "tsc --noEmit",
     "extract-endpoints": "tsx scripts/extract-endpoints.ts",
-    "view-report": "npx vite preview --outDir reports/html"
+    "view-report": "npx vite preview --outDir reports/html",
+    "view-evidence": "open reports/detailed-evidence.html"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,698 @@
+
+> api-test-system@1.0.0 test
+> vitest run
+
+[1m[43m DEPRECATED [49m[22m [33m`test.poolOptions` was removed in Vitest 4. All previous `poolOptions` are now top-level options. Please, refer to the migration guide: https://vitest.dev/guide/migration#pool-rework[39m
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/trung.hoang/Desktop/api-test-system[39m
+
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:13:5[22m[2m > [22m01 - Smoke Tests[2m > [22mHealth Check[2m > [22mGET / → server is reachable[33m 578[2mms[22m[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:12:5[22m[2m > [22m06 - Security Tests[2m > [22mAuthentication Bypass[2m > [22mRequest without token to protected endpoint → 401[33m 607[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/trades.test.ts[2m:12:5[22m[2m > [22mTrades - Single API Tests[2m > [22mPublic Endpoints[2m > [22mGET /trades/market-trade - should return market trades[33m 642[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/trades.test.ts[2m:18:5[22m[2m > [22mTrades - Single API Tests[2m > [22mPublic Endpoints[2m > [22mGET /trades/market-trade - should support query params[32m 204[2mms[22m[39m
+ [31m×[39m generated/tests/06-security/security.test.ts[2m:18:5[22m[2m > [22m06 - Security Tests[2m > [22mAuthentication Bypass[2m > [22mRequest with expired token → 401[32m 204[2mms[22m[39m
+[31m   → expected 200 to be 401 // Object.is equality[39m
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:23:5[22m[2m > [22mDB Verification Tests[2m > [22mDatabase Connection[2m > [22mshould connect to database successfully[33m 935[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:13:5[22m[2m > [22m02 - Contract Tests[2m > [22mResponse Format[2m > [22mSuccess response should have code, data fields[33m 1070[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS01: User views markets and favorites[2m > [22mStep 1: GET /markets[33m 1080[2mms[22m[39m
+ [31m×[39m generated/tests/06-security/security.test.ts[2m:26:5[22m[2m > [22m06 - Security Tests[2m > [22mAuthentication Bypass[2m > [22mRequest with malformed token → 401[32m 179[2mms[22m[39m
+[31m   → expected 500 to be 401 // Object.is equality[39m
+ [31m×[39m generated/tests/03-single/trades.test.ts[2m:23:5[22m[2m > [22mTrades - Single API Tests[2m > [22mPublic Endpoints[2m > [22mGET /trades/graph - should return graph data[32m 189[2mms[22m[39m
+[31m   → expected 400 to be 200 // Object.is equality[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:20:5[22m[2m > [22m01 - Smoke Tests[2m > [22mMarkets - Public[2m > [22mGET /markets → list all markets[33m 579[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:22:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 1: User views markets and favorites[2m > [22mStep 1: Get list of markets (public)[33m 581[2mms[22m[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:33:5[22m[2m > [22m06 - Security Tests[2m > [22mAuthentication Bypass[2m > [22mRequest with empty token → 401[32m 181[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS01: User views markets and favorites[2m > [22mStep 2: GET /markets/${marketList.data[0].id}[32m 221[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:20:5[22m[2m > [22m02 - Contract Tests[2m > [22mResponse Format[2m > [22mList response should have metadata with pagination[32m 232[2mms[22m[39m
+ [31m×[39m generated/tests/03-single/trades.test.ts[2m:29:5[22m[2m > [22mTrades - Single API Tests[2m > [22mPublic Endpoints[2m > [22mGET /trades/graph-overrall - should return overall graph[32m 184[2mms[22m[39m
+[31m   → expected 400 to be 200 // Object.is equality[39m
+[90mstdout[2m | generated/tests/07-db/db-verification.test.ts[2m:36:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mUsers Table Verification[2m > [22m[2mshould have users table with data
+[22m[39mFound 92 users in database
+
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:36:5[22m[2m > [22mDB Verification Tests[2m > [22mUsers Table Verification[2m > [22mshould have users table with data[33m 371[2mms[22m[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:40:5[22m[2m > [22m06 - Security Tests[2m > [22mAuthentication Bypass[2m > [22mRequest with token missing Bearer prefix → should be handled[32m 178[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:25:5[22m[2m > [22m01 - Smoke Tests[2m > [22mMarkets - Public[2m > [22mGET /markets/{id} → get market detail[32m 183[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/trades.test.ts[2m:37:5[22m[2m > [22mTrades - Single API Tests[2m > [22mAuth Required Endpoints[2m > [22mGET /trades - should require authentication[32m 184[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:30:5[22m[2m > [22m02 - Contract Tests[2m > [22mMarkets[2m > [22mGET /markets - response contract: code, data (array), metadata[32m 221[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:28:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 1: User views markets and favorites[2m > [22mStep 2: Get market detail[32m 201[2mms[22m[39m
+ [31m×[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS01: User views markets and favorites[2m > [22mStep 3: POST /markets/${marketDetail.data.id}/favorite[32m 188[2mms[22m[39m
+[31m   → expected [ 200, 201 ] to include 401[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:54:5[22m[2m > [22m06 - Security Tests[2m > [22mSQL Injection[2m > [22mSQL injection in query param (id) → should not cause 500[32m 183[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:30:5[22m[2m > [22m01 - Smoke Tests[2m > [22mMarkets - Public[2m > [22mGET /markets/category → get categories[32m 175[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:35:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 1: User views markets and favorites[2m > [22mStep 3: Toggle favorite (auth required)[32m 183[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:35:5[22m[2m > [22m01 - Smoke Tests[2m > [22mMarkets - Public[2m > [22mGET /markets/top-holders/{id} → top holders[32m 208[2mms[22m[39m
+ [31m×[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS01: User views markets and favorites[2m > [22mStep 4: GET /markets/favorites[32m 187[2mms[22m[39m
+[31m   → expected [ 200 ] to include 401[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:61:5[22m[2m > [22m06 - Security Tests[2m > [22mSQL Injection[2m > [22mSQL injection in query param (marketId)[32m 188[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:43:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 1: User views markets and favorites[2m > [22mStep 4: Get user favorites list[32m 182[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/trades.test.ts[2m:43:5[22m[2m > [22mTrades - Single API Tests[2m > [22mAuth Required Endpoints[2m > [22mGET /trades - should return user trades (auth)[33m 564[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS02: User views orders and positions[2m > [22mStep 1: GET /orders[32m 200[2mms[22m[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:66:5[22m[2m > [22m06 - Security Tests[2m > [22mSQL Injection[2m > [22mSQL injection in search/filter param[32m 186[2mms[22m[39m
+[90mstdout[2m | generated/tests/07-db/db-verification.test.ts[2m:44:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mUsers Table Verification[2m > [22m[2mshould match API user data with DB
+[22m[39mAPI returned non-200, skipping DB verification
+
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:44:5[22m[2m > [22mDB Verification Tests[2m > [22mUsers Table Verification[2m > [22mshould match API user data with DB[33m 647[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:40:5[22m[2m > [22m01 - Smoke Tests[2m > [22mMarkets - Public[2m > [22mGET /markets/ipfs/{id} → IPFS data[32m 288[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:52:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 2: User views orders and positions[2m > [22mStep 1: Get user orders[32m 199[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:37:5[22m[2m > [22m02 - Contract Tests[2m > [22mMarkets[2m > [22mGET /markets/{id} - response contract: code, data (object)[33m 629[2mms[22m[39m
+ [31m×[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS02: User views orders and positions[2m > [22mStep 2: GET /orders/position[32m 187[2mms[22m[39m
+[31m   → expected [ 200 ] to include 401[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:71:5[22m[2m > [22m06 - Security Tests[2m > [22mSQL Injection[2m > [22mSQL injection in POST body[32m 184[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/trades.test.ts[2m:50:5[22m[2m > [22mTrades - Single API Tests[2m > [22mAuth Required Endpoints[2m > [22mGET /trades - should support pagination[32m 193[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:59:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 2: User views orders and positions[2m > [22mStep 2: Get user positions[32m 185[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:47:5[22m[2m > [22m01 - Smoke Tests[2m > [22mMarkets - Auth Required[2m > [22mGET /markets/proposed → proposed markets[32m 182[2mms[22m[39m
+ [31m×[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS02: User views orders and positions[2m > [22mStep 3: GET /orders/position-claims[32m 186[2mms[22m[39m
+[31m   → expected [ 200 ] to include 401[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:84:5[22m[2m > [22m06 - Security Tests[2m > [22mXSS Prevention[2m > [22mXSS in comment content → should be sanitized or escaped[32m 179[2mms[22m[39m
+[90mstdout[2m | generated/tests/07-db/db-verification.test.ts[2m:70:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mMarkets Table Verification[2m > [22m[2mshould have markets table with data
+[22m[39mFound 569 markets in database
+
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:70:5[22m[2m > [22mDB Verification Tests[2m > [22mMarkets Table Verification[2m > [22mshould have markets table with data[33m 366[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:48:5[22m[2m > [22m02 - Contract Tests[2m > [22mMarkets[2m > [22mGET /markets/category - response contract: categories array[32m 190[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/trades.test.ts[2m:57:5[22m[2m > [22mTrades - Single API Tests[2m > [22mAuth Required Endpoints[2m > [22mGET /trades/history - should require authentication[32m 192[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS02: User views orders and positions[2m > [22mStep 4: GET /orders/activity[32m 223[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:66:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 2: User views orders and positions[2m > [22mStep 3: Get position claims[32m 186[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:54:5[22m[2m > [22m01 - Smoke Tests[2m > [22mMarkets - Auth Required[2m > [22mGET /markets/proposed-detail/{id} → proposed detail[32m 182[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/trades.test.ts[2m:63:5[22m[2m > [22mTrades - Single API Tests[2m > [22mAuth Required Endpoints[2m > [22mGET /trades/history - should return trade history (auth)[32m 203[2mms[22m[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:95:5[22m[2m > [22m06 - Security Tests[2m > [22mXSS Prevention[2m > [22mXSS with event handlers[32m 193[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:73:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 2: User views orders and positions[2m > [22mStep 4: Get order activity[32m 220[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:54:5[22m[2m > [22m02 - Contract Tests[2m > [22mMarkets[2m > [22mGET /markets/proposed - response contract (auth required)[32m 196[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:61:5[22m[2m > [22m01 - Smoke Tests[2m > [22mMarkets - Auth Required[2m > [22mGET /markets/favorites → user favorites[32m 187[2mms[22m[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:107:5[22m[2m > [22m06 - Security Tests[2m > [22mPath Traversal[2m > [22mPath traversal in ID param[32m 182[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS03: User views trades[2m > [22mStep 1: GET /trades/market-trade[32m 187[2mms[22m[39m
+[90mstdout[2m | generated/tests/07-db/db-verification.test.ts[2m:78:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mMarkets Table Verification[2m > [22m[2mshould match API markets count with DB count
+[22m[39mMarkets: API shows 186, DB has 569
+
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:78:5[22m[2m > [22mDB Verification Tests[2m > [22mMarkets Table Verification[2m > [22mshould match API markets count with DB count[33m 410[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:66:5[22m[2m > [22m02 - Contract Tests[2m > [22mOrders[2m > [22mGET /orders - response contract: orders list[32m 201[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS03: User views trades[2m > [22mStep 2: GET /trades[32m 203[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:68:5[22m[2m > [22m01 - Smoke Tests[2m > [22mMarkets - Auth Required[2m > [22mPOST /markets/{marketId}/favorite → toggle favorite[32m 186[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:82:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 3: User views trades[2m > [22mStep 1: Get market trades (public)[32m 182[2mms[22m[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:112:5[22m[2m > [22m06 - Security Tests[2m > [22mPath Traversal[2m > [22mPath traversal in IPFS endpoint[32m 181[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:76:5[22m[2m > [22m02 - Contract Tests[2m > [22mOrders[2m > [22mGET /orders/position - response contract: positions data[32m 189[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:75:5[22m[2m > [22m01 - Smoke Tests[2m > [22mMarkets - Auth Required[2m > [22mPOST /markets/market → create market[32m 180[2mms[22m[39m
+ [31m×[39m generated/tests/04-integration/integration.test.ts[2m:87:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 3: User views trades[2m > [22mStep 2: Get trade graph (public)[32m 184[2mms[22m[39m
+[31m   → expected 400 to be 200 // Object.is equality[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS03: User views trades[2m > [22mStep 3: GET /trades/history[32m 216[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:85:5[22m[2m > [22m02 - Contract Tests[2m > [22mOrders[2m > [22mGET /orders/position-claims - response contract: claims list[32m 186[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:82:5[22m[2m > [22m01 - Smoke Tests[2m > [22mMarkets - Auth Required[2m > [22mPUT /markets/vote/{id} → vote on market[32m 179[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:92:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 3: User views trades[2m > [22mStep 3: Get user trades (auth)[32m 193[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS04: Comment lifecycle[2m > [22mStep 1: GET /markets[32m 225[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:94:5[22m[2m > [22m02 - Contract Tests[2m > [22mOrders[2m > [22mGET /orders/activity - response contract: activity list[32m 229[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/other.test.ts[2m:12:5[22m[2m > [22mOther Endpoints - Single API Tests[2m > [22mRoot[2m > [22mGET / - should return health status[33m 601[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:89:5[22m[2m > [22m01 - Smoke Tests[2m > [22mMarkets - Auth Required[2m > [22mPUT /markets/add-liquidity/{id} → add liquidity[32m 178[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:99:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 3: User views trades[2m > [22mStep 4: Get trade history[32m 194[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS04: Comment lifecycle[2m > [22mStep 2: GET /comments/market/${markets.data[0].id}[32m 203[2mms[22m[39m
+[90mstdout[2m | generated/tests/07-db/db-verification.test.ts[2m:95:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mMarkets Table Verification[2m > [22m[2mshould verify market detail matches DB
+[22m[39mVerified market 529: "Will Anyone Be Jailed In February Over Epstein Disclosures?"
+
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:95:5[22m[2m > [22mDB Verification Tests[2m > [22mMarkets Table Verification[2m > [22mshould verify market detail matches DB[33m 695[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:105:5[22m[2m > [22m02 - Contract Tests[2m > [22mTrades[2m > [22mGET /trades - response contract (auth required)[32m 205[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:94:5[22m[2m > [22m01 - Smoke Tests[2m > [22mMarkets - Auth Required[2m > [22mPOST /markets/upload → upload file[32m 189[2mms[22m[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:119:5[22m[2m > [22m06 - Security Tests[2m > [22mInput Validation[2m > [22mExtremely long string in content → should be rejected[33m 781[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/other.test.ts[2m:19:5[22m[2m > [22mOther Endpoints - Single API Tests[2m > [22mOrderbook[2m > [22mGET /orderbook - should return orderbook data[32m 191[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:108:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 4: Comment lifecycle[2m > [22mStep 1: Get market comments[32m 199[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:103:5[22m[2m > [22m01 - Smoke Tests[2m > [22mOrders - Auth Required[2m > [22mGET /orders → list orders[32m 198[2mms[22m[39m
+ [31m×[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS04: Comment lifecycle[2m > [22mStep 3: POST /comments[32m 198[2mms[22m[39m
+[31m   → expected [ 200, 201, 400, 422 ] to include 401[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:114:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 4: Comment lifecycle[2m > [22mStep 2: Create comment (requires auth)[32m 182[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:114:5[22m[2m > [22m02 - Contract Tests[2m > [22mTrades[2m > [22mGET /trades/market-trade - response contract: trades list[32m 186[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/other.test.ts[2m:25:5[22m[2m > [22mOther Endpoints - Single API Tests[2m > [22mOrderbook[2m > [22mGET /orderbook - should support marketId query[32m 185[2mms[22m[39m
+[90mstdout[2m | generated/tests/07-db/db-verification.test.ts[2m:114:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mOrders Table Verification[2m > [22m[2mshould have orders table
+[22m[39mFound 711 orders in database
+
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:114:5[22m[2m > [22mDB Verification Tests[2m > [22mOrders Table Verification[2m > [22mshould have orders table[33m 371[2mms[22m[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:131:5[22m[2m > [22m06 - Security Tests[2m > [22mInput Validation[2m > [22mNegative numbers where positive expected[32m 178[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:110:5[22m[2m > [22m01 - Smoke Tests[2m > [22mOrders - Auth Required[2m > [22mPOST /orders → create order[32m 177[2mms[22m[39m
+ [31m×[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS04: Comment lifecycle[2m > [22mStep 4: POST /comments/1/like[32m 186[2mms[22m[39m
+[31m   → expected [ 200, 201, 404 ] to include 401[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:125:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 4: Comment lifecycle[2m > [22mStep 3: Like comment (requires auth)[32m 181[2mms[22m[39m
+ [31m×[39m generated/tests/02-contract/contract.test.ts[2m:120:5[22m[2m > [22m02 - Contract Tests[2m > [22mTrades[2m > [22mGET /trades/graph - response contract: graph data[32m 188[2mms[22m[39m
+[31m   → expected 400 to be 200 // Object.is equality[39m
+ [32m✓[39m generated/tests/03-single/other.test.ts[2m:32:5[22m[2m > [22mOther Endpoints - Single API Tests[2m > [22mStatistic[2m > [22mGET /statistic/rank - should return ranking data[32m 196[2mms[22m[39m
+ [31m×[39m generated/tests/06-security/security.test.ts[2m:143:5[22m[2m > [22m06 - Security Tests[2m > [22mInput Validation[2m > [22mNon-numeric ID where numeric expected[32m 192[2mms[22m[39m
+[31m   → expected [ 400, 404 ] to include 500[39m
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:122:5[22m[2m > [22mDB Verification Tests[2m > [22mOrders Table Verification[2m > [22mshould verify user orders match DB[32m 209[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:117:5[22m[2m > [22m01 - Smoke Tests[2m > [22mOrders - Auth Required[2m > [22mPUT /orders/{id}/cancelled → cancel order[32m 182[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS05: Orderbook and statistics[2m > [22mStep 1: GET /orderbook[32m 185[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:133:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 4: Comment lifecycle[2m > [22mStep 4: Get replies[32m 181[2mms[22m[39m
+ [31m×[39m generated/tests/02-contract/contract.test.ts[2m:126:5[22m[2m > [22m02 - Contract Tests[2m > [22mTrades[2m > [22mGET /trades/graph-overrall - response contract: overall graph[32m 186[2mms[22m[39m
+[31m   → expected 400 to be 200 // Object.is equality[39m
+ [32m✓[39m generated/tests/03-single/other.test.ts[2m:38:5[22m[2m > [22mOther Endpoints - Single API Tests[2m > [22mStatistic[2m > [22mGET /statistic/rank - should support pagination[32m 192[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:124:5[22m[2m > [22m01 - Smoke Tests[2m > [22mOrders - Auth Required[2m > [22mPUT /orders/{id}/claimed → claim order[32m 182[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS05: Orderbook and statistics[2m > [22mStep 2: GET /statistic/rank[32m 193[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:140:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 5: Orderbook and statistics[2m > [22mStep 1: Get orderbook[32m 183[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:132:5[22m[2m > [22m02 - Contract Tests[2m > [22mTrades[2m > [22mGET /trades/history - response contract (auth required)[32m 194[2mms[22m[39m
+ [31m×[39m generated/tests/03-single/other.test.ts[2m:45:5[22m[2m > [22mOther Endpoints - Single API Tests[2m > [22mSlack[2m > [22mGET /slack/{id} - should handle test endpoint[32m 205[2mms[22m[39m
+[31m   → expected [ 200, 404 ] to include 400[39m
+[90mstdout[2m | generated/tests/07-db/db-verification.test.ts[2m:158:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mComments Table Verification[2m > [22m[2mshould have comments table
+[22m[39mFound 223 comments in database
+
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:158:5[22m[2m > [22mDB Verification Tests[2m > [22mComments Table Verification[2m > [22mshould have comments table[33m 366[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:143:5[22m[2m > [22m02 - Contract Tests[2m > [22mComments[2m > [22mGET /comments/market/{marketId} - response contract: comments list[32m 205[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:131:5[22m[2m > [22m01 - Smoke Tests[2m > [22mOrders - Auth Required[2m > [22mGET /orders/position → user positions[32m 182[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/other.test.ts[2m:52:5[22m[2m > [22mOther Endpoints - Single API Tests[2m > [22mAdmin[2m > [22mGET /admin - should require authentication[32m 203[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:145:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 5: Orderbook and statistics[2m > [22mStep 2: Get orderbook for specific market[32m 180[2mms[22m[39m
+ [31m×[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS06: User profile and assets[2m > [22mStep 1: GET /auth/me[32m 188[2mms[22m[39m
+[31m   → expected [ 200 ] to include 401[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:138:5[22m[2m > [22m01 - Smoke Tests[2m > [22mOrders - Auth Required[2m > [22mGET /orders/position-claims → position claims[33m 302[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/other.test.ts[2m:58:5[22m[2m > [22mOther Endpoints - Single API Tests[2m > [22mAdmin[2m > [22mGET /admin - should return admin list (auth)[32m 218[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:150:5[22m[2m > [22m02 - Contract Tests[2m > [22mComments[2m > [22mGET /comments/reply/{parentId} - response contract: replies list[32m 283[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:151:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 5: Orderbook and statistics[2m > [22mStep 3: Get ranking[33m 343[2mms[22m[39m
+[90mstdout[2m | generated/tests/07-db/db-verification.test.ts[2m:168:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mOutcomes Table Verification[2m > [22m[2mshould have outcomes table
+[22m[39mFound 734 outcomes in database
+
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:168:5[22m[2m > [22mDB Verification Tests[2m > [22mOutcomes Table Verification[2m > [22mshould have outcomes table[33m 370[2mms[22m[39m
+ [31m×[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS06: User profile and assets[2m > [22mStep 2: GET /auth/asset[32m 272[2mms[22m[39m
+[31m   → expected [ 200 ] to include 401[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:145:5[22m[2m > [22m01 - Smoke Tests[2m > [22mOrders - Auth Required[2m > [22mPOST /orders/position-claims → save position claim[32m 185[2mms[22m[39m
+ [31m×[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS07: Proposed markets flow[2m > [22mStep 1: GET /markets/proposed[32m 193[2mms[22m[39m
+[31m   → expected [ 200 ] to include 401[39m
+ [32m✓[39m generated/tests/03-single/other.test.ts[2m:66:5[22m[2m > [22mOther Endpoints - Single API Tests[2m > [22mAdmin[2m > [22mPOST /admin - should require authentication[32m 192[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:159:5[22m[2m > [22m02 - Contract Tests[2m > [22mAuthentication[2m > [22mGET /auth/me - response contract: user data (walletAddress, isAdmin, createdAt)[32m 186[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:158:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 6: User profile and assets[2m > [22mStep 1: Get user profile[32m 183[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:152:5[22m[2m > [22m01 - Smoke Tests[2m > [22mOrders - Auth Required[2m > [22mPOST /orders/add-liquidity → add liquidity[32m 180[2mms[22m[39m
+[90mstderr[2m | generated/tests/07-db/db-verification.test.ts[2m:176:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mOutcomes Table Verification[2m > [22m[2mshould verify each market has at least 2 outcomes
+[22m[39mFound 5 markets with < 2 outcomes: [
+  { id: [33m213[39m, title: [32m'Minh Add LP'[39m, outcomeCount: [33m1[39m },
+  { id: [33m214[39m, title: [32m'test voiting'[39m, outcomeCount: [33m1[39m },
+  { id: [33m215[39m, title: [32m'Testing vote'[39m, outcomeCount: [33m1[39m },
+  { id: [33m217[39m, title: [32m'Check pending'[39m, outcomeCount: [33m1[39m },
+  {
+    id: [33m218[39m,
+    title: [32m'What price will Bitcoin hit by March 31? testing 3103'[39m,
+    outcomeCount: [33m1[39m
+  }
+]
+
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:176:5[22m[2m > [22mDB Verification Tests[2m > [22mOutcomes Table Verification[2m > [22mshould verify each market has at least 2 outcomes[33m 372[2mms[22m[39m
+ [31m×[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS07: Proposed markets flow[2m > [22mStep 2: GET /markets/proposed-detail/1[32m 188[2mms[22m[39m
+[31m   → expected [ 200, 404, 500 ] to include 401[39m
+ [32m✓[39m generated/tests/03-single/other.test.ts[2m:72:5[22m[2m > [22mOther Endpoints - Single API Tests[2m > [22mAdmin[2m > [22mPOST /admin - should validate input (auth)[32m 192[2mms[22m[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:150:5[22m[2m > [22m06 - Security Tests[2m > [22mRate Limiting (if implemented)[2m > [22mMultiple rapid requests should not crash[33m 1263[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:172:5[22m[2m > [22m02 - Contract Tests[2m > [22mAuthentication[2m > [22mGET /auth/me - metadata field present if returned[32m 187[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:167:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 6: User profile and assets[2m > [22mStep 2: Get user assets[32m 181[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:159:5[22m[2m > [22m01 - Smoke Tests[2m > [22mOrders - Auth Required[2m > [22mGET /orders/activity → order activity[32m 219[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/other.test.ts[2m:79:5[22m[2m > [22mOther Endpoints - Single API Tests[2m > [22mAdmin[2m > [22mPUT /admin - should require authentication[32m 191[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS08: Guest vs authenticated access[2m > [22mStep 1: GET /markets[32m 242[2mms[22m[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:164:5[22m[2m > [22m06 - Security Tests[2m > [22mResponse Security[2m > [22mError responses should not leak stack traces[32m 226[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:176:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 7: Proposed markets flow[2m > [22mStep 1: Get proposed markets (auth)[32m 189[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:181:5[22m[2m > [22m02 - Contract Tests[2m > [22mAuthentication[2m > [22mGET /auth/asset - response contract: user asset data[32m 193[2mms[22m[39m
+[90mstderr[2m | generated/tests/07-db/db-verification.test.ts[2m:201:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mForeign Key Integrity[2m > [22m[2mshould verify orders reference valid markets
+[22m[39mFound 4 orphan orders: [
+  { id: [33m1342[39m, market_id: [33m155[39m },
+  { id: [33m1343[39m, market_id: [33m155[39m },
+  { id: [33m1344[39m, market_id: [33m155[39m },
+  { id: [33m1345[39m, market_id: [33m155[39m }
+]
+
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:168:5[22m[2m > [22m01 - Smoke Tests[2m > [22mTrades[2m > [22mGET /trades → user trades[32m 194[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:192:5[22m[2m > [22m02 - Contract Tests[2m > [22mOrderbook[2m > [22mGET /orderbook - response contract: orderbook data[32m 200[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:183:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 7: Proposed markets flow[2m > [22mStep 2: Get proposed market detail[32m 201[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS08: Guest vs authenticated access[2m > [22mStep 2: GET /orderbook[32m 202[2mms[22m[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:175:5[22m[2m > [22m06 - Security Tests[2m > [22mResponse Security[2m > [22mError responses should not expose internal paths[32m 201[2mms[22m[39m
+ [31m×[39m generated/tests/07-db/db-verification.test.ts[2m:201:5[22m[2m > [22mDB Verification Tests[2m > [22mForeign Key Integrity[2m > [22mshould verify orders reference valid markets[33m 378[2mms[22m[39m
+[31m   → expected 4 to be +0 // Object.is equality[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:175:5[22m[2m > [22m01 - Smoke Tests[2m > [22mTrades[2m > [22mGET /trades/market-trade → market trades[32m 178[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:200:5[22m[2m > [22m02 - Contract Tests[2m > [22mAdmin[2m > [22mGET /admin - response contract (admin auth required)[32m 199[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS08: Guest vs authenticated access[2m > [22mStep 3: GET /orders[32m 199[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:190:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 7: Proposed markets flow[2m > [22mStep 3: Vote on market[32m 199[2mms[22m[39m
+[90mstdout[2m | generated/tests/04-integration/integration-scenarios.test.ts[2m:93:1[22m[2m[2m > [22m[2m04 - Integration Tests (Scenario-Based)
+[22m[39mEvidence report saved to: /Users/trung.hoang/Desktop/api-test-system/reports/integration-evidence.md
+
+ [32m✓[39m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS08: Guest vs authenticated access[2m > [22mStep 4: POST /comments[32m 183[2mms[22m[39m
+[90mstdout[2m | generated/tests/07-db/db-verification.test.ts[2m:222:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mForeign Key Integrity[2m > [22m[2mshould verify comments reference valid markets
+[22m[39mNo orphan comments found (FK integrity OK)
+
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:222:5[22m[2m > [22mDB Verification Tests[2m > [22mForeign Key Integrity[2m > [22mshould verify comments reference valid markets[33m 373[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:200:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 8: Guest user access (public vs protected)[2m > [22mPublic: GET /markets should succeed without auth[32m 214[2mms[22m[39m
+ [31m×[39m generated/tests/01-smoke/smoke.test.ts[2m:180:5[22m[2m > [22m01 - Smoke Tests[2m > [22mTrades[2m > [22mGET /trades/graph → trade graph[32m 181[2mms[22m[39m
+[31m   → expected 400 to be 200 // Object.is equality[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:187:5[22m[2m > [22m06 - Security Tests[2m > [22mHTTP Method Security[2m > [22mOPTIONS request should be handled (CORS)[32m 200[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:211:5[22m[2m > [22m02 - Contract Tests[2m > [22mError Response Format[2m > [22m401 error should have message field[32m 185[2mms[22m[39m
+ [32m✓[39m generated/tests/06-security/security.test.ts[2m:195:5[22m[2m > [22m06 - Security Tests[2m > [22mHTTP Method Security[2m > [22mUnsupported method on endpoint → 405 or 404[32m 203[2mms[22m[39m
+ [32m✓[39m generated/tests/02-contract/contract.test.ts[2m:219:5[22m[2m > [22m02 - Contract Tests[2m > [22mError Response Format[2m > [22m400 error should have message field[32m 188[2mms[22m[39m
+ [31m×[39m generated/tests/01-smoke/smoke.test.ts[2m:185:5[22m[2m > [22m01 - Smoke Tests[2m > [22mTrades[2m > [22mGET /trades/graph-overrall → overall trade graph[32m 181[2mms[22m[39m
+[31m   → expected 400 to be 200 // Object.is equality[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:206:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 8: Guest user access (public vs protected)[2m > [22mPublic: GET /orderbook should succeed without auth[32m 184[2mms[22m[39m
+[90mstdout[2m | generated/tests/07-db/db-verification.test.ts[2m:243:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mForeign Key Integrity[2m > [22m[2mshould verify orders reference valid users
+[22m[39mAll orders reference valid users (FK integrity OK)
+
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:243:5[22m[2m > [22mDB Verification Tests[2m > [22mForeign Key Integrity[2m > [22mshould verify orders reference valid users[33m 370[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:190:5[22m[2m > [22m01 - Smoke Tests[2m > [22mTrades[2m > [22mGET /trades/history → trade history[32m 192[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:212:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 8: Guest user access (public vs protected)[2m > [22mPublic: GET /trades/market-trade should succeed without auth[32m 177[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:199:5[22m[2m > [22m01 - Smoke Tests[2m > [22mComments[2m > [22mGET /comments/market/{marketId} → market comments[32m 186[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:16:5[22m[2m > [22m05 - RBAC Tests[2m > [22mGuest Access (No Auth)[2m > [22mGuest can access GET /markets[33m 970[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:218:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 8: Guest user access (public vs protected)[2m > [22mProtected: GET /orders should fail without auth[32m 182[2mms[22m[39m
+[90mstdout[2m | generated/tests/07-db/db-verification.test.ts[2m:266:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mData Constraints[2m > [22m[2mshould verify no negative order amounts
+[22m[39mNo negative order amounts found
+
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:266:5[22m[2m > [22mDB Verification Tests[2m > [22mData Constraints[2m > [22mshould verify no negative order amounts[33m 366[2mms[22m[39m
+ [32m✓[39m generated/tests/04-integration/integration.test.ts[2m:224:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 8: Guest user access (public vs protected)[2m > [22mProtected: POST /comments should fail without auth[32m 179[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:204:5[22m[2m > [22m01 - Smoke Tests[2m > [22mComments[2m > [22mGET /comments/reply/{parentId} → comment replies[32m 179[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:12:5[22m[2m > [22mOrders - Single API Tests[2m > [22mHappy Path[2m > [22mGET /orders - should list user orders (auth)[33m 611[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:21:5[22m[2m > [22m05 - RBAC Tests[2m > [22mGuest Access (No Auth)[2m > [22mGuest can access GET /markets/{id}[32m 190[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:209:5[22m[2m > [22m01 - Smoke Tests[2m > [22mComments[2m > [22mPOST /comments → create comment[32m 179[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:22:5[22m[2m > [22mOrders - Single API Tests[2m > [22mHappy Path[2m > [22mGET /orders - should support pagination[32m 210[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:26:5[22m[2m > [22m05 - RBAC Tests[2m > [22mGuest Access (No Auth)[2m > [22mGuest can access GET /orderbook[32m 178[2mms[22m[39m
+[90mstderr[2m | generated/tests/07-db/db-verification.test.ts[2m:277:5[22m[2m[2m > [22m[2mDB Verification Tests[2m > [22m[2mData Constraints[2m > [22m[2mshould verify market ended_at > created_at
+[22m[39mFound 5 markets with invalid ended_at: [
+  {
+    id: [33m566[39m,
+    title: [32m'Market-7V4pVj-1772177948972'[39m,
+    ended_at: [35mInvalid Date[39m,
+    created_at: [35m2026-02-27T00:39:09.000Z[39m
+  },
+  {
+    id: [33m578[39m,
+    title: [32m'Market-xWkn8M-1772177961644'[39m,
+    ended_at: [35mInvalid Date[39m,
+    created_at: [35m2026-02-27T00:39:21.000Z[39m
+  },
+  {
+    id: [33m635[39m,
+    title: [32m'Market-WCX7CG-1772180658040'[39m,
+    ended_at: [35mInvalid Date[39m,
+    created_at: [35m2026-02-27T01:24:18.000Z[39m
+  },
+  {
+    id: [33m647[39m,
+    title: [32m'Market-FXMADp-1772180666976'[39m,
+    ended_at: [35mInvalid Date[39m,
+    created_at: [35m2026-02-27T01:24:27.000Z[39m
+  },
+  {
+    id: [33m699[39m,
+    title: [32m'Market-D0PePX-1772180715148'[39m,
+    ended_at: [35mInvalid Date[39m,
+    created_at: [35m2026-02-27T01:25:15.000Z[39m
+  }
+]
+
+ [32m✓[39m generated/tests/07-db/db-verification.test.ts[2m:277:5[22m[2m > [22mDB Verification Tests[2m > [22mData Constraints[2m > [22mshould verify market ended_at > created_at[33m 366[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:216:5[22m[2m > [22m01 - Smoke Tests[2m > [22mComments[2m > [22mPOST /comments/reply → reply to comment[32m 200[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:31:5[22m[2m > [22m05 - RBAC Tests[2m > [22mGuest Access (No Auth)[2m > [22mGuest can access GET /trades/market-trade[32m 184[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:223:5[22m[2m > [22m01 - Smoke Tests[2m > [22mComments[2m > [22mPOST /comments/{commentId}/like → like comment[32m 178[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:29:5[22m[2m > [22mOrders - Single API Tests[2m > [22mHappy Path[2m > [22mGET /orders/position - should return user positions[32m 191[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:36:5[22m[2m > [22m05 - RBAC Tests[2m > [22mGuest Access (No Auth)[2m > [22mGuest can access GET /statistic/rank[32m 192[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:230:5[22m[2m > [22m01 - Smoke Tests[2m > [22mComments[2m > [22mDELETE /comments/{commentId} → delete comment[32m 179[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:36:5[22m[2m > [22mOrders - Single API Tests[2m > [22mHappy Path[2m > [22mGET /orders/position-claims - should return position claims[32m 188[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:22:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mHappy Path - CRUD Operations[2m > [22mGET /markets - should return list of markets[33m 579[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/comments.test.ts[2m:12:5[22m[2m > [22mComments - Single API Tests[2m > [22mRead Comments[2m > [22mGET /comments/market/{marketId} - should return market comments[33m 639[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:41:5[22m[2m > [22m05 - RBAC Tests[2m > [22mGuest Access (No Auth)[2m > [22mGuest CANNOT access GET /orders → 401[32m 184[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:239:5[22m[2m > [22m01 - Smoke Tests[2m > [22mAuthentication[2m > [22mPOST /auth/login → login endpoint exists[32m 183[2mms[22m[39m
+ [32m✓[39m generated/tests/07-db/db-integrity.test.ts[2m:13:5[22m[2m > [22m07 - DB Integrity Tests[2m > [22mData Consistency[2m > [22mMarket list count should match metadata total[33m 1266[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:28:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mHappy Path - CRUD Operations[2m > [22mGET /markets - should support pagination[32m 212[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/comments.test.ts[2m:20:5[22m[2m > [22mComments - Single API Tests[2m > [22mRead Comments[2m > [22mGET /comments/market/{marketId} - should support pagination[32m 208[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:46:5[22m[2m > [22m05 - RBAC Tests[2m > [22mGuest Access (No Auth)[2m > [22mGuest CANNOT access POST /orders → 401[32m 185[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:244:5[22m[2m > [22m01 - Smoke Tests[2m > [22mAuthentication[2m > [22mPOST /auth/logout → logout endpoint[32m 183[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/auth.test.ts[2m:12:5[22m[2m > [22mAuthentication - Single API Tests[2m > [22mLogin[2m > [22mPOST /auth/login - should exist and accept requests[33m 651[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:34:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mHappy Path - CRUD Operations[2m > [22mGET /markets/{id} - should return market detail[32m 202[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:43:5[22m[2m > [22mOrders - Single API Tests[2m > [22mHappy Path[2m > [22mGET /orders/activity - should return order activity[33m 585[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/comments.test.ts[2m:25:5[22m[2m > [22mComments - Single API Tests[2m > [22mRead Comments[2m > [22mGET /comments/reply/{parentId} - should return replies[32m 207[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:51:5[22m[2m > [22m05 - RBAC Tests[2m > [22mGuest Access (No Auth)[2m > [22mGuest CANNOT access GET /orders/position → 401[32m 185[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:251:5[22m[2m > [22m01 - Smoke Tests[2m > [22mAuthentication[2m > [22mPOST /auth/refresh-token → refresh token[32m 187[2mms[22m[39m
+ [32m✓[39m generated/tests/07-db/db-integrity.test.ts[2m:23:5[22m[2m > [22m07 - DB Integrity Tests[2m > [22mData Consistency[2m > [22mPaginated results should be consistent[33m 460[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/auth.test.ts[2m:18:5[22m[2m > [22mAuthentication - Single API Tests[2m > [22mLogin[2m > [22mPOST /auth/login - should return proper error for invalid credentials[32m 205[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/comments.test.ts[2m:32:5[22m[2m > [22mComments - Single API Tests[2m > [22mCreate Comment[2m > [22mPOST /comments - should require authentication[32m 201[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:56:5[22m[2m > [22m05 - RBAC Tests[2m > [22mGuest Access (No Auth)[2m > [22mGuest CANNOT access POST /comments → 401[32m 187[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:258:5[22m[2m > [22m01 - Smoke Tests[2m > [22mAuthentication[2m > [22mPOST /auth/admin-refresh-token → admin refresh[32m 181[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:41:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mHappy Path - CRUD Operations[2m > [22mGET /markets/category - should return categories[32m 185[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:52:5[22m[2m > [22mOrders - Single API Tests[2m > [22mCreate Order[2m > [22mPOST /orders - should require authentication[32m 188[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/auth.test.ts[2m:28:5[22m[2m > [22mAuthentication - Single API Tests[2m > [22mLogout[2m > [22mPOST /auth/logout - should require authentication[32m 204[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:61:5[22m[2m > [22m05 - RBAC Tests[2m > [22mGuest Access (No Auth)[2m > [22mGuest CANNOT access GET /auth/me → 401[32m 181[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:265:5[22m[2m > [22m01 - Smoke Tests[2m > [22mAuthentication[2m > [22mGET /auth/me → current user profile[32m 178[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/comments.test.ts[2m:41:5[22m[2m > [22mComments - Single API Tests[2m > [22mCreate Comment[2m > [22mPOST /comments - should validate required fields[32m 207[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:46:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mHappy Path - CRUD Operations[2m > [22mGET /markets/top-holders/{id} - should return top holders[32m 197[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:63:5[22m[2m > [22mOrders - Single API Tests[2m > [22mCreate Order[2m > [22mPOST /orders - should validate required fields[32m 190[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/auth.test.ts[2m:34:5[22m[2m > [22mAuthentication - Single API Tests[2m > [22mLogout[2m > [22mPOST /auth/logout - should succeed with valid token[32m 208[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:66:5[22m[2m > [22m05 - RBAC Tests[2m > [22mGuest Access (No Auth)[2m > [22mGuest CANNOT access GET /markets/favorites → 401[32m 183[2mms[22m[39m
+ [32m✓[39m generated/tests/07-db/db-integrity.test.ts[2m:36:5[22m[2m > [22m07 - DB Integrity Tests[2m > [22mData Consistency[2m > [22mMarket detail should match list item[33m 435[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:272:5[22m[2m > [22m01 - Smoke Tests[2m > [22mAuthentication[2m > [22mGET /auth/asset → user assets[32m 181[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/comments.test.ts[2m:48:5[22m[2m > [22mComments - Single API Tests[2m > [22mCreate Comment[2m > [22mPOST /comments - should reject empty content[32m 203[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:70:5[22m[2m > [22mOrders - Single API Tests[2m > [22mCreate Order[2m > [22mPOST /orders - should create order with valid data[32m 195[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:71:5[22m[2m > [22m05 - RBAC Tests[2m > [22mGuest Access (No Auth)[2m > [22mGuest CANNOT access GET /markets/proposed → 401[32m 184[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:281:5[22m[2m > [22m01 - Smoke Tests[2m > [22mAdmin[2m > [22mGET /admin → list admins[32m 181[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/auth.test.ts[2m:43:5[22m[2m > [22mAuthentication - Single API Tests[2m > [22mRefresh Token[2m > [22mPOST /auth/refresh-token - should require authentication[32m 203[2mms[22m[39m
+ [32m✓[39m generated/tests/07-db/db-integrity.test.ts[2m:49:5[22m[2m > [22m07 - DB Integrity Tests[2m > [22mReferential Integrity[2m > [22mOrders should reference valid markets[32m 214[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:52:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mHappy Path - CRUD Operations[2m > [22mGET /markets/ipfs/{id} - should return IPFS data for market[33m 446[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:85:5[22m[2m > [22mOrders - Single API Tests[2m > [22mValidation[2m > [22mPOST /orders - should reject negative amount[32m 194[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:86:5[22m[2m > [22m05 - RBAC Tests[2m > [22mUser Access (Authenticated)[2m > [22mUser can access GET /orders[32m 200[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/comments.test.ts[2m:60:5[22m[2m > [22mComments - Single API Tests[2m > [22mReply to Comment[2m > [22mPOST /comments/reply - should require authentication[32m 201[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:288:5[22m[2m > [22m01 - Smoke Tests[2m > [22mAdmin[2m > [22mPOST /admin → create admin[32m 182[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/auth.test.ts[2m:49:5[22m[2m > [22mAuthentication - Single API Tests[2m > [22mRefresh Token[2m > [22mPOST /auth/refresh-token - should validate refresh token[32m 202[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/comments.test.ts[2m:69:5[22m[2m > [22mComments - Single API Tests[2m > [22mReply to Comment[2m > [22mPOST /comments/reply - should validate required fields[32m 202[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:97:5[22m[2m > [22mOrders - Single API Tests[2m > [22mValidation[2m > [22mPOST /orders - should reject zero amount[32m 188[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:58:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mHappy Path - CRUD Operations[2m > [22mPOST /markets/market - should create market with valid data (auth)[32m 193[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:295:5[22m[2m > [22m01 - Smoke Tests[2m > [22mAdmin[2m > [22mPUT /admin → update admin[32m 180[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:91:5[22m[2m > [22m05 - RBAC Tests[2m > [22mUser Access (Authenticated)[2m > [22mUser can access GET /orders/position[32m 182[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/auth.test.ts[2m:58:5[22m[2m > [22mAuthentication - Single API Tests[2m > [22mRefresh Token[2m > [22mPOST /auth/admin-refresh-token - should require authentication[32m 204[2mms[22m[39m
+ [32m✓[39m generated/tests/07-db/db-integrity.test.ts[2m:65:5[22m[2m > [22m07 - DB Integrity Tests[2m > [22mReferential Integrity[2m > [22mComments should reference valid markets[33m 425[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/comments.test.ts[2m:78:5[22m[2m > [22mComments - Single API Tests[2m > [22mLike Comment[2m > [22mPOST /comments/{commentId}/like - should require authentication[32m 204[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:109:5[22m[2m > [22mOrders - Single API Tests[2m > [22mValidation[2m > [22mPOST /orders - should reject missing marketId[32m 186[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:70:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mAuth Required Endpoints[2m > [22mGET /markets/proposed - should return proposed markets (auth)[32m 189[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:304:5[22m[2m > [22m01 - Smoke Tests[2m > [22mOther[2m > [22mGET /orderbook → orderbook data[32m 182[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:96:5[22m[2m > [22m05 - RBAC Tests[2m > [22mUser Access (Authenticated)[2m > [22mUser can access GET /auth/me[32m 185[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:122:5[22m[2m > [22mOrders - Single API Tests[2m > [22mCancel Order[2m > [22mPUT /orders/{id}/cancelled - should require authentication[32m 186[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/comments.test.ts[2m:84:5[22m[2m > [22mComments - Single API Tests[2m > [22mLike Comment[2m > [22mPOST /comments/{commentId}/like - non-existent comment[32m 204[2mms[22m[39m
+ [32m✓[39m generated/tests/07-db/db-integrity.test.ts[2m:81:5[22m[2m > [22m07 - DB Integrity Tests[2m > [22mPosition Consistency[2m > [22mPosition data should be non-negative[32m 210[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:77:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mAuth Required Endpoints[2m > [22mGET /markets/proposed-detail/{id} - should return proposed detail[32m 197[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/auth.test.ts[2m:66:5[22m[2m > [22mAuthentication - Single API Tests[2m > [22mUser Profile[2m > [22mGET /auth/me - should require authentication[32m 201[2mms[22m[39m
+ [32m✓[39m generated/tests/01-smoke/smoke.test.ts[2m:309:5[22m[2m > [22m01 - Smoke Tests[2m > [22mOther[2m > [22mGET /statistic/rank → ranking data[32m 191[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:101:5[22m[2m > [22m05 - RBAC Tests[2m > [22mUser Access (Authenticated)[2m > [22mUser can access GET /markets/favorites[32m 184[2mms[22m[39m
+ [31m×[39m generated/tests/01-smoke/smoke.test.ts[2m:314:5[22m[2m > [22m01 - Smoke Tests[2m > [22mOther[2m > [22mGET /slack/{id} → slack test[32m 196[2mms[22m[39m
+[31m   → expected [ 200, 404 ] to include 400[39m
+ [32m✓[39m generated/tests/03-single/auth.test.ts[2m:72:5[22m[2m > [22mAuthentication - Single API Tests[2m > [22mUser Profile[2m > [22mGET /auth/me - should return user data with valid token[32m 209[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:128:5[22m[2m > [22mOrders - Single API Tests[2m > [22mCancel Order[2m > [22mPUT /orders/{id}/cancelled - non-existent order should return 404[32m 192[2mms[22m[39m
+ [32m✓[39m generated/tests/07-db/db-integrity.test.ts[2m:101:5[22m[2m > [22m07 - DB Integrity Tests[2m > [22mTimestamp Integrity[2m > [22mCreatedAt timestamps should be valid ISO dates[32m 226[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:84:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mAuth Required Endpoints[2m > [22mGET /markets/favorites - should return user favorites (auth)[32m 188[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:106:5[22m[2m > [22m05 - RBAC Tests[2m > [22mUser Access (Authenticated)[2m > [22mUser can access POST /comments[32m 183[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/comments.test.ts[2m:93:5[22m[2m > [22mComments - Single API Tests[2m > [22mDelete Comment[2m > [22mDELETE /comments/{commentId} - should require authentication[32m 199[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/auth.test.ts[2m:84:5[22m[2m > [22mAuthentication - Single API Tests[2m > [22mUser Assets[2m > [22mGET /auth/asset - should require authentication[32m 203[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:137:5[22m[2m > [22mOrders - Single API Tests[2m > [22mClaim Order[2m > [22mPUT /orders/{id}/claimed - should require authentication[32m 186[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/comments.test.ts[2m:99:5[22m[2m > [22mComments - Single API Tests[2m > [22mDelete Comment[2m > [22mDELETE /comments/{commentId} - non-existent comment[32m 202[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:91:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mAuth Required Endpoints[2m > [22mPOST /markets/{marketId}/favorite - should toggle favorite[32m 192[2mms[22m[39m
+ [32m✓[39m generated/tests/07-db/db-integrity.test.ts[2m:113:5[22m[2m > [22m07 - DB Integrity Tests[2m > [22mTimestamp Integrity[2m > [22mUpdatedAt should be >= CreatedAt[32m 231[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:115:5[22m[2m > [22m05 - RBAC Tests[2m > [22mUser Access (Authenticated)[2m > [22mUser can access GET /trades[32m 195[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:143:5[22m[2m > [22mOrders - Single API Tests[2m > [22mClaim Order[2m > [22mPUT /orders/{id}/claimed - non-existent order should return 404[32m 188[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/auth.test.ts[2m:90:5[22m[2m > [22mAuthentication - Single API Tests[2m > [22mUser Assets[2m > [22mGET /auth/asset - should return asset data with valid token[32m 203[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:99:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mAuth Required Endpoints[2m > [22mPUT /markets/vote/{id} - should vote on market[32m 189[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:120:5[22m[2m > [22m05 - RBAC Tests[2m > [22mUser Access (Authenticated)[2m > [22mUser can access GET /trades/history[32m 194[2mms[22m[39m
+ [32m✓[39m generated/tests/07-db/db-integrity.test.ts[2m:128:5[22m[2m > [22m07 - DB Integrity Tests[2m > [22mUnique Constraints[2m > [22mUser walletAddress should be unique (via API)[32m 204[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:152:5[22m[2m > [22mOrders - Single API Tests[2m > [22mAdd Liquidity[2m > [22mPOST /orders/add-liquidity - should require authentication[32m 185[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:109:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mEdge Cases[2m > [22mGET /markets/{id} - non-existent ID should return 404 or empty[32m 190[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:135:5[22m[2m > [22m05 - RBAC Tests[2m > [22mAdmin Access[2m > [22mAdmin can access GET /admin[32m 189[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:158:5[22m[2m > [22mOrders - Single API Tests[2m > [22mAdd Liquidity[2m > [22mPOST /orders/add-liquidity - should validate input[32m 189[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:114:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mEdge Cases[2m > [22mGET /markets/{id} - invalid ID format should handle gracefully[32m 193[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:167:5[22m[2m > [22mOrders - Single API Tests[2m > [22mSecurity - Auth Required[2m > [22mGET /orders - without auth should return 401[32m 187[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:141:5[22m[2m > [22m05 - RBAC Tests[2m > [22mAdmin Access[2m > [22mAdmin can access all user endpoints[32m 207[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:148:5[22m[2m > [22m05 - RBAC Tests[2m > [22mResource Ownership (IDOR Protection)[2m > [22mUser cannot cancel order owned by another user[32m 184[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:119:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mEdge Cases[2m > [22mGET /markets - empty result should return empty array[32m 193[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/orders.test.ts[2m:173:5[22m[2m > [22mOrders - Single API Tests[2m > [22mSecurity - Auth Required[2m > [22mGET /orders/position - without auth should return 401[32m 184[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:127:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mSecurity - Auth Required[2m > [22mGET /markets/proposed - without auth should return 401[32m 183[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:158:5[22m[2m > [22m05 - RBAC Tests[2m > [22mResource Ownership (IDOR Protection)[2m > [22mUser cannot claim order owned by another user[32m 184[2mms[22m[39m
+ [32m✓[39m generated/tests/05-rbac/rbac.test.ts[2m:165:5[22m[2m > [22m05 - RBAC Tests[2m > [22mResource Ownership (IDOR Protection)[2m > [22mUser cannot delete comment owned by another user[32m 182[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:133:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mSecurity - Auth Required[2m > [22mGET /markets/favorites - without auth should return 401[32m 185[2mms[22m[39m
+ [32m✓[39m generated/tests/03-single/markets.test.ts[2m:139:5[22m[2m > [22mMarkets - Single API Tests[2m > [22mSecurity - Auth Required[2m > [22mPOST /markets/market - without auth should return 401[32m 184[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 23 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m generated/tests/01-smoke/smoke.test.ts[2m:180:5[22m[2m > [22m01 - Smoke Tests[2m > [22mTrades[2m > [22mGET /trades/graph → trade graph
+[31m[1mAssertionError[22m: expected 400 to be 200 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 400[39m
+
+[36m [2m❯[22m generated/tests/01-smoke/smoke.test.ts:[2m182:31[22m[39m
+    [90m180| [39m    [34mit[39m([32m'GET /trades/graph → trade graph'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m181| [39m      [35mconst[39m response [33m=[39m [35mawait[39m apiClient[33m.[39m[35mget[39m([32m'/trades/graph'[39m)[33m;[39m
+    [90m182| [39m      [34mexpect[39m(response[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m200[39m)[33m;[39m
+    [90m   | [39m                              [31m^[39m
+    [90m183| [39m    })[33m;[39m
+    [90m184| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/01-smoke/smoke.test.ts[2m:185:5[22m[2m > [22m01 - Smoke Tests[2m > [22mTrades[2m > [22mGET /trades/graph-overrall → overall trade graph
+[31m[1mAssertionError[22m: expected 400 to be 200 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 400[39m
+
+[36m [2m❯[22m generated/tests/01-smoke/smoke.test.ts:[2m187:31[22m[39m
+    [90m185| [39m    it('GET /trades/graph-overrall → overall trade graph', async () =>…
+    [90m186| [39m      [35mconst[39m response [33m=[39m [35mawait[39m apiClient[33m.[39m[35mget[39m([32m'/trades/graph-overrall'[39m)[33m;[39m
+    [90m187| [39m      [34mexpect[39m(response[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m200[39m)[33m;[39m
+    [90m   | [39m                              [31m^[39m
+    [90m188| [39m    })[33m;[39m
+    [90m189| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/01-smoke/smoke.test.ts[2m:314:5[22m[2m > [22m01 - Smoke Tests[2m > [22mOther[2m > [22mGET /slack/{id} → slack test
+[31m[1mAssertionError[22m: expected [ 200, 404 ] to include 400[39m
+[36m [2m❯[22m generated/tests/01-smoke/smoke.test.ts:[2m316:26[22m[39m
+    [90m314| [39m    [34mit[39m([32m'GET /slack/{id} → slack test'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m315| [39m      [35mconst[39m response [33m=[39m [35mawait[39m apiClient[33m.[39m[35mget[39m([32m'/slack/test'[39m)[33m;[39m
+    [90m316| [39m      [34mexpect[39m([[34m200[39m[33m,[39m [34m404[39m])[33m.[39m[34mtoContain[39m(response[33m.[39mstatus)[33m;[39m
+    [90m   | [39m                         [31m^[39m
+    [90m317| [39m    })[33m;[39m
+    [90m318| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/02-contract/contract.test.ts[2m:120:5[22m[2m > [22m02 - Contract Tests[2m > [22mTrades[2m > [22mGET /trades/graph - response contract: graph data
+[31m[1mAssertionError[22m: expected 400 to be 200 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 400[39m
+
+[36m [2m❯[22m generated/tests/02-contract/contract.test.ts:[2m122:31[22m[39m
+    [90m120| [39m    it('GET /trades/graph - response contract: graph data', async () =…
+    [90m121| [39m      [35mconst[39m response [33m=[39m [35mawait[39m apiClient[33m.[39m[35mget[39m([32m'/trades/graph'[39m)[33m;[39m
+    [90m122| [39m      [34mexpect[39m(response[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m200[39m)[33m;[39m
+    [90m   | [39m                              [31m^[39m
+    [90m123| [39m      [34mexpect[39m(response[33m.[39mdata)[33m.[39m[34mtoHaveProperty[39m([32m'data'[39m)[33m;[39m
+    [90m124| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/02-contract/contract.test.ts[2m:126:5[22m[2m > [22m02 - Contract Tests[2m > [22mTrades[2m > [22mGET /trades/graph-overrall - response contract: overall graph
+[31m[1mAssertionError[22m: expected 400 to be 200 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 400[39m
+
+[36m [2m❯[22m generated/tests/02-contract/contract.test.ts:[2m128:31[22m[39m
+    [90m126| [39m    it('GET /trades/graph-overrall - response contract: overall graph'…
+    [90m127| [39m      [35mconst[39m response [33m=[39m [35mawait[39m apiClient[33m.[39m[35mget[39m([32m'/trades/graph-overrall'[39m)[33m;[39m
+    [90m128| [39m      [34mexpect[39m(response[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m200[39m)[33m;[39m
+    [90m   | [39m                              [31m^[39m
+    [90m129| [39m      [34mexpect[39m(response[33m.[39mdata)[33m.[39m[34mtoHaveProperty[39m([32m'data'[39m)[33m;[39m
+    [90m130| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/03-single/other.test.ts[2m:45:5[22m[2m > [22mOther Endpoints - Single API Tests[2m > [22mSlack[2m > [22mGET /slack/{id} - should handle test endpoint
+[31m[1mAssertionError[22m: expected [ 200, 404 ] to include 400[39m
+[36m [2m❯[22m generated/tests/03-single/other.test.ts:[2m47:26[22m[39m
+    [90m 45| [39m    [34mit[39m([32m'GET /slack/{id} - should handle test endpoint'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m 46| [39m      [35mconst[39m response [33m=[39m [35mawait[39m apiClient[33m.[39m[35mget[39m([32m'/slack/test'[39m)[33m;[39m
+    [90m 47| [39m      [34mexpect[39m([[34m200[39m[33m,[39m [34m404[39m])[33m.[39m[34mtoContain[39m(response[33m.[39mstatus)[33m;[39m
+    [90m   | [39m                         [31m^[39m
+    [90m 48| [39m    })[33m;[39m
+    [90m 49| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/03-single/trades.test.ts[2m:23:5[22m[2m > [22mTrades - Single API Tests[2m > [22mPublic Endpoints[2m > [22mGET /trades/graph - should return graph data
+[31m[1mAssertionError[22m: expected 400 to be 200 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 400[39m
+
+[36m [2m❯[22m generated/tests/03-single/trades.test.ts:[2m25:31[22m[39m
+    [90m 23| [39m    [34mit[39m([32m'GET /trades/graph - should return graph data'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m 24| [39m      [35mconst[39m response [33m=[39m [35mawait[39m apiClient[33m.[39m[35mget[39m([32m'/trades/graph'[39m)[33m;[39m
+    [90m 25| [39m      [34mexpect[39m(response[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m200[39m)[33m;[39m
+    [90m   | [39m                              [31m^[39m
+    [90m 26| [39m      [34mexpect[39m(response[33m.[39mdata)[33m.[39m[34mtoHaveProperty[39m([32m'data'[39m)[33m;[39m
+    [90m 27| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/03-single/trades.test.ts[2m:29:5[22m[2m > [22mTrades - Single API Tests[2m > [22mPublic Endpoints[2m > [22mGET /trades/graph-overrall - should return overall graph
+[31m[1mAssertionError[22m: expected 400 to be 200 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 400[39m
+
+[36m [2m❯[22m generated/tests/03-single/trades.test.ts:[2m31:31[22m[39m
+    [90m 29| [39m    it('GET /trades/graph-overrall - should return overall graph', asy…
+    [90m 30| [39m      [35mconst[39m response [33m=[39m [35mawait[39m apiClient[33m.[39m[35mget[39m([32m'/trades/graph-overrall'[39m)[33m;[39m
+    [90m 31| [39m      [34mexpect[39m(response[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m200[39m)[33m;[39m
+    [90m   | [39m                              [31m^[39m
+    [90m 32| [39m      [34mexpect[39m(response[33m.[39mdata)[33m.[39m[34mtoHaveProperty[39m([32m'data'[39m)[33m;[39m
+    [90m 33| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS01: User views markets and favorites[2m > [22mStep 3: POST /markets/${marketDetail.data.id}/favorite
+[31m[1mAssertionError[22m: expected [ 200, 201 ] to include 401[39m
+[36m [2m❯[22m generated/tests/04-integration/integration-scenarios.test.ts:[2m195:28[22m[39m
+    [90m193| [39m
+    [90m194| [39m          [90m// Assert[39m
+    [90m195| [39m          [34mexpect[39m(expected)[33m.[39m[34mtoContain[39m(response[33m.[39mstatus)[33m;[39m
+    [90m   | [39m                           [31m^[39m
+    [90m196| [39m        })[33m;[39m
+    [90m197| [39m      }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS01: User views markets and favorites[2m > [22mStep 4: GET /markets/favorites
+[41m[1m FAIL [22m[49m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS02: User views orders and positions[2m > [22mStep 2: GET /orders/position
+[41m[1m FAIL [22m[49m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS02: User views orders and positions[2m > [22mStep 3: GET /orders/position-claims
+[41m[1m FAIL [22m[49m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS06: User profile and assets[2m > [22mStep 1: GET /auth/me
+[41m[1m FAIL [22m[49m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS06: User profile and assets[2m > [22mStep 2: GET /auth/asset
+[41m[1m FAIL [22m[49m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS07: Proposed markets flow[2m > [22mStep 1: GET /markets/proposed
+[31m[1mAssertionError[22m: expected [ 200 ] to include 401[39m
+[36m [2m❯[22m generated/tests/04-integration/integration-scenarios.test.ts:[2m195:28[22m[39m
+    [90m193| [39m
+    [90m194| [39m          [90m// Assert[39m
+    [90m195| [39m          [34mexpect[39m(expected)[33m.[39m[34mtoContain[39m(response[33m.[39mstatus)[33m;[39m
+    [90m   | [39m                           [31m^[39m
+    [90m196| [39m        })[33m;[39m
+    [90m197| [39m      }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS04: Comment lifecycle[2m > [22mStep 3: POST /comments
+[31m[1mAssertionError[22m: expected [ 200, 201, 400, 422 ] to include 401[39m
+[36m [2m❯[22m generated/tests/04-integration/integration-scenarios.test.ts:[2m195:28[22m[39m
+    [90m193| [39m
+    [90m194| [39m          [90m// Assert[39m
+    [90m195| [39m          [34mexpect[39m(expected)[33m.[39m[34mtoContain[39m(response[33m.[39mstatus)[33m;[39m
+    [90m   | [39m                           [31m^[39m
+    [90m196| [39m        })[33m;[39m
+    [90m197| [39m      }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS04: Comment lifecycle[2m > [22mStep 4: POST /comments/1/like
+[31m[1mAssertionError[22m: expected [ 200, 201, 404 ] to include 401[39m
+[36m [2m❯[22m generated/tests/04-integration/integration-scenarios.test.ts:[2m195:28[22m[39m
+    [90m193| [39m
+    [90m194| [39m          [90m// Assert[39m
+    [90m195| [39m          [34mexpect[39m(expected)[33m.[39m[34mtoContain[39m(response[33m.[39mstatus)[33m;[39m
+    [90m   | [39m                           [31m^[39m
+    [90m196| [39m        })[33m;[39m
+    [90m197| [39m      }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/04-integration/integration-scenarios.test.ts[2m:109:9[22m[2m > [22m04 - Integration Tests (Scenario-Based)[2m > [22mS07: Proposed markets flow[2m > [22mStep 2: GET /markets/proposed-detail/1
+[31m[1mAssertionError[22m: expected [ 200, 404, 500 ] to include 401[39m
+[36m [2m❯[22m generated/tests/04-integration/integration-scenarios.test.ts:[2m195:28[22m[39m
+    [90m193| [39m
+    [90m194| [39m          [90m// Assert[39m
+    [90m195| [39m          [34mexpect[39m(expected)[33m.[39m[34mtoContain[39m(response[33m.[39mstatus)[33m;[39m
+    [90m   | [39m                           [31m^[39m
+    [90m196| [39m        })[33m;[39m
+    [90m197| [39m      }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/04-integration/integration.test.ts[2m:87:5[22m[2m > [22m04 - Integration Tests[2m > [22mScenario 3: User views trades[2m > [22mStep 2: Get trade graph (public)
+[31m[1mAssertionError[22m: expected 400 to be 200 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 200[39m
+[31m+ 400[39m
+
+[36m [2m❯[22m generated/tests/04-integration/integration.test.ts:[2m89:31[22m[39m
+    [90m 87| [39m    [34mit[39m([32m'Step 2: Get trade graph (public)'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m 88| [39m      [35mconst[39m response [33m=[39m [35mawait[39m apiClient[33m.[39m[35mget[39m([32m'/trades/graph'[39m)[33m;[39m
+    [90m 89| [39m      [34mexpect[39m(response[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m200[39m)[33m;[39m
+    [90m   | [39m                              [31m^[39m
+    [90m 90| [39m    })[33m;[39m
+    [90m 91| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/06-security/security.test.ts[2m:18:5[22m[2m > [22m06 - Security Tests[2m > [22mAuthentication Bypass[2m > [22mRequest with expired token → 401
+[31m[1mAssertionError[22m: expected 200 to be 401 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 401[39m
+[31m+ 200[39m
+
+[36m [2m❯[22m generated/tests/06-security/security.test.ts:[2m23:31[22m[39m
+    [90m 21| [39m      [35mconst[39m response [33m=[39m [35mawait[39m apiClient[33m.[39m[35mget[39m([32m'/orders'[39m)[33m;[39m
+    [90m 22| [39m      apiClient[33m.[39m[34mclearToken[39m()[33m;[39m
+    [90m 23| [39m      [34mexpect[39m(response[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m401[39m)[33m;[39m
+    [90m   | [39m                              [31m^[39m
+    [90m 24| [39m    })[33m;[39m
+    [90m 25| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/06-security/security.test.ts[2m:26:5[22m[2m > [22m06 - Security Tests[2m > [22mAuthentication Bypass[2m > [22mRequest with malformed token → 401
+[31m[1mAssertionError[22m: expected 500 to be 401 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 401[39m
+[31m+ 500[39m
+
+[36m [2m❯[22m generated/tests/06-security/security.test.ts:[2m30:31[22m[39m
+    [90m 28| [39m      [35mconst[39m response [33m=[39m [35mawait[39m apiClient[33m.[39m[35mget[39m([32m'/orders'[39m)[33m;[39m
+    [90m 29| [39m      apiClient[33m.[39m[34mclearToken[39m()[33m;[39m
+    [90m 30| [39m      [34mexpect[39m(response[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m401[39m)[33m;[39m
+    [90m   | [39m                              [31m^[39m
+    [90m 31| [39m    })[33m;[39m
+    [90m 32| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/06-security/security.test.ts[2m:143:5[22m[2m > [22m06 - Security Tests[2m > [22mInput Validation[2m > [22mNon-numeric ID where numeric expected
+[31m[1mAssertionError[22m: expected [ 400, 404 ] to include 500[39m
+[36m [2m❯[22m generated/tests/06-security/security.test.ts:[2m145:26[22m[39m
+    [90m143| [39m    [34mit[39m([32m'Non-numeric ID where numeric expected'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m144| [39m      [35mconst[39m response [33m=[39m [35mawait[39m apiClient[33m.[39m[35mget[39m([32m'/markets/not-a-number'[39m)[33m;[39m
+    [90m145| [39m      [34mexpect[39m([[34m400[39m[33m,[39m [34m404[39m])[33m.[39m[34mtoContain[39m(response[33m.[39mstatus)[33m;[39m
+    [90m   | [39m                         [31m^[39m
+    [90m146| [39m    })[33m;[39m
+    [90m147| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/23]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m generated/tests/07-db/db-verification.test.ts[2m:201:5[22m[2m > [22mDB Verification Tests[2m > [22mForeign Key Integrity[2m > [22mshould verify orders reference valid markets
+[31m[1mAssertionError[22m: expected 4 to be +0 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 4[39m
+
+[36m [2m❯[22m generated/tests/07-db/db-verification.test.ts:[2m219:30[22m[39m
+    [90m217| [39m      }
+    [90m218| [39m
+    [90m219| [39m      [34mexpect[39m(orphans[33m.[39mlength)[33m.[39m[34mtoBe[39m([34m0[39m)[33m;[39m
+    [90m   | [39m                             [31m^[39m
+    [90m220| [39m    })[33m;[39m
+    [90m221| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/23]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m8 failed[39m[22m[2m | [22m[1m[32m6 passed[39m[22m[90m (14)[39m
+[2m      Tests [22m [1m[31m23 failed[39m[22m[2m | [22m[1m[32m251 passed[39m[22m[90m (274)[39m
+[2m   Start at [22m 11:36:41
+[2m   Duration [22m 11.52s[2m (transform 632ms, setup 0ms, import 2.59s, tests 70.16s, environment 2ms)[22m
+
+[1m[7m[35m HTML [39m[27m[22m [35mReport is generated[39m
+[2m       You can run [22m[1mnpx vite preview --outDir reports/html[22m[2m to see the test results.[22m

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Evidence Report</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; }
+    .header { background: #1e293b; padding: 20px 32px; border-bottom: 1px solid #334155; }
+    .header h1 { font-size: 1.4rem; }
+    .stats { display: flex; gap: 16px; padding: 20px 32px; background: #1e293b; }
+    .stat { background: #0f172a; padding: 16px; border-radius: 8px; min-width: 100px; }
+    .stat-value { font-size: 1.5rem; font-weight: 700; color: #3b82f6; }
+    .container { padding: 20px 32px; }
+
+    .test-group { background: #1e293b; border-radius: 8px; margin-bottom: 16px; overflow: hidden; border: 1px solid #334155; }
+    .test-group-header { padding: 12px 16px; cursor: pointer; background: #0f172a; }
+    .test-group-header:hover { background: #1e293b; }
+    .test-group-header h3 { font-size: 0.9rem; }
+    .test-group-header .suite { font-size: 0.75rem; color: #64748b; }
+    .test-group-body { display: none; }
+    .test-group.open .test-group-body { display: block; }
+
+    .request { border-top: 1px solid #334155; padding: 16px; }
+    .request-line { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .method { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; }
+    .method.GET { background: #22c55e20; color: #22c55e; }
+    .method.POST { background: #3b82f620; color: #3b82f6; }
+    .method.PUT { background: #f59e0b20; color: #f59e0b; }
+    .method.DELETE { background: #ef444420; color: #ef4444; }
+    .method.PATCH { background: #8b5cf620; color: #8b5cf6; }
+    .url { font-family: monospace; font-size: 0.875rem; flex: 1; word-break: break-all; }
+    .status { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+    .status.success { background: #22c55e20; color: #22c55e; }
+    .status.error { background: #ef444420; color: #ef4444; }
+    .duration { font-size: 0.75rem; color: #64748b; }
+
+    .section { margin-bottom: 12px; }
+    .section-label { font-size: 0.7rem; color: #64748b; margin-bottom: 4px; text-transform: uppercase; font-weight: 600; }
+    .code { background: #020617; border: 1px solid #1e293b; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 0.8rem; overflow-x: auto; white-space: pre-wrap; word-break: break-all; max-height: 300px; overflow-y: auto; }
+    .code.json { color: #a5f3fc; }
+    .code.curl { color: #86efac; }
+
+    .copy-btn { background: #334155; border: none; color: #e2e8f0; padding: 6px 12px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; margin-top: 8px; }
+    .copy-btn:hover { background: #475569; }
+    .copy-btn:active { background: #22c55e; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>API Evidence Report</h1>
+    <p style="color: #64748b; font-size: 0.875rem;">Generated: 2026-03-02T08:01:47.178Z</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value">4</div>
+      <div style="color: #64748b; font-size: 0.75rem;">TESTS WITH EVIDENCE</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">4</div>
+      <div style="color: #64748b; font-size: 0.75rem;">API CALLS</div>
+    </div>
+  </div>
+
+  <div class="container">
+    
+    <div class="test-group open">
+      <div class="test-group-header" onclick="this.parentElement.classList.toggle('open')">
+        <h3>should match API user data with DB</h3>
+        <div class="suite">Users Table Verification - 1 request(s)</div>
+      </div>
+      <div class="test-group-body">
+        
+        <div class="request">
+          <div class="request-line">
+            <span class="method GET">GET</span>
+            <span class="url">https://api.foreon.network/auth/me</span>
+            <span class="status error">401</span>
+            <span class="duration">600ms</span>
+          </div>
+
+          
+
+          <div class="section">
+            <div class="section-label">Response Body</div>
+            <div class="code json">{
+  &quot;data&quot;: {},
+  &quot;message&quot;: &quot;Expired token&quot;
+}</div>
+          </div>
+
+          <div class="section">
+            <div class="section-label">Curl Command</div>
+            <div class="code curl">curl -X GET &quot;https://api.foreon.network/auth/me&quot; \
+  -H &quot;Accept: application/json, text/plain, */*&quot; \
+  -H &quot;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo&quot;</div>
+            <button class="copy-btn" onclick="copyToClipboard(this, `curl -X GET &quot;https://api.foreon.network/auth/me&quot; \\
+  -H &quot;Accept: application/json, text/plain, */*&quot; \\
+  -H &quot;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo&quot;`)">Copy Curl</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="test-group open">
+      <div class="test-group-header" onclick="this.parentElement.classList.toggle('open')">
+        <h3>should match API markets count with DB count</h3>
+        <div class="suite">Markets Table Verification - 1 request(s)</div>
+      </div>
+      <div class="test-group-body">
+        
+        <div class="request">
+          <div class="request-line">
+            <span class="method GET">GET</span>
+            <span class="url">https://api.foreon.network/markets?limit=1</span>
+            <span class="status success">200</span>
+            <span class="duration">212ms</span>
+          </div>
+
+          
+
+          <div class="section">
+            <div class="section-label">Response Body</div>
+            <div class="code json">{
+  &quot;_truncated&quot;: true,
+  &quot;_originalLength&quot;: 2587,
+  &quot;_preview&quot;: &quot;{\&quot;code\&quot;:200,\&quot;data\&quot;:[{\&quot;id\&quot;:529,\&quot;userId\&quot;:null,\&quot;imageUrl\&quot;:\&quot;https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\&quot;,\&quot;title\&quot;:\&quot;Will Anyone Be Jailed In February Over Epstein Disclosures?\&quot;,\&quot;marketRule\&quot;:\&quot;This market will resolve to “Yes” if, by February 28th, 2026, 11:59 PM, any individual serves any time in a federal, state, or local U.S. jail or prison, and the cause of that incarceration is attributed to information contained in files related to Jeffrey Epstein released by the federal government on or after December 19, 2025. Otherwise, this market will resolve to “No.”\\n\\nA qualifying incarceration must be caused by information included in Epstein-related files released on or after December 19, 2025. The cause of incarceration may be established through official charging documents, court rulings, sentencing statements, or through a clear consensus of credible reporting attributing the incarceration to information contained in those released files. Incarceration driven by information that was publicly known before December 19, 2025, or by reasons unrelated to the content of the released Epstein-related files, will not qualify.\\n\\nThe resolution source for this market will be official court records or government statements, however a consensus of credible reporting may also be used.\&quot;,\&quot;totalVolume\&quot;:100,\&quot;status\&quot;:5,\&quot;type\&quot;:0,\&quot;resolveMethod\&quot;:1,\&quot;resolveStatus\&quot;:0,\&quot;isCanceled\&quot;:0,\&quot;category\&quot;:\&quot;Politics\&quot;,\&quot;endedAt\&quot;:\&quot;2026-02-28T20:59:00.000Z\&quot;,\&quot;startVoteAt\&quot;:null,\&quot;endVoteAt\&quot;:null,\&quot;totalVoted\&quot;:0,\&quot;totalRejectVote\&quot;:0,\&quot;totalApproveVote\&quot;:0,\&quot;hash\&quot;:null,\&quot;publishedAt\&quot;:\&quot;2026-02-02T04:49:00.000Z\&quot;,\&quot;isSuggestion\&quot;:0,\&quot;email\&quot;:null,\&quot;createdAt\&quot;:\&quot;2026-02-02T04:48:41.000Z\&quot;,\&quot;updatedAt\&quot;:\&quot;2026-02-02T04:48:41.000Z\&quot;,\&quot;cancelledAt\&quot;:null,\&quot;outcomes\&quot;:[{\&quot;id\&quot;:809,\&quot;marketId\&quot;:529,\&quot;imageUrl\&quot;:\&quot;https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\&quot;,\&quot;title\&quot;:\&quot;Will Anyone Be Jailed In February Over Epstein Disclosures?\&quot;,\&quot;resul...&quot;
+}</div>
+          </div>
+
+          <div class="section">
+            <div class="section-label">Curl Command</div>
+            <div class="code curl">curl -X GET &quot;https://api.foreon.network/markets?limit=1&quot; \
+  -H &quot;Accept: application/json, text/plain, */*&quot;</div>
+            <button class="copy-btn" onclick="copyToClipboard(this, `curl -X GET &quot;https://api.foreon.network/markets?limit=1&quot; \\
+  -H &quot;Accept: application/json, text/plain, */*&quot;`)">Copy Curl</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="test-group open">
+      <div class="test-group-header" onclick="this.parentElement.classList.toggle('open')">
+        <h3>should verify market detail matches DB</h3>
+        <div class="suite">Markets Table Verification - 1 request(s)</div>
+      </div>
+      <div class="test-group-body">
+        
+        <div class="request">
+          <div class="request-line">
+            <span class="method GET">GET</span>
+            <span class="url">https://api.foreon.network/markets?limit=1</span>
+            <span class="status success">200</span>
+            <span class="duration">206ms</span>
+          </div>
+
+          
+
+          <div class="section">
+            <div class="section-label">Response Body</div>
+            <div class="code json">{
+  &quot;_truncated&quot;: true,
+  &quot;_originalLength&quot;: 2587,
+  &quot;_preview&quot;: &quot;{\&quot;code\&quot;:200,\&quot;data\&quot;:[{\&quot;id\&quot;:529,\&quot;userId\&quot;:null,\&quot;imageUrl\&quot;:\&quot;https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\&quot;,\&quot;title\&quot;:\&quot;Will Anyone Be Jailed In February Over Epstein Disclosures?\&quot;,\&quot;marketRule\&quot;:\&quot;This market will resolve to “Yes” if, by February 28th, 2026, 11:59 PM, any individual serves any time in a federal, state, or local U.S. jail or prison, and the cause of that incarceration is attributed to information contained in files related to Jeffrey Epstein released by the federal government on or after December 19, 2025. Otherwise, this market will resolve to “No.”\\n\\nA qualifying incarceration must be caused by information included in Epstein-related files released on or after December 19, 2025. The cause of incarceration may be established through official charging documents, court rulings, sentencing statements, or through a clear consensus of credible reporting attributing the incarceration to information contained in those released files. Incarceration driven by information that was publicly known before December 19, 2025, or by reasons unrelated to the content of the released Epstein-related files, will not qualify.\\n\\nThe resolution source for this market will be official court records or government statements, however a consensus of credible reporting may also be used.\&quot;,\&quot;totalVolume\&quot;:100,\&quot;status\&quot;:5,\&quot;type\&quot;:0,\&quot;resolveMethod\&quot;:1,\&quot;resolveStatus\&quot;:0,\&quot;isCanceled\&quot;:0,\&quot;category\&quot;:\&quot;Politics\&quot;,\&quot;endedAt\&quot;:\&quot;2026-02-28T20:59:00.000Z\&quot;,\&quot;startVoteAt\&quot;:null,\&quot;endVoteAt\&quot;:null,\&quot;totalVoted\&quot;:0,\&quot;totalRejectVote\&quot;:0,\&quot;totalApproveVote\&quot;:0,\&quot;hash\&quot;:null,\&quot;publishedAt\&quot;:\&quot;2026-02-02T04:49:00.000Z\&quot;,\&quot;isSuggestion\&quot;:0,\&quot;email\&quot;:null,\&quot;createdAt\&quot;:\&quot;2026-02-02T04:48:41.000Z\&quot;,\&quot;updatedAt\&quot;:\&quot;2026-02-02T04:48:41.000Z\&quot;,\&quot;cancelledAt\&quot;:null,\&quot;outcomes\&quot;:[{\&quot;id\&quot;:809,\&quot;marketId\&quot;:529,\&quot;imageUrl\&quot;:\&quot;https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\&quot;,\&quot;title\&quot;:\&quot;Will Anyone Be Jailed In February Over Epstein Disclosures?\&quot;,\&quot;resul...&quot;
+}</div>
+          </div>
+
+          <div class="section">
+            <div class="section-label">Curl Command</div>
+            <div class="code curl">curl -X GET &quot;https://api.foreon.network/markets?limit=1&quot; \
+  -H &quot;Accept: application/json, text/plain, */*&quot;</div>
+            <button class="copy-btn" onclick="copyToClipboard(this, `curl -X GET &quot;https://api.foreon.network/markets?limit=1&quot; \\
+  -H &quot;Accept: application/json, text/plain, */*&quot;`)">Copy Curl</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="test-group ">
+      <div class="test-group-header" onclick="this.parentElement.classList.toggle('open')">
+        <h3>should verify user orders match DB</h3>
+        <div class="suite">Orders Table Verification - 1 request(s)</div>
+      </div>
+      <div class="test-group-body">
+        
+        <div class="request">
+          <div class="request-line">
+            <span class="method GET">GET</span>
+            <span class="url">https://api.foreon.network/auth/me</span>
+            <span class="status error">401</span>
+            <span class="duration">188ms</span>
+          </div>
+
+          
+
+          <div class="section">
+            <div class="section-label">Response Body</div>
+            <div class="code json">{
+  &quot;data&quot;: {},
+  &quot;message&quot;: &quot;Expired token&quot;
+}</div>
+          </div>
+
+          <div class="section">
+            <div class="section-label">Curl Command</div>
+            <div class="code curl">curl -X GET &quot;https://api.foreon.network/auth/me&quot; \
+  -H &quot;Accept: application/json, text/plain, */*&quot; \
+  -H &quot;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo&quot;</div>
+            <button class="copy-btn" onclick="copyToClipboard(this, `curl -X GET &quot;https://api.foreon.network/auth/me&quot; \\
+  -H &quot;Accept: application/json, text/plain, */*&quot; \\
+  -H &quot;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo&quot;`)">Copy Curl</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function copyToClipboard(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy Curl', 1500);
+      });
+    }
+  </script>
+</body>
+</html>
