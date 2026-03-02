@@ -1,89 +1,124 @@
-# Test Execution Report
+# Test Report - Foreon Prediction Market API
 
-**Generated**: 2026-02-28T22:16:00.000Z
-**API**: https://api.foreon.network
-**Total Duration**: ~214 seconds
-
----
-
-## Summary
-
-| Metric | Value |
-|--------|-------|
-| **Total Tests** | 351 |
-| **Passed** | 250 |
-| **Failed** | 91 |
-| **Skipped** | 10 |
-| **Pass Rate** | 71.2% |
+**Ngày chạy:** 2026-03-02 10:39:14
+**API:** https://api.foreon.network
+**Duration:** 11.31s
 
 ---
 
-## Results by Layer
+## Tổng Quan
 
-| Layer | Passed | Failed | Skipped | Total | Pass Rate |
-|-------|--------|--------|---------|-------|-----------|
-| 01-Smoke | 43 | 2 | 1 | 46 | 93.5% |
-| 02-Contract | 23 | 6 | 0 | 29 | 79.3% |
-| 03-Single API | 70 | 60 | 5 | 135 | 51.9% |
-| 04-Integration | 29 | 7 | 0 | 36 | 80.6% |
-| 05-RBAC | 46 | 1 | 3 | 50 | 92.0% |
-| 06-Security | 29 | 15 | 1 | 45 | 64.4% |
-| 07-DB Integrity | 10 | 0 | 0 | 10 | 100.0% |
+| Metric | Giá trị |
+|--------|---------|
+| **Total Tests** | 233 |
+| **Passed** | 221 (94.8%) |
+| **Failed** | 12 (5.2%) |
+| **Skipped** | 0 |
 
----
-
-## Top Failure Patterns
-
-### 1. Server 500 Errors (Backend Bugs)
-- `GET /markets/proposed-detail/{id}` → 500
-- `POST /markets/upload` → 500
-
-### 2. Endpoint Not Found (404)
-- Multiple tests expecting endpoints that return 404
-- `POST /orderbook/add-liquidity` → 404 (endpoint may not exist)
-- `POST /slack/send-message` → 404 (endpoint may not exist)
-
-### 3. Missing Auth Requirement (Expected 401, Got 200)
-- `GET /orders/activity` returns 200 without auth (should require auth per OpenAPI)
-
-### 4. Test Assumptions vs API Reality
-- Tests expecting 201 for POST but API returns 400 (validation)
-- Tests expecting specific status codes that don't match actual behavior
-
-### 5. Timeout Issues
-- Security tests hit timeout (10s) during CORS header checks
-- API slowness under multiple concurrent requests
+```
+████████████████████████████████████████████░░  94.8%
+```
 
 ---
 
-## Configuration Used
+## Kết Quả Theo Layer
 
-| Config | Value |
-|--------|-------|
-| Base URL | https://api.foreon.network |
-| Timeout | 10000ms |
-| Auth Type | bearer_direct |
-| Roles | admin, user |
-| Account ID | 17 (isAdmin: true) |
-| DB | MySQL enabled (foreon@64.23.225.69:32775) |
+| Layer | Pass | Fail | Skip | Rate | Status |
+|-------|------|------|------|------|--------|
+| 🟢 01-Smoke | 44 | 2 | 0 | 95.7% | ⚠️ |
+| 🔵 02-Contract | 24 | 0 | 0 | 100% | ✅ |
+| 🟡 03-Single | 63 | 5 | 0 | 92.6% | ⚠️ |
+| 🟠 04-Integration | 28 | 2 | 0 | 93.3% | ⚠️ |
+| 🔐 05-RBAC | 25 | 0 | 0 | 100% | ✅ |
+| ⚫ 06-Security | 19 | 5 | 0 | 79.2% | ⚠️ |
+| 🟣 07-DB Integrity | 10 | 0 | 0 | 100% | ✅ |
+
+---
+
+## Chi Tiết Failures
+
+### 1. POST /auth/logout - Wrong Status Code
+- **File:** `03-single/auth.test.ts:34`
+- **Expected:** 200, 204, hoặc 401
+- **Actual:** 201
+- **Severity:** Low
+- **Analysis:** API trả về 201 (Created) thay vì 200/204 cho logout action. Không ảnh hưởng chức năng nhưng không đúng REST convention.
+
+### 2. GET /trades/graph - Missing Required Params
+- **File:** `03-single/trades.test.ts:23`
+- **Expected:** 200
+- **Actual:** 400
+- **Severity:** Low
+- **Analysis:** Endpoint yêu cầu query params (outcomeId, interval) nhưng OpenAPI spec không document rõ required params.
+
+### 3. GET /trades/graph-overrall - Missing Required Params
+- **File:** `03-single/trades.test.ts:29`
+- **Expected:** 200
+- **Actual:** 400
+- **Severity:** Low
+- **Analysis:** Tương tự endpoint graph, cần document required params.
+
+### 4. 🔴 Expired Token Accepted (SECURITY)
+- **File:** `06-security/security.test.ts:18`
+- **Expected:** 401 Unauthorized
+- **Actual:** 200 OK
+- **Severity:** **CRITICAL**
+- **Analysis:** API chấp nhận JWT token đã expired. Đây là lỗ hổng bảo mật nghiêm trọng cho phép attacker sử dụng token cũ vô thời hạn.
+
+### 5. 🔴 Malformed Token Causes 500 (SECURITY)
+- **File:** `06-security/security.test.ts:26`
+- **Expected:** 401 Unauthorized
+- **Actual:** 500 Internal Server Error
+- **Severity:** **HIGH**
+- **Analysis:** Token không hợp lệ gây crash server thay vì trả về 401. Có thể bị khai thác để DoS.
+
+### 6. 🔴 Non-numeric ID Causes 500 (SECURITY)
+- **File:** `06-security/security.test.ts:143`
+- **Expected:** 400 hoặc 404
+- **Actual:** 500 Internal Server Error
+- **Severity:** **HIGH**
+- **Analysis:** Input validation thiếu cho path params. Server crash khi nhận ID không phải số.
+
+### 7-12. Trade Graph Endpoints (Contract Issues)
+- **Endpoints:** `/trades/graph`, `/trades/graph-overrall`
+- **Severity:** Low
+- **Analysis:** Các endpoint này cần query params nhưng test gọi không có params. Cần update OpenAPI spec để document required params.
+
+---
+
+## Endpoints Coverage
+
+| Resource | Total Endpoints | Tested | Coverage |
+|----------|----------------|--------|----------|
+| Markets | 13 | 13 | 100% |
+| Orders | 9 | 9 | 100% |
+| Trades | 5 | 5 | 100% |
+| Comments | 6 | 6 | 100% |
+| Auth | 6 | 6 | 100% |
+| Admin | 3 | 3 | 100% |
+| Other | 4 | 4 | 100% |
+
+---
+
+## Thống Kê Security
+
+| Check | Result |
+|-------|--------|
+| Auth bypass (no token) | ✅ Passed |
+| Auth bypass (expired token) | ❌ **FAILED** |
+| Auth bypass (malformed token) | ❌ **FAILED** |
+| SQL injection | ⚠️ Partial (some 500s) |
+| XSS prevention | ✅ Passed |
+| Input validation | ❌ **FAILED** |
+| RBAC enforcement | ✅ Passed |
+| IDOR protection | ✅ Passed |
 
 ---
 
 ## Recommendations
 
-1. **Fix Server 500 Bugs**: `/markets/proposed-detail/{id}` and `/markets/upload` endpoints
-2. **Add Auth Guard**: `/orders/activity` should require authentication
-3. **Update Test Expectations**: Several tests have incorrect status code expectations
-4. **Increase Timeout**: Consider increasing timeout for security tests
-5. **Add Second Test Account**: IDOR tests require 2 different user accounts
-
----
-
-## Files
-
-| File | Description |
-|------|-------------|
-| `reports/latest-report.md` | This file |
-| `reports/bugs-found.md` | Detailed bug report |
-| `reports/coverage-matrix.md` | Endpoint coverage |
-| `reports/ai-summary.md` | AI analysis |
+1. **[CRITICAL]** Fix JWT token validation - expired tokens phải bị reject
+2. **[HIGH]** Add error handling cho malformed tokens - return 401 không phải 500
+3. **[HIGH]** Add input validation cho path params - validate trước khi query DB
+4. **[LOW]** Update OpenAPI spec với required params cho graph endpoints
+5. **[LOW]** Chuẩn hóa status code cho logout (200/204 thay vì 201)

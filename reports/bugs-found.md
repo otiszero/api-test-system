@@ -1,149 +1,229 @@
-# Bugs Found Report
+# Bug Reports - Foreon Prediction Market API
 
-**Generated**: 2026-02-28
-**API**: https://api.foreon.network
-
----
-
-## Critical Bugs (P1)
-
-### BUG-001: Server Error 500 on `/markets/proposed-detail/{id}`
-- **Layer**: Smoke, Single API
-- **Endpoint**: `GET /markets/proposed-detail/{id}`
-- **Expected**: 200 or 404
-- **Actual**: 500 Internal Server Error
-- **Impact**: Critical - Users cannot view proposed market details
-- **Evidence**:
-  ```
-  Request: GET /markets/proposed-detail/1
-  Response: 500 Internal Server Error
-  ```
-
-### BUG-002: Server Error 500 on `/markets/upload`
-- **Layer**: Smoke, Single API
-- **Endpoint**: `POST /markets/upload`
-- **Expected**: 400 (no file) or 200/201 (with file)
-- **Actual**: 500 Internal Server Error
-- **Impact**: Critical - File upload functionality broken
-- **Evidence**:
-  ```
-  Request: POST /markets/upload (empty body)
-  Response: 500 Internal Server Error
-  ```
+**Ngày phát hiện:** 2026-03-02
+**Tổng số bugs:** 6
 
 ---
 
-## High Priority Bugs (P2)
+## BUG-001: JWT Expired Token Được Chấp Nhận
 
-### BUG-003: Missing Auth on `/orders/activity`
-- **Layer**: RBAC, Contract
-- **Endpoint**: `GET /orders/activity`
-- **Expected**: 401 Unauthorized (without token)
-- **Actual**: 200 OK (without token)
-- **Impact**: Security - Unauthenticated users can view order activity
-- **OpenAPI**: Endpoint has `security: [bearer]` but not enforced
-- **Evidence**:
-  ```
-  Request: GET /orders/activity (no Authorization header)
-  Response: 200 OK with activity data
-  ```
+### Severity: 🔴 CRITICAL
 
-### BUG-004: Inconsistent Error Response Format
-- **Layer**: Contract
-- **Endpoint**: Multiple endpoints
-- **Expected**: `{ code: number, message: string }`
-- **Actual**: `{ data: {}, message: string }` (missing `code`)
-- **Impact**: API consumers cannot reliably parse error responses
-- **Evidence**:
-  ```
-  Response on auth error: {"data":{},"message":"Authorization: Bearer <token> header missing"}
-  Missing field: code
-  ```
+### Endpoint
+`GET /orders`
 
----
+### Mô tả
+API chấp nhận JWT token đã expired và trả về data bình thường thay vì reject với 401 Unauthorized.
 
-## Medium Priority Bugs (P3)
+### Steps to Reproduce
+```bash
+# Token với exp timestamp đã qua
+curl -X GET "https://api.foreon.network/orders" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxMDAwMDAwMDAwfQ.invalid" \
+  -H "Content-Type: application/json"
+```
 
-### BUG-005: Endpoints Not Found (404)
-- **Layer**: Single API
-- **Endpoints**:
-  - `POST /orderbook/add-liquidity` → 404
-  - `POST /slack/send-message` → 404
-  - `GET /auth/nonce` → 404
-  - `POST /auth/connect-wallet` → 404
-  - `GET /auth/verify-wallet` → 404
-  - `PUT /auth/me` → 404
-  - `POST /auth/register-wallet` → 404
-- **Expected**: Endpoints exist per OpenAPI spec
-- **Actual**: 404 Not Found
-- **Impact**: Tests fail, OpenAPI spec out of sync with implementation
+### Expected
+- Status: 401 Unauthorized
+- Body: `{"message": "Expired token"}`
 
-### BUG-006: Incorrect Status Code for Non-existent Resources
-- **Layer**: Single API
-- **Endpoint**: `GET /markets/{id}` with invalid ID
-- **Expected**: 404 Not Found
-- **Actual**: 200 OK (returns empty or null data)
-- **Impact**: Clients cannot distinguish between empty data and not found
+### Actual
+- Status: 200 OK
+- Body: Data được trả về bình thường
 
-### BUG-007: Missing Validation on Invalid ID Format
-- **Layer**: Single API
-- **Endpoint**: `GET /markets/{id}` with ID = "abc"
-- **Expected**: 400 Bad Request
-- **Actual**: 500 Internal Server Error
-- **Impact**: Poor error handling exposes server errors to users
+### Impact
+- Attacker có thể sử dụng token cũ vô thời hạn
+- Không thể revoke access của user bị compromise
+- Session không bao giờ expire
+
+### Recommendation
+- Verify `exp` claim trong JWT middleware
+- Reject tokens với `exp < current_timestamp`
+- Implement token refresh flow đúng cách
 
 ---
 
-## Low Priority Bugs (P4)
+## BUG-002: Malformed Token Gây Server Error 500
 
-### BUG-008: Response Schema Mismatch
-- **Layer**: Contract
-- **Endpoints**: GET list endpoints
-- **Issue**: Some list endpoints missing pagination metadata
-- **Expected**: `{ code, data, metadata: { total, page, limit } }`
-- **Actual**: `{ code, data }` (missing metadata)
+### Severity: 🔴 HIGH
 
-### BUG-009: CORS Headers Not Configured
-- **Layer**: Security
-- **Issue**: Tests timeout checking CORS headers
-- **Note**: May be network issue or CORS not properly configured
+### Endpoint
+`GET /orders` (và tất cả protected endpoints)
 
----
+### Mô tả
+Khi gửi token không phải JWT format, server crash và trả về 500 Internal Server Error thay vì 401.
 
-## API Behavior Inconsistencies
+### Steps to Reproduce
+```bash
+curl -X GET "https://api.foreon.network/orders" \
+  -H "Authorization: Bearer malformed-not-a-jwt" \
+  -H "Content-Type: application/json"
+```
 
-### INC-001: Public vs Protected Confusion
-| Endpoint | OpenAPI | Actual |
-|----------|---------|--------|
-| GET /orders/activity | Bearer required | Public (200) |
-| GET /trades | Bearer required | Bearer required (correct) |
-| GET /trades/history | Bearer required | Bearer required (correct) |
+### Expected
+- Status: 401 Unauthorized
+- Body: `{"message": "Invalid token format"}`
 
-### INC-002: Status Code Inconsistencies
-| Operation | Expected | Actual |
-|-----------|----------|--------|
-| POST resource (success) | 201 Created | 200 OK |
-| POST resource (validation fail) | 400 | 400 (correct) |
-| DELETE non-existent | 404 | 400 |
+### Actual
+- Status: 500 Internal Server Error
+- Có thể leak stack trace
 
----
+### Impact
+- Có thể bị khai thác để DoS
+- Leak thông tin internal (stack trace)
+- Log pollution
 
-## Test Failures by Category
-
-| Category | Count | Examples |
-|----------|-------|----------|
-| Server 500 errors | 2 | proposed-detail, upload |
-| Missing endpoints (404) | ~20 | auth endpoints, orderbook/add-liquidity |
-| Wrong status code | ~30 | Expected 201 got 200, expected 401 got 200 |
-| Schema validation | ~10 | Missing fields, wrong types |
-| Timeout | ~15 | Security CORS tests |
-| Business logic | ~14 | State-dependent tests |
+### Recommendation
+- Wrap JWT parsing trong try-catch
+- Return 401 cho mọi token parsing errors
+- Không expose internal errors ra client
 
 ---
 
-## Recommendations
+## BUG-003: Non-numeric ID Gây Server Error 500
 
-1. **Immediate**: Fix server 500 bugs (BUG-001, BUG-002)
-2. **High**: Add auth middleware to /orders/activity (BUG-003)
-3. **Medium**: Update OpenAPI spec to match actual endpoints (BUG-005)
-4. **Low**: Standardize error response format with `code` field (BUG-004)
+### Severity: 🔴 HIGH
+
+### Endpoint
+`GET /markets/{id}`
+
+### Mô tả
+Khi truyền ID không phải số vào path param, server crash thay vì trả về 400 Bad Request.
+
+### Steps to Reproduce
+```bash
+curl -X GET "https://api.foreon.network/markets/not-a-number" \
+  -H "Content-Type: application/json"
+```
+
+### Expected
+- Status: 400 Bad Request
+- Body: `{"message": "Invalid ID format"}`
+
+### Actual
+- Status: 500 Internal Server Error
+
+### Impact
+- Có thể bị khai thác để DoS
+- SQL injection vector (nếu không sanitize)
+- Application instability
+
+### Recommendation
+- Validate path params trước khi xử lý
+- Use NestJS ParseIntPipe hoặc custom validation
+- Return 400 cho invalid format
+
+---
+
+## BUG-004: Logout Returns Wrong Status Code
+
+### Severity: 🟢 LOW
+
+### Endpoint
+`POST /auth/logout`
+
+### Mô tả
+API trả về 201 Created cho logout action thay vì 200 OK hoặc 204 No Content.
+
+### Steps to Reproduce
+```bash
+curl -X POST "https://api.foreon.network/auth/logout" \
+  -H "Authorization: Bearer <valid_token>" \
+  -H "Content-Type: application/json"
+```
+
+### Expected
+- Status: 200 OK hoặc 204 No Content
+
+### Actual
+- Status: 201 Created
+
+### Impact
+- Không ảnh hưởng functionality
+- Không đúng REST conventions
+- Có thể gây confusion cho API consumers
+
+### Recommendation
+- Change response status to 200 hoặc 204
+- 201 chỉ nên dùng khi tạo resource mới
+
+---
+
+## BUG-005: GET /trades/graph Thiếu Required Params Documentation
+
+### Severity: 🟡 MEDIUM
+
+### Endpoint
+`GET /trades/graph`
+
+### Mô tả
+Endpoint trả về 400 khi không có query params, nhưng OpenAPI spec không document required params.
+
+### Steps to Reproduce
+```bash
+curl -X GET "https://api.foreon.network/trades/graph" \
+  -H "Content-Type: application/json"
+```
+
+### Expected (theo OpenAPI)
+- Status: 200 OK
+
+### Actual
+- Status: 400 Bad Request
+- Body: Missing required params
+
+### Impact
+- API consumers không biết params nào required
+- Test cases fail do thiếu documentation
+- Integration khó khăn
+
+### Recommendation
+- Update OpenAPI spec với required params
+- Add clear error message chỉ ra params nào thiếu
+
+---
+
+## BUG-006: GET /trades/graph-overrall Thiếu Required Params Documentation
+
+### Severity: 🟡 MEDIUM
+
+### Endpoint
+`GET /trades/graph-overrall`
+
+### Mô tả
+Tương tự BUG-005. Endpoint yêu cầu query params nhưng không document.
+
+### Steps to Reproduce
+```bash
+curl -X GET "https://api.foreon.network/trades/graph-overrall" \
+  -H "Content-Type: application/json"
+```
+
+### Expected (theo OpenAPI)
+- Status: 200 OK
+
+### Actual
+- Status: 400 Bad Request
+
+### Recommendation
+- Update OpenAPI spec
+- Document required query parameters
+
+---
+
+## Summary by Severity
+
+| Severity | Count | Bugs |
+|----------|-------|------|
+| 🔴 CRITICAL | 1 | BUG-001 |
+| 🔴 HIGH | 2 | BUG-002, BUG-003 |
+| 🟡 MEDIUM | 2 | BUG-005, BUG-006 |
+| 🟢 LOW | 1 | BUG-004 |
+
+## Priority Order
+
+1. **BUG-001** - Fix JWT expiration validation ngay lập tức
+2. **BUG-002** - Add error handling cho token parsing
+3. **BUG-003** - Add input validation cho path params
+4. **BUG-005, BUG-006** - Update OpenAPI documentation
+5. **BUG-004** - Fix status code (low priority)

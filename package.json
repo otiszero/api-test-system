@@ -14,7 +14,8 @@
     "test:security": "vitest run generated/tests/06-security",
     "test:db": "vitest run generated/tests/07-db",
     "typecheck": "tsc --noEmit",
-    "extract-endpoints": "tsx scripts/extract-endpoints.ts"
+    "extract-endpoints": "tsx scripts/extract-endpoints.ts",
+    "view-report": "npx vite preview --outDir reports/html"
   },
   "keywords": [],
   "author": "",
