@@ -1,0 +1,38 @@
+{
+  "_comment": "Full QC Workflow - Chạy tất cả từ assess đến generate reports",
+  "_usage": "Run: npm run full-test",
+
+  "workflow": {
+    "steps": [
+      {
+        "name": "assess",
+        "description": "Check configs và connectivity",
+        "command": "npm run test:smoke -- --run --reporter=verbose 2>&1 | head -20"
+      },
+      {
+        "name": "run-all-tests",
+        "description": "Run all test layers",
+        "command": "npm test"
+      },
+      {
+        "name": "generate-reports",
+        "description": "Generate HTML và markdown reports",
+        "outputs": [
+          "reports/html/index.html",
+          "reports/latest-report.md",
+          "reports/bugs-found.md",
+          "reports/integration-evidence.md"
+        ]
+      }
+    ]
+  },
+
+  "quickCommands": {
+    "full": "Chạy toàn bộ workflow",
+    "smoke": "Chỉ smoke tests",
+    "single": "Chỉ single API tests",
+    "integration": "Chỉ integration tests",
+    "security": "Chỉ security tests",
+    "db": "Chỉ DB verification tests"
+  }
+}

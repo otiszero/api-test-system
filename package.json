@@ -13,6 +13,7 @@
     "test:rbac": "vitest run generated/tests/05-rbac",
     "test:security": "vitest run generated/tests/06-security",
     "test:db": "vitest run generated/tests/07-db",
+    "full-test": "bash scripts/full-test.sh",
     "typecheck": "tsc --noEmit",
     "extract-endpoints": "tsx scripts/extract-endpoints.ts",
     "view-report": "npx vite preview --outDir reports/html"
