@@ -1,0 +1,621 @@
+[
+  {
+    "scenario": "S01: User views markets and favorites",
+    "step": "Step 1: GET /markets",
+    "request": {
+      "method": "GET",
+      "url": "/markets",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "_truncated": true,
+        "_preview": "{\"code\":200,\"data\":[{\"id\":529,\"userId\":null,\"imageUrl\":\"https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\",\"title\":\"Will Anyone Be Jailed In February Over Epstein Disclosures?\",\"marketRule\":\"This market will resolve to “Yes” if, by February 28th, 2026, 11:59 PM, any individual serves any time in a federal, state, or local U.S. jail or prison, and the cause of that incarceration is attributed to information contained in files related to Jeffr...",
+        "_fullLength": 90828
+      }
+    },
+    "expected": 200,
+    "passed": true,
+    "duration": 1151,
+    "curl": "curl -X GET \"https://api.foreon.network/markets\" \\\n  -H \"Content-Type: application/json\""
+  },
+  {
+    "scenario": "S01: User views markets and favorites",
+    "step": "Step 2: GET /markets/${marketList.data[0].id}",
+    "request": {
+      "method": "GET",
+      "url": "/markets/529",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "_truncated": true,
+        "_preview": "{\"code\":200,\"data\":{\"id\":529,\"userId\":null,\"imageUrl\":\"https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\",\"title\":\"Will Anyone Be Jailed In February Over Epstein Disclosures?\",\"marketRule\":\"This market will resolve to “Yes” if, by February 28th, 2026, 11:59 PM, any individual serves any time in a federal, state, or local U.S. jail or prison, and the cause of that incarceration is attributed to information contained in files related to Jeffre...",
+        "_fullLength": 2538
+      }
+    },
+    "expected": 200,
+    "passed": true,
+    "duration": 216,
+    "curl": "curl -X GET \"https://api.foreon.network/markets/529\" \\\n  -H \"Content-Type: application/json\""
+  },
+  {
+    "scenario": "S01: User views markets and favorites",
+    "step": "Step 3: POST /markets/${marketDetail.data.id}/favorite",
+    "request": {
+      "method": "POST",
+      "url": "/markets/529/favorite",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      }
+    },
+    "response": {
+      "status": 401,
+      "body": {
+        "data": {},
+        "message": "Expired token"
+      }
+    },
+    "expected": [
+      200,
+      201
+    ],
+    "passed": false,
+    "duration": 194,
+    "curl": "curl -X POST \"https://api.foreon.network/markets/529/favorite\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\""
+  },
+  {
+    "scenario": "S01: User views markets and favorites",
+    "step": "Step 4: GET /markets/favorites",
+    "request": {
+      "method": "GET",
+      "url": "/markets/favorites",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      }
+    },
+    "response": {
+      "status": 401,
+      "body": {
+        "data": {},
+        "message": "Expired token"
+      }
+    },
+    "expected": 200,
+    "passed": false,
+    "duration": 196,
+    "curl": "curl -X GET \"https://api.foreon.network/markets/favorites\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\""
+  },
+  {
+    "scenario": "S02: User views orders and positions",
+    "step": "Step 1: GET /orders",
+    "request": {
+      "method": "GET",
+      "url": "/orders",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "_truncated": true,
+        "_preview": "{\"code\":200,\"data\":[{\"id\":2044,\"address\":\"addr_test1qr9gcnk28lenmstprxcanfmlm9w5u3a5r9klqk8ltg525psf9lcknt9fxdx7ge9aqdt6q65u7dkwla2cvkmhj0er2ryqlel834\",\"type\":1,\"side\":1,\"outcomeType\":1,\"status\":4,\"price\":0.9,\"averagePrice\":0.9,\"amount\":200,\"filledAmount\":200,\"remainingAmount\":0,\"total\":180,\"payback\":0,\"txHash\":\"1240be53d8dd1f4b2468606247fa092f89dc42264afb0aa3a39c3f5e2187c561\",\"outputIndex\":1,\"createdAt\":\"2026-01-22T12:35:05.000Z\",\"outcome\":{\"id\":770,\"title\":\"Outcome 1\",\"result\":null},\"market\":{...",
+        "_fullLength": 1728
+      }
+    },
+    "expected": 200,
+    "passed": true,
+    "duration": 304,
+    "curl": "curl -X GET \"https://api.foreon.network/orders\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\""
+  },
+  {
+    "scenario": "S02: User views orders and positions",
+    "step": "Step 2: GET /orders/position",
+    "request": {
+      "method": "GET",
+      "url": "/orders/position",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      }
+    },
+    "response": {
+      "status": 401,
+      "body": {
+        "data": {},
+        "message": "Expired token"
+      }
+    },
+    "expected": 200,
+    "passed": false,
+    "duration": 227,
+    "curl": "curl -X GET \"https://api.foreon.network/orders/position\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\""
+  },
+  {
+    "scenario": "S02: User views orders and positions",
+    "step": "Step 3: GET /orders/position-claims",
+    "request": {
+      "method": "GET",
+      "url": "/orders/position-claims",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      }
+    },
+    "response": {
+      "status": 401,
+      "body": {
+        "data": {},
+        "message": "Expired token"
+      }
+    },
+    "expected": 200,
+    "passed": false,
+    "duration": 198,
+    "curl": "curl -X GET \"https://api.foreon.network/orders/position-claims\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\""
+  },
+  {
+    "scenario": "S02: User views orders and positions",
+    "step": "Step 4: GET /orders/activity",
+    "request": {
+      "method": "GET",
+      "url": "/orders/activity",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "_truncated": true,
+        "_preview": "{\"code\":200,\"data\":[{\"id\":2055,\"address\":\"addr_test1qr7lcuv3rvtpekk34pet26ppp5lafgmrjaelj66uqp6mp2cnsa7060msaaywzmyefgxdckhrctrr9zpteujyl6mky5qs5yz04r\",\"type\":1,\"side\":1,\"outcomeType\":1,\"status\":-2,\"price\":0.5,\"averagePrice\":0,\"amount\":50,\"filledAmount\":0,\"remainingAmount\":50,\"total\":25,\"payback\":0,\"txHash\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"createdAt\":\"2026-02-28T14:40:35.000Z\",\"outcome\":{\"id\":809,\"imageUrl\":\"https://dev.api.foreon-network.sotatek.works/markets/...",
+        "_fullLength": 47168
+      }
+    },
+    "expected": 200,
+    "passed": true,
+    "duration": 232,
+    "curl": "curl -X GET \"https://api.foreon.network/orders/activity\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\""
+  },
+  {
+    "scenario": "S03: User views trades",
+    "step": "Step 1: GET /trades/market-trade",
+    "request": {
+      "method": "GET",
+      "url": "/trades/market-trade",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "code": 200,
+        "data": {},
+        "metadata": {}
+      }
+    },
+    "expected": 200,
+    "passed": true,
+    "duration": 194,
+    "curl": "curl -X GET \"https://api.foreon.network/trades/market-trade\" \\\n  -H \"Content-Type: application/json\""
+  },
+  {
+    "scenario": "S03: User views trades",
+    "step": "Step 2: GET /trades",
+    "request": {
+      "method": "GET",
+      "url": "/trades",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "_truncated": true,
+        "_preview": "{\"code\":200,\"data\":[{\"id\":524,\"marketId\":234,\"outcomeId\":353,\"sellOrderId\":1356,\"buyOrderId\":1357,\"sellAddress\":\"addr_test1qpyf9ywseuegvcq6xgksz2awuhjyj6qhfvx7ag4hnm9f0l342u24wg9xvfacvv52rndypurdd7nwa5u6lyswyxzly76qmdjqz3\",\"buyAddress\":\"addr_test1qpyf9ywseuegvcq6xgksz2awuhjyj6qhfvx7ag4hnm9f0l342u24wg9xvfacvv52rndypurdd7nwa5u6lyswyxzly76qmdjqz3\",\"sellUserId\":46,\"buyUserId\":46,\"filledAmount\":50,\"price\":0.25,\"sellOrderPrice\":0.25,\"buyOrderPrice\":0.75,\"type\":1,\"sellOrderOutcomeType\":1,\"buyOrderOutco...",
+        "_fullLength": 46200
+      }
+    },
+    "expected": 200,
+    "passed": true,
+    "duration": 211,
+    "curl": "curl -X GET \"https://api.foreon.network/trades\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\""
+  },
+  {
+    "scenario": "S03: User views trades",
+    "step": "Step 3: GET /trades/history",
+    "request": {
+      "method": "GET",
+      "url": "/trades/history",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "_truncated": true,
+        "_preview": "{\"code\":200,\"data\":[{\"market_title\":\"Test multi outcome 2\",\"market_id\":497,\"market_type\":1,\"outcome_title\":\"Outcome 1\",\"outcome_id\":770,\"id\":2044,\"outcome_type\":1,\"trade_id\":783,\"method\":2,\"order_id\":2044,\"user_id\":91,\"price\":0.9,\"filled_amount\":200,\"created_at\":\"2026-01-22T12:37:39.000Z\",\"order_hash\":\"1240be53d8dd1f4b2468606247fa092f89dc42264afb0aa3a39c3f5e2187c561\",\"tx_hash\":\"e870bda069e5c04a1a3ee1c182aef32b205d79799c5631d7b2e5db45c37a2667\",\"action\":\"buy\",\"total\":180},{\"market_title\":\"Test mul...",
+        "_fullLength": 1026
+      }
+    },
+    "expected": 200,
+    "passed": true,
+    "duration": 223,
+    "curl": "curl -X GET \"https://api.foreon.network/trades/history\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\""
+  },
+  {
+    "scenario": "S04: Comment lifecycle",
+    "step": "Step 1: GET /markets",
+    "request": {
+      "method": "GET",
+      "url": "/markets",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "_truncated": true,
+        "_preview": "{\"code\":200,\"data\":[{\"id\":529,\"userId\":null,\"imageUrl\":\"https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\",\"title\":\"Will Anyone Be Jailed In February Over Epstein Disclosures?\",\"marketRule\":\"This market will resolve to “Yes” if, by February 28th, 2026, 11:59 PM, any individual serves any time in a federal, state, or local U.S. jail or prison, and the cause of that incarceration is attributed to information contained in files related to Jeffr...",
+        "_fullLength": 90828
+      }
+    },
+    "expected": 200,
+    "passed": true,
+    "duration": 248,
+    "curl": "curl -X GET \"https://api.foreon.network/markets\" \\\n  -H \"Content-Type: application/json\""
+  },
+  {
+    "scenario": "S04: Comment lifecycle",
+    "step": "Step 2: GET /comments/market/${markets.data[0].id}",
+    "request": {
+      "method": "GET",
+      "url": "/comments/market/529",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "code": 200,
+        "data": [],
+        "metadata": {
+          "page": 1,
+          "totalPage": 0,
+          "total": 0,
+          "limit": 50,
+          "timestamp": "2026-03-02T04:19:41.988Z"
+        }
+      }
+    },
+    "expected": [
+      200,
+      404
+    ],
+    "passed": true,
+    "duration": 199,
+    "curl": "curl -X GET \"https://api.foreon.network/comments/market/529\" \\\n  -H \"Content-Type: application/json\""
+  },
+  {
+    "scenario": "S04: Comment lifecycle",
+    "step": "Step 3: POST /comments",
+    "request": {
+      "method": "POST",
+      "url": "/comments",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      },
+      "body": {
+        "marketId": 529,
+        "content": "Test comment 1772425182068"
+      }
+    },
+    "response": {
+      "status": 401,
+      "body": {
+        "data": {},
+        "message": "Expired token"
+      }
+    },
+    "expected": [
+      200,
+      201,
+      400,
+      422
+    ],
+    "passed": false,
+    "duration": 199,
+    "curl": "curl -X POST \"https://api.foreon.network/comments\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\" \\\n  -d '{\"marketId\":529,\"content\":\"Test comment 1772425182068\"}'"
+  },
+  {
+    "scenario": "S04: Comment lifecycle",
+    "step": "Step 4: POST /comments/1/like",
+    "request": {
+      "method": "POST",
+      "url": "/comments/1/like",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      }
+    },
+    "response": {
+      "status": 401,
+      "body": {
+        "data": {},
+        "message": "Expired token"
+      }
+    },
+    "expected": [
+      200,
+      201,
+      404
+    ],
+    "passed": false,
+    "duration": 195,
+    "curl": "curl -X POST \"https://api.foreon.network/comments/1/like\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\""
+  },
+  {
+    "scenario": "S05: Orderbook and statistics",
+    "step": "Step 1: GET /orderbook",
+    "request": {
+      "method": "GET",
+      "url": "/orderbook",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "code": 200,
+        "data": {
+          "asks": [],
+          "bids": []
+        },
+        "metadata": {
+          "timestamp": "2026-03-02T04:19:42.579Z"
+        }
+      }
+    },
+    "expected": 200,
+    "passed": true,
+    "duration": 196,
+    "curl": "curl -X GET \"https://api.foreon.network/orderbook\" \\\n  -H \"Content-Type: application/json\""
+  },
+  {
+    "scenario": "S05: Orderbook and statistics",
+    "step": "Step 2: GET /statistic/rank",
+    "request": {
+      "method": "GET",
+      "url": "/statistic/rank",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "_truncated": true,
+        "_preview": "{\"code\":200,\"data\":[{\"id\":70,\"walletAddress\":\"addr_test1qqu7w7xjddl0e7lta9jnuk4hmelt8w36hl54c79tq924c5r3d3h404prdhl3yrjj92n6vsshz7jt5fh3cx3mhgat654quy4um2\",\"totalAmount\":3782.79,\"totalReward\":5939.587279},{\"id\":90,\"walletAddress\":\"addr_test1qqgk4kplwmpl65484mhmrwfe58c2mfe8gp59g78fnkhymwckcr3d8qcqhsu7pz7nuzl6udwdeq3k44s4h527svpyyr6s3fchql\",\"totalAmount\":3079,\"totalReward\":1200},{\"id\":31,\"walletAddress\":\"addr_test1qqukq6stggvnvl832nlx84jd6kdsmjzy94sldu5hdwl7naj2gr4apkl02y28zr5vg68aneugnd0j78dnz06u...",
+        "_fullLength": 3279
+      }
+    },
+    "expected": 200,
+    "passed": true,
+    "duration": 208,
+    "curl": "curl -X GET \"https://api.foreon.network/statistic/rank\" \\\n  -H \"Content-Type: application/json\""
+  },
+  {
+    "scenario": "S06: User profile and assets",
+    "step": "Step 1: GET /auth/me",
+    "request": {
+      "method": "GET",
+      "url": "/auth/me",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      }
+    },
+    "response": {
+      "status": 401,
+      "body": {
+        "data": {},
+        "message": "Expired token"
+      }
+    },
+    "expected": 200,
+    "passed": false,
+    "duration": 197,
+    "curl": "curl -X GET \"https://api.foreon.network/auth/me\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\""
+  },
+  {
+    "scenario": "S06: User profile and assets",
+    "step": "Step 2: GET /auth/asset",
+    "request": {
+      "method": "GET",
+      "url": "/auth/asset",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      }
+    },
+    "response": {
+      "status": 401,
+      "body": {
+        "data": {},
+        "message": "Expired token"
+      }
+    },
+    "expected": 200,
+    "passed": false,
+    "duration": 194,
+    "curl": "curl -X GET \"https://api.foreon.network/auth/asset\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\""
+  },
+  {
+    "scenario": "S07: Proposed markets flow",
+    "step": "Step 1: GET /markets/proposed",
+    "request": {
+      "method": "GET",
+      "url": "/markets/proposed",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      }
+    },
+    "response": {
+      "status": 401,
+      "body": {
+        "data": {},
+        "message": "Expired token"
+      }
+    },
+    "expected": 200,
+    "passed": false,
+    "duration": 196,
+    "curl": "curl -X GET \"https://api.foreon.network/markets/proposed\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\""
+  },
+  {
+    "scenario": "S07: Proposed markets flow",
+    "step": "Step 2: GET /markets/proposed-detail/1",
+    "request": {
+      "method": "GET",
+      "url": "/markets/proposed-detail/1",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw"
+      }
+    },
+    "response": {
+      "status": 401,
+      "body": {
+        "data": {},
+        "message": "Expired token"
+      }
+    },
+    "expected": [
+      200,
+      404,
+      500
+    ],
+    "passed": false,
+    "duration": 195,
+    "curl": "curl -X GET \"https://api.foreon.network/markets/proposed-detail/1\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MjAyNjEsImV4cCI6MTc3MjQzODI2MX0.jXD0Ufqb-7mfg1Ye0huQJ0sihoi6QZTXdkspZEZqROw\""
+  },
+  {
+    "scenario": "S08: Guest vs authenticated access",
+    "step": "Step 1: GET /markets",
+    "request": {
+      "method": "GET",
+      "url": "/markets",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "_truncated": true,
+        "_preview": "{\"code\":200,\"data\":[{\"id\":529,\"userId\":null,\"imageUrl\":\"https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\",\"title\":\"Will Anyone Be Jailed In February Over Epstein Disclosures?\",\"marketRule\":\"This market will resolve to “Yes” if, by February 28th, 2026, 11:59 PM, any individual serves any time in a federal, state, or local U.S. jail or prison, and the cause of that incarceration is attributed to information contained in files related to Jeffr...",
+        "_fullLength": 90828
+      }
+    },
+    "expected": 200,
+    "passed": true,
+    "duration": 264,
+    "curl": "curl -X GET \"https://api.foreon.network/markets\" \\\n  -H \"Content-Type: application/json\""
+  },
+  {
+    "scenario": "S08: Guest vs authenticated access",
+    "step": "Step 2: GET /orderbook",
+    "request": {
+      "method": "GET",
+      "url": "/orderbook",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "code": 200,
+        "data": {
+          "asks": [],
+          "bids": []
+        },
+        "metadata": {
+          "timestamp": "2026-03-02T04:19:44.037Z"
+        }
+      }
+    },
+    "expected": 200,
+    "passed": true,
+    "duration": 202,
+    "curl": "curl -X GET \"https://api.foreon.network/orderbook\" \\\n  -H \"Content-Type: application/json\""
+  },
+  {
+    "scenario": "S08: Guest vs authenticated access",
+    "step": "Step 3: GET /orders",
+    "request": {
+      "method": "GET",
+      "url": "/orders",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    },
+    "response": {
+      "status": 401,
+      "body": {
+        "data": {},
+        "message": "Unauthorized"
+      }
+    },
+    "expected": 401,
+    "passed": true,
+    "duration": 209,
+    "curl": "curl -X GET \"https://api.foreon.network/orders\" \\\n  -H \"Content-Type: application/json\""
+  },
+  {
+    "scenario": "S08: Guest vs authenticated access",
+    "step": "Step 4: POST /comments",
+    "request": {
+      "method": "POST",
+      "url": "/comments",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "content": "test"
+      }
+    },
+    "response": {
+      "status": 401,
+      "body": {
+        "data": {},
+        "message": "Authorization: Bearer <token> header missing"
+      }
+    },
+    "expected": 401,
+    "passed": true,
+    "duration": 198,
+    "curl": "curl -X POST \"https://api.foreon.network/comments\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"content\":\"test\"}'"
+  }
+]
