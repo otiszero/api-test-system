@@ -1,7 +1,7 @@
 # Bug Reports - Foreon Prediction Market API
 
 **Ngày phát hiện:** 2026-03-02
-**Tổng số bugs:** 6
+**Tổng số bugs:** 8
 
 ---
 
@@ -211,13 +211,99 @@ curl -X GET "https://api.foreon.network/trades/graph-overrall" \
 
 ---
 
+## BUG-007: Orphan Orders - Foreign Key Integrity Violation
+
+### Severity: 🔴 HIGH
+
+### Source
+DB Verification Test - Direct Database Query
+
+### Mô tả
+Có 4 orders trong database tham chiếu đến market_id=155, nhưng market này không tồn tại trong bảng markets.
+
+### Evidence
+```sql
+SELECT o.id, o.market_id
+FROM orders o
+LEFT JOIN markets m ON o.market_id = m.id
+WHERE m.id IS NULL;
+
+-- Results:
+-- id: 1342, market_id: 155
+-- id: 1343, market_id: 155
+-- id: 1344, market_id: 155
+-- id: 1345, market_id: 155
+```
+
+### Impact
+- Data integrity violation
+- Application có thể crash khi load orders với invalid market reference
+- Business logic errors khi process orders
+- Reports và analytics bị sai
+
+### Root Cause
+- Market 155 có thể đã bị hard delete thay vì soft delete
+- Hoặc orders được tạo với invalid market_id
+- Foreign key constraint không được enforce ở DB level
+
+### Recommendation
+1. Add foreign key constraint: `orders.market_id → markets.id`
+2. Investigate tại sao market 155 bị delete mà orders còn
+3. Implement soft delete cho markets thay vì hard delete
+4. Clean up orphan orders hoặc restore market 155
+
+---
+
+## BUG-008: Markets với ended_at = NULL (Invalid Date)
+
+### Severity: 🟡 MEDIUM
+
+### Source
+DB Verification Test - Direct Database Query
+
+### Mô tả
+Có ít nhất 5 markets có field `ended_at` = NULL hoặc invalid, dẫn đến Invalid Date khi parse.
+
+### Evidence
+```sql
+SELECT id, title, ended_at, created_at
+FROM markets
+WHERE ended_at IS NULL OR ended_at <= created_at;
+
+-- Results (sample):
+-- id: 566, title: 'Market-7V4pVj-1772177948972', ended_at: NULL
+-- id: 578, title: 'Market-xWkn8M-1772177961644', ended_at: NULL
+-- id: 635, title: 'Market-WCX7CG-1772180658040', ended_at: NULL
+-- id: 647, title: 'Market-FXMADp-1772180666976', ended_at: NULL
+-- id: 699, title: 'Market-D0PePX-1772180715148', ended_at: NULL
+```
+
+### Impact
+- Markets không có end date sẽ không bao giờ resolve
+- Business logic errors khi check market status
+- UI có thể hiển thị "Invalid Date"
+- Reports bị ảnh hưởng
+
+### Root Cause
+- Validation thiếu khi tạo market
+- `ended_at` không được mark as required
+- Test data không clean up
+
+### Recommendation
+1. Add NOT NULL constraint cho `ended_at` column
+2. Add validation: `ended_at > created_at`
+3. Clean up hoặc set proper ended_at cho affected markets
+4. Review market creation flow để ensure ended_at always set
+
+---
+
 ## Summary by Severity
 
 | Severity | Count | Bugs |
 |----------|-------|------|
 | 🔴 CRITICAL | 1 | BUG-001 |
-| 🔴 HIGH | 2 | BUG-002, BUG-003 |
-| 🟡 MEDIUM | 2 | BUG-005, BUG-006 |
+| 🔴 HIGH | 3 | BUG-002, BUG-003, BUG-007 |
+| 🟡 MEDIUM | 3 | BUG-005, BUG-006, BUG-008 |
 | 🟢 LOW | 1 | BUG-004 |
 
 ## Priority Order
@@ -225,5 +311,7 @@ curl -X GET "https://api.foreon.network/trades/graph-overrall" \
 1. **BUG-001** - Fix JWT expiration validation ngay lập tức
 2. **BUG-002** - Add error handling cho token parsing
 3. **BUG-003** - Add input validation cho path params
-4. **BUG-005, BUG-006** - Update OpenAPI documentation
-5. **BUG-004** - Fix status code (low priority)
+4. **BUG-007** - Fix FK integrity + investigate orphan orders
+5. **BUG-008** - Fix markets với invalid ended_at
+6. **BUG-005, BUG-006** - Update OpenAPI documentation
+7. **BUG-004** - Fix status code (low priority)
