@@ -3,7 +3,18 @@
 # ============================================
 # FULL QC WORKFLOW
 # Chạy toàn bộ test workflow từ assess đến report
+# Usage:
+#   npm run full-test           # Interactive mode
+#   npm run full-test -- --ci   # Non-interactive (CI mode)
 # ============================================
+
+# Check for CI mode flag
+CI_MODE=false
+for arg in "$@"; do
+    if [ "$arg" = "--ci" ] || [ "$arg" = "-y" ]; then
+        CI_MODE=true
+    fi
+done
 
 set -e
 
@@ -66,11 +77,15 @@ npm run test:smoke 2>&1 | tail -10
 
 SMOKE_EXIT=${PIPESTATUS[0]}
 if [ $SMOKE_EXIT -ne 0 ]; then
-    echo -e "${YELLOW}  ⚠️  Some smoke tests failed. Continue anyway? (y/n)${NC}"
-    read -r CONTINUE
-    if [ "$CONTINUE" != "y" ]; then
-        echo "Aborted by user."
-        exit 1
+    if [ "$CI_MODE" = true ]; then
+        echo -e "${YELLOW}  ⚠️  Some smoke tests failed. Continuing in CI mode...${NC}"
+    else
+        echo -e "${YELLOW}  ⚠️  Some smoke tests failed. Continue anyway? (y/n)${NC}"
+        read -r CONTINUE
+        if [ "$CONTINUE" != "y" ]; then
+            echo "Aborted by user."
+            exit 1
+        fi
     fi
 fi
 echo ""
