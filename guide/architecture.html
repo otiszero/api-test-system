@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Test System - Architecture & State Machine</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-blue: #3b82f6;
+      --accent-green: #22c55e;
+      --accent-yellow: #eab308;
+      --accent-red: #ef4444;
+      --accent-purple: #8b5cf6;
+      --accent-cyan: #06b6d4;
+      --accent-orange: #f97316;
+      --border: #475569;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      padding: 40px 32px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    /* Navigation */
+    .nav {
+      background: var(--bg-secondary);
+      padding: 16px 32px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+      background: var(--bg-tertiary);
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title .icon {
+      font-size: 1.5rem;
+    }
+
+    /* Architecture Diagram */
+    .diagram-container {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 24px;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+    }
+
+    .diagram {
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.75rem;
+      line-height: 1.4;
+      white-space: pre;
+      color: var(--accent-cyan);
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .card-description {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Layer Colors */
+    .layer-smoke { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+    .layer-contract { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+    .layer-single { background: rgba(234, 179, 8, 0.2); color: var(--accent-yellow); }
+    .layer-integration { background: rgba(249, 115, 22, 0.2); color: var(--accent-orange); }
+    .layer-rbac { background: rgba(139, 92, 246, 0.2); color: var(--accent-purple); }
+    .layer-security { background: rgba(100, 116, 139, 0.2); color: var(--text-secondary); }
+    .layer-db { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: var(--bg-tertiary);
+      padding: 14px 16px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    tr:hover td {
+      background: var(--bg-secondary);
+    }
+
+    td code {
+      background: var(--bg-tertiary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+    }
+
+    /* State Machine */
+    .state-machine {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 32px;
+      border: 1px solid var(--border);
+    }
+
+    .state-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .state-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .state-node {
+      background: var(--bg-tertiary);
+      padding: 16px 24px;
+      border-radius: 8px;
+      text-align: center;
+      min-width: 140px;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .state-node:hover {
+      border-color: var(--accent-blue);
+    }
+
+    .state-node.active {
+      border-color: var(--accent-green);
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .state-node .command {
+      font-family: monospace;
+      font-size: 1rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    .state-node .description {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .arrow {
+      color: var(--accent-blue);
+      font-size: 1.5rem;
+    }
+
+    .arrow-down {
+      transform: rotate(90deg);
+    }
+
+    /* Flow Diagram */
+    .flow-container {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 32px;
+      border: 1px solid var(--border);
+    }
+
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .flow-step-number {
+      width: 32px;
+      height: 32px;
+      background: var(--accent-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .flow-step-content {
+      flex: 1;
+      background: var(--bg-tertiary);
+      padding: 16px;
+      border-radius: 8px;
+    }
+
+    .flow-step-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .flow-step-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #020617;
+      border-radius: 8px;
+      padding: 16px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+    }
+
+    .code-block .keyword { color: #c678dd; }
+    .code-block .string { color: #98c379; }
+    .code-block .comment { color: #5c6370; }
+    .code-block .function { color: #61afef; }
+    .code-block .variable { color: #e5c07b; }
+
+    /* File Tree */
+    .file-tree {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 24px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+    }
+
+    .file-tree-item {
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .file-tree-item.folder { color: var(--accent-blue); }
+    .file-tree-item.file { color: var(--text-secondary); margin-left: 20px; }
+    .file-tree-item.file-ts { color: var(--accent-cyan); }
+    .file-tree-item.file-json { color: var(--accent-yellow); }
+    .file-tree-item.file-md { color: var(--accent-green); }
+
+    /* Badge */
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-critical { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+    .badge-high { background: rgba(249, 115, 22, 0.2); color: var(--accent-orange); }
+    .badge-medium { background: rgba(234, 179, 8, 0.2); color: var(--accent-yellow); }
+    .badge-low { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+
+    /* Warning Box */
+    .warning-box {
+      background: rgba(234, 179, 8, 0.1);
+      border: 1px solid var(--accent-yellow);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .warning-box-title {
+      color: var(--accent-yellow);
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .warning-box-content {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Tech Stack */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .tech-item {
+      background: var(--bg-secondary);
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .tech-item-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .tech-item-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--bg-secondary);
+      padding: 24px 32px;
+      text-align: center;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header h1 { font-size: 1.8rem; }
+      .nav-links { gap: 8px; }
+      .nav-links a { padding: 6px 12px; font-size: 0.8rem; }
+      .container { padding: 16px; }
+      .diagram { font-size: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>API Test System</h1>
+    <p>Architecture & State Machine Documentation</p>
+  </header>
+
+  <nav class="nav">
+    <div class="nav-links">
+      <a href="#architecture">Architecture</a>
+      <a href="#state-machine">State Machine</a>
+      <a href="#layers">Test Layers</a>
+      <a href="#evidence">Evidence Flow</a>
+      <a href="#anti-hallucination">Anti-Hallucination</a>
+      <a href="#commands">Commands</a>
+      <a href="#file-structure">File Structure</a>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- Section 1: High-Level Architecture -->
+    <section id="architecture" class="section">
+      <h2 class="section-title"><span class="icon">🏗️</span> High-Level Architecture</h2>
+
+      <div class="diagram-container">
+        <pre class="diagram">
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│                              API TEST SYSTEM ARCHITECTURE                                │
+└─────────────────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│                                    USER LAYER                                            │
+│  ┌─────────────────────────────────────────────────────────────────────────────────┐    │
+│  │                           SLASH COMMANDS (Claude Code)                           │    │
+│  │  /init → /assess → /analyze → /generate-* → /run → /report → /view-report       │    │
+│  └─────────────────────────────────────────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────────────────────────────────────┘
+                                           │
+                                           ▼
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│                                 CONFIGURATION LAYER                                      │
+│  ┌─────────────┐ ┌──────────────┐ ┌─────────────┐ ┌──────────────┐ ┌───────────────┐   │
+│  │ api.config  │ │ auth.config  │ │ db.config   │ │ test-rules   │ │ openapi.yaml  │   │
+│  │ .json       │ │ .json        │ │ .json       │ │ .md          │ │               │   │
+│  └─────────────┘ └──────────────┘ └─────────────┘ └──────────────┘ └───────────────┘   │
+│       config/         config/         config/         config/           input/          │
+└─────────────────────────────────────────────────────────────────────────────────────────┘
+                                           │
+                                           ▼
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│                              GENERATION LAYER (AI-generated)                             │
+│  ┌─────────────────────────────────────────────────────────────────────────────────┐    │
+│  │              generated/canonical-endpoints.json (SOURCE OF TRUTH)                │    │
+│  └─────────────────────────────────────────────────────────────────────────────────┘    │
+│                                          │                                               │
+│  ┌──────────────────────────┐           │           ┌───────────────────────────────┐  │
+│  │       HELPERS            │           │           │         TEST FILES            │  │
+│  │ generated/helpers/       │◀──────────┴──────────▶│ generated/tests/01-07         │  │
+│  └──────────────────────────┘                       └───────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────────────────────┘
+                                           │
+                                           ▼
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│                              EXECUTION LAYER (Vitest)                                    │
+│  vitest.setup.ts → beforeEach/afterEach/afterAll → Evidence Collection                  │
+└─────────────────────────────────────────────────────────────────────────────────────────┘
+                                           │
+                                           ▼
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│                                REPORTING LAYER                                           │
+│  reports/latest-report.md | bugs-found.md | detailed-evidence.html | html/index.html   │
+└─────────────────────────────────────────────────────────────────────────────────────────┘
+        </pre>
+      </div>
+
+      <div class="cards-grid" style="margin-top: 24px;">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background: rgba(59, 130, 246, 0.2); color: var(--accent-blue);">👤</div>
+            <div class="card-title">User Layer</div>
+          </div>
+          <div class="card-description">QC Engineer interacts via slash commands in Claude Code. Commands orchestrate the entire workflow from setup to reporting.</div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background: rgba(234, 179, 8, 0.2); color: var(--accent-yellow);">⚙️</div>
+            <div class="card-title">Configuration Layer</div>
+          </div>
+          <div class="card-description">QC fills config files (api, auth, db, test-rules) and provides OpenAPI spec. These drive all test generation.</div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background: rgba(139, 92, 246, 0.2); color: var(--accent-purple);">🤖</div>
+            <div class="card-title">Generation Layer</div>
+          </div>
+          <div class="card-description">AI generates test files based on canonical endpoints. Includes helpers (api-client, auth, db) and 7 test layers.</div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background: rgba(34, 197, 94, 0.2); color: var(--accent-green);">▶️</div>
+            <div class="card-title">Execution Layer</div>
+          </div>
+          <div class="card-description">Vitest runs tests with hooks (vitest.setup.ts) that capture evidence for every HTTP request made during tests.</div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background: rgba(6, 182, 212, 0.2); color: var(--accent-cyan);">📊</div>
+            <div class="card-title">Reporting Layer</div>
+          </div>
+          <div class="card-description">Generates markdown reports, bug reports with curl commands, coverage matrix, and interactive HTML dashboard.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: State Machine -->
+    <section id="state-machine" class="section">
+      <h2 class="section-title"><span class="icon">🔄</span> Slash Commands State Machine</h2>
+
+      <div class="state-machine">
+        <div class="state-flow">
+          <div class="state-row">
+            <div class="state-node">
+              <div class="command">/init</div>
+              <div class="description">Setup project</div>
+            </div>
+          </div>
+
+          <div class="state-row">
+            <span class="arrow arrow-down">→</span>
+          </div>
+
+          <div class="state-row">
+            <div class="state-node">
+              <div class="command">QC fills configs</div>
+              <div class="description">api, auth, db, test-rules</div>
+            </div>
+          </div>
+
+          <div class="state-row">
+            <span class="arrow arrow-down">→</span>
+          </div>
+
+          <div class="state-row">
+            <div class="state-node">
+              <div class="command">/assess</div>
+              <div class="description">Check readiness (0-60)</div>
+            </div>
+          </div>
+
+          <div class="state-row">
+            <span class="arrow arrow-down">→</span>
+          </div>
+
+          <div class="state-row">
+            <div class="state-node">
+              <div class="command">/analyze</div>
+              <div class="description">Parse OpenAPI → canonical</div>
+            </div>
+          </div>
+
+          <div class="state-row">
+            <span class="arrow arrow-down">→</span>
+          </div>
+
+          <div class="state-row">
+            <div class="state-node" style="background: rgba(139, 92, 246, 0.2);">
+              <div class="command">/generate-*</div>
+              <div class="description">Generate test files</div>
+            </div>
+          </div>
+
+          <div class="state-row">
+            <span class="arrow arrow-down">→</span>
+          </div>
+
+          <div class="state-row">
+            <div class="state-node" style="background: rgba(34, 197, 94, 0.2);">
+              <div class="command">/run</div>
+              <div class="description">Execute tests</div>
+            </div>
+          </div>
+
+          <div class="state-row">
+            <span class="arrow arrow-down">→</span>
+          </div>
+
+          <div class="state-row">
+            <div class="state-node">
+              <div class="command">/report</div>
+              <div class="description">Generate reports</div>
+            </div>
+            <span class="arrow">→</span>
+            <div class="state-node">
+              <div class="command">/view-report</div>
+              <div class="description">Display report</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="warning-box">
+        <div class="warning-box-title">⚠️ Important Flow Rules</div>
+        <div class="warning-box-content">
+          <ul style="margin-left: 20px; margin-top: 8px;">
+            <li><code>/assess</code> score &lt; 40 → Must fill more configs before proceeding</li>
+            <li><code>/generate-*</code> MUST read <code>canonical-endpoints.json</code> first</li>
+            <li>Integration layer requires <code>test-rules.md</code> (scenarios section)</li>
+            <li>RBAC layer requires 2+ roles and 2+ accounts per role</li>
+            <li>DB layer requires <code>db.config.enabled = true</code></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Test Layers -->
+    <section id="layers" class="section">
+      <h2 class="section-title"><span class="icon">📚</span> Test Layers & Dependencies</h2>
+
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon layer-smoke">🟢</div>
+            <div class="card-title">01-Smoke</div>
+          </div>
+          <div class="card-description">
+            <strong>Purpose:</strong> Quick health check - "Is API alive?"<br>
+            <strong>Hard deps:</strong> openapi.yaml<br>
+            <strong>Soft deps:</strong> api-config, auth-config
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon layer-contract">🔵</div>
+            <div class="card-title">02-Contract</div>
+          </div>
+          <div class="card-description">
+            <strong>Purpose:</strong> Schema validation - "Response matches spec?"<br>
+            <strong>Hard deps:</strong> openapi.yaml<br>
+            <strong>Soft deps:</strong> api-config, auth-config
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon layer-single">🟡</div>
+            <div class="card-title">03-Single</div>
+          </div>
+          <div class="card-description">
+            <strong>Purpose:</strong> Individual endpoints - CRUD, validation, errors<br>
+            <strong>Hard deps:</strong> openapi, api-config<br>
+            <strong>Soft deps:</strong> auth-config, test-rules, db-config
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon layer-integration">🟠</div>
+            <div class="card-title">04-Integration</div>
+          </div>
+          <div class="card-description">
+            <strong>Purpose:</strong> Multi-endpoint flows - Business scenarios<br>
+            <strong>Hard deps:</strong> openapi, api-config, <span class="badge badge-critical">test-rules</span><br>
+            <strong>Soft deps:</strong> auth-config, db-config
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon layer-rbac">🔐</div>
+            <div class="card-title">05-RBAC</div>
+          </div>
+          <div class="card-description">
+            <strong>Purpose:</strong> Permission tests - Role access, IDOR<br>
+            <strong>Hard deps:</strong> openapi, auth-config (2+ roles)<br>
+            <strong>Soft deps:</strong> permission-matrix
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon layer-security">⚫</div>
+            <div class="card-title">06-Security</div>
+          </div>
+          <div class="card-description">
+            <strong>Purpose:</strong> Security tests - Auth bypass, injection<br>
+            <strong>Hard deps:</strong> openapi, api-config<br>
+            <strong>Soft deps:</strong> auth-config, test-rules
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon layer-db">🟣</div>
+            <div class="card-title">07-DB</div>
+          </div>
+          <div class="card-description">
+            <strong>Purpose:</strong> Data integrity - FK constraints, orphans<br>
+            <strong>Hard deps:</strong> <span class="badge badge-critical">db-config (enabled)</span><br>
+            <strong>Soft deps:</strong> openapi, db-schema
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container" style="margin-top: 24px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Layer</th>
+              <th>Tests Count</th>
+              <th>What It Tests</th>
+              <th>Output File</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge layer-smoke">Smoke</span></td>
+              <td>~46</td>
+              <td>Connectivity, basic response codes</td>
+              <td><code>01-smoke/smoke.test.ts</code></td>
+            </tr>
+            <tr>
+              <td><span class="badge layer-contract">Contract</span></td>
+              <td>~24</td>
+              <td>Response schema validation (AJV)</td>
+              <td><code>02-contract/contract.test.ts</code></td>
+            </tr>
+            <tr>
+              <td><span class="badge layer-single">Single</span></td>
+              <td>~68</td>
+              <td>CRUD, validation, pagination, errors</td>
+              <td><code>03-single/{resource}.test.ts</code></td>
+            </tr>
+            <tr>
+              <td><span class="badge layer-integration">Integration</span></td>
+              <td>~30</td>
+              <td>Business workflows, multi-step scenarios</td>
+              <td><code>04-integration/*.test.ts</code></td>
+            </tr>
+            <tr>
+              <td><span class="badge layer-rbac">RBAC</span></td>
+              <td>~25</td>
+              <td>Role permissions, IDOR protection</td>
+              <td><code>05-rbac/rbac.test.ts</code></td>
+            </tr>
+            <tr>
+              <td><span class="badge layer-security">Security</span></td>
+              <td>~24</td>
+              <td>Auth bypass, token validation, injection</td>
+              <td><code>06-security/security.test.ts</code></td>
+            </tr>
+            <tr>
+              <td><span class="badge layer-db">DB</span></td>
+              <td>~25</td>
+              <td>FK integrity, orphan records, data consistency</td>
+              <td><code>07-db/db-*.test.ts</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 4: Evidence Collection -->
+    <section id="evidence" class="section">
+      <h2 class="section-title"><span class="icon">📋</span> Evidence Collection Flow</h2>
+
+      <div class="flow-container">
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-number">1</div>
+            <div class="flow-step-content">
+              <div class="flow-step-title">Test Makes API Call</div>
+              <div class="flow-step-desc">
+                <code>const response = await apiClient.get('/markets');</code>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-step">
+            <div class="flow-step-number">2</div>
+            <div class="flow-step-content">
+              <div class="flow-step-title">api-client.ts Records Evidence</div>
+              <div class="flow-step-desc">
+                Records: method, url, headers, body, response status, response body, duration, auto-generated curl command
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-step">
+            <div class="flow-step-number">3</div>
+            <div class="flow-step-content">
+              <div class="flow-step-title">vitest.setup.ts - afterEach()</div>
+              <div class="flow-step-desc">
+                Collects all evidence from api-client and links to current test name/suite via evidence-store
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-step">
+            <div class="flow-step-number">4</div>
+            <div class="flow-step-content">
+              <div class="flow-step-title">vitest.setup.ts - afterAll()</div>
+              <div class="flow-step-desc">
+                Saves <code>reports/evidence.json</code> and generates <code>reports/detailed-evidence.html</code>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-step">
+            <div class="flow-step-number">5</div>
+            <div class="flow-step-content">
+              <div class="flow-step-title">HTML Report with Curl Commands</div>
+              <div class="flow-step-desc">
+                Interactive HTML report grouped by test, with copy-to-clipboard curl commands for bug reproduction
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block" style="margin-top: 24px;">
+<span class="comment">// Evidence structure for each API call</span>
+{
+  <span class="string">"testName"</span>: <span class="string">"should return markets"</span>,
+  <span class="string">"testSuite"</span>: <span class="string">"Markets API Tests"</span>,
+  <span class="string">"method"</span>: <span class="string">"GET"</span>,
+  <span class="string">"url"</span>: <span class="string">"https://api.foreon.network/markets"</span>,
+  <span class="string">"responseStatus"</span>: <span class="variable">200</span>,
+  <span class="string">"responseBody"</span>: { <span class="string">"code"</span>: <span class="variable">200</span>, <span class="string">"data"</span>: [...] },
+  <span class="string">"duration"</span>: <span class="variable">212</span>,
+  <span class="string">"curl"</span>: <span class="string">"curl -X GET \"https://api.foreon.network/markets\" -H \"Authorization: Bearer ...\""</span>
+}
+      </div>
+    </section>
+
+    <!-- Section 5: Anti-Hallucination -->
+    <section id="anti-hallucination" class="section">
+      <h2 class="section-title"><span class="icon">🛡️</span> Anti-Hallucination System</h2>
+
+      <div class="warning-box" style="border-color: var(--accent-red); background: rgba(239, 68, 68, 0.1);">
+        <div class="warning-box-title" style="color: var(--accent-red);">❌ The Problem</div>
+        <div class="warning-box-content">
+          AI can "hallucinate" endpoints that don't exist based on common patterns:
+          <ul style="margin-left: 20px; margin-top: 8px;">
+            <li><code>/markets/new-markets</code> → Doesn't exist (actual: <code>/markets/proposed</code>)</li>
+            <li><code>/markets/popular-markets</code> → Doesn't exist (actual: <code>/markets/favorites</code>)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="warning-box" style="border-color: var(--accent-green); background: rgba(34, 197, 94, 0.1);">
+        <div class="warning-box-title" style="color: var(--accent-green);">✅ The Solution</div>
+        <div class="warning-box-content">
+          <strong>canonical-endpoints.json</strong> is the SINGLE SOURCE OF TRUTH for all endpoints.
+          <ol style="margin-left: 20px; margin-top: 8px;">
+            <li><code>/analyze</code> runs <code>npm run extract-endpoints</code></li>
+            <li>Script parses OpenAPI spec programmatically</li>
+            <li>Applies endpoint filters (blacklist/whitelist)</li>
+            <li>Writes <code>generated/canonical-endpoints.json</code></li>
+            <li>All <code>/generate-*</code> commands MUST read this file first</li>
+            <li>Only generate tests for endpoints with <code>isTestable: true</code></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="diagram-container" style="margin-top: 24px;">
+        <pre class="diagram">
+   input/openapi.yaml                    generated/canonical-endpoints.json
+   ┌──────────────────────┐              ┌──────────────────────────────────┐
+   │ paths:               │              │ {                                │
+   │   /markets:          │   Extract    │   "metadata": {                  │
+   │     get: ...         │ ──────────▶  │     "totalEndpoints": 68,        │
+   │   /markets/proposed: │              │     "testableEndpoints": 42      │
+   │     get: ...         │              │   },                             │
+   │   /markets/favorites:│              │   "endpoints": [                 │
+   │     get: ...         │              │     {                            │
+   └──────────────────────┘              │       "path": "/markets/proposed"│
+                                         │       "isTestable": true         │
+                                         │     }                            │
+                                         │   ]                              │
+                                         │ }                                │
+                                         └──────────────────────────────────┘
+                                                        │
+                                                        │ /generate-* MUST read
+                                                        │ this file FIRST
+                                                        ▼
+                                         ┌──────────────────────────────────┐
+                                         │ ⚠️ CRITICAL RULES                │
+                                         │                                  │
+                                         │ • NEVER add endpoints not in     │
+                                         │   canonical file                 │
+                                         │ • NEVER assume endpoints exist   │
+                                         │ • Check blacklistReason if       │
+                                         │   endpoint seems missing         │
+                                         └──────────────────────────────────┘
+        </pre>
+      </div>
+    </section>
+
+    <!-- Section 6: Commands -->
+    <section id="commands" class="section">
+      <h2 class="section-title"><span class="icon">⌨️</span> Command Quick Reference</h2>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Command</th>
+              <th>Purpose</th>
+              <th>Input</th>
+              <th>Output</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/init</code></td>
+              <td>Setup project</td>
+              <td>-</td>
+              <td>config templates, package.json</td>
+            </tr>
+            <tr>
+              <td><code>/assess</code></td>
+              <td>Check readiness</td>
+              <td>config/*</td>
+              <td>score 0-60, action items</td>
+            </tr>
+            <tr>
+              <td><code>/analyze</code></td>
+              <td>Parse OpenAPI</td>
+              <td>openapi.yaml</td>
+              <td>canonical-endpoints.json, test-plan.md</td>
+            </tr>
+            <tr>
+              <td><code>/generate-all</code></td>
+              <td>Generate all tests</td>
+              <td>canonical-endpoints</td>
+              <td>generated/tests/*/*.ts</td>
+            </tr>
+            <tr>
+              <td><code>/generate-smoke</code></td>
+              <td>Quick health tests</td>
+              <td>canonical-endpoints</td>
+              <td>01-smoke/smoke.test.ts</td>
+            </tr>
+            <tr>
+              <td><code>/generate-contract</code></td>
+              <td>Schema tests</td>
+              <td>canonical-endpoints</td>
+              <td>02-contract/*.ts</td>
+            </tr>
+            <tr>
+              <td><code>/generate-single</code></td>
+              <td>CRUD tests</td>
+              <td>canonical-endpoints</td>
+              <td>03-single/*.ts</td>
+            </tr>
+            <tr>
+              <td><code>/generate-integration</code></td>
+              <td>Flow tests</td>
+              <td>canonical + test-rules</td>
+              <td>04-integration/*.ts</td>
+            </tr>
+            <tr>
+              <td><code>/generate-rbac</code></td>
+              <td>Permission tests</td>
+              <td>canonical + auth-config</td>
+              <td>05-rbac/*.ts</td>
+            </tr>
+            <tr>
+              <td><code>/generate-security</code></td>
+              <td>Security tests</td>
+              <td>canonical-endpoints</td>
+              <td>06-security/*.ts</td>
+            </tr>
+            <tr>
+              <td><code>/generate-db</code></td>
+              <td>DB integrity tests</td>
+              <td>db-config</td>
+              <td>07-db/*.ts</td>
+            </tr>
+            <tr>
+              <td><code>/run [layer]</code></td>
+              <td>Execute tests</td>
+              <td>generated/tests</td>
+              <td>vitest results + evidence</td>
+            </tr>
+            <tr>
+              <td><code>/report</code></td>
+              <td>Generate reports</td>
+              <td>test results</td>
+              <td>reports/*.md</td>
+            </tr>
+            <tr>
+              <td><code>/view-report [type]</code></td>
+              <td>Display report</td>
+              <td>reports/</td>
+              <td>formatted output</td>
+            </tr>
+            <tr>
+              <td><code>/list-reports</code></td>
+              <td>List all reports</td>
+              <td>reports/</td>
+              <td>metadata table</td>
+            </tr>
+            <tr>
+              <td><code>/coverage</code></td>
+              <td>Coverage matrix</td>
+              <td>generated/tests</td>
+              <td>endpoint × layer matrix</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 7: File Structure -->
+    <section id="file-structure" class="section">
+      <h2 class="section-title"><span class="icon">📁</span> File Structure</h2>
+
+      <div class="file-tree">
+        <div class="file-tree-item folder">📁 api-test-system/</div>
+        <div class="file-tree-item folder" style="margin-left: 20px;">📁 config/</div>
+        <div class="file-tree-item file file-json" style="margin-left: 40px;">📄 api.config.json</div>
+        <div class="file-tree-item file file-json" style="margin-left: 40px;">📄 auth.config.json</div>
+        <div class="file-tree-item file file-json" style="margin-left: 40px;">📄 db.config.json</div>
+        <div class="file-tree-item file file-md" style="margin-left: 40px;">📄 test-rules.md</div>
+
+        <div class="file-tree-item folder" style="margin-left: 20px;">📁 input/</div>
+        <div class="file-tree-item file" style="margin-left: 40px;">📄 openapi.yaml</div>
+
+        <div class="file-tree-item folder" style="margin-left: 20px;">📁 generated/</div>
+        <div class="file-tree-item file file-json" style="margin-left: 40px;">📄 canonical-endpoints.json ⭐</div>
+        <div class="file-tree-item file file-md" style="margin-left: 40px;">📄 test-plan.md</div>
+        <div class="file-tree-item file file-json" style="margin-left: 40px;">📄 dependency-graph.json</div>
+        <div class="file-tree-item folder" style="margin-left: 40px;">📁 helpers/</div>
+        <div class="file-tree-item file file-ts" style="margin-left: 60px;">📄 api-client.ts</div>
+        <div class="file-tree-item file file-ts" style="margin-left: 60px;">📄 auth-helper.ts</div>
+        <div class="file-tree-item file file-ts" style="margin-left: 60px;">📄 evidence-store.ts</div>
+        <div class="file-tree-item file file-ts" style="margin-left: 60px;">📄 ...</div>
+        <div class="file-tree-item folder" style="margin-left: 40px;">📁 tests/</div>
+        <div class="file-tree-item folder" style="margin-left: 60px;">📁 01-smoke/</div>
+        <div class="file-tree-item folder" style="margin-left: 60px;">📁 02-contract/</div>
+        <div class="file-tree-item folder" style="margin-left: 60px;">📁 03-single/</div>
+        <div class="file-tree-item folder" style="margin-left: 60px;">📁 04-integration/</div>
+        <div class="file-tree-item folder" style="margin-left: 60px;">📁 05-rbac/</div>
+        <div class="file-tree-item folder" style="margin-left: 60px;">📁 06-security/</div>
+        <div class="file-tree-item folder" style="margin-left: 60px;">📁 07-db/</div>
+
+        <div class="file-tree-item folder" style="margin-left: 20px;">📁 reports/</div>
+        <div class="file-tree-item file file-md" style="margin-left: 40px;">📄 latest-report.md</div>
+        <div class="file-tree-item file file-md" style="margin-left: 40px;">📄 bugs-found.md</div>
+        <div class="file-tree-item file" style="margin-left: 40px;">📄 detailed-evidence.html</div>
+        <div class="file-tree-item file file-json" style="margin-left: 40px;">📄 evidence.json</div>
+        <div class="file-tree-item folder" style="margin-left: 40px;">📁 html/</div>
+
+        <div class="file-tree-item file file-ts" style="margin-left: 20px;">📄 vitest.config.ts</div>
+        <div class="file-tree-item file file-ts" style="margin-left: 20px;">📄 vitest.setup.ts</div>
+        <div class="file-tree-item file file-json" style="margin-left: 20px;">📄 package.json</div>
+      </div>
+
+      <h3 style="margin-top: 32px; margin-bottom: 16px;">Tech Stack</h3>
+      <div class="tech-grid">
+        <div class="tech-item">
+          <div class="tech-item-name">Vitest</div>
+          <div class="tech-item-desc">Test runner</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-item-name">TypeScript</div>
+          <div class="tech-item-desc">Type safety</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-item-name">Axios</div>
+          <div class="tech-item-desc">HTTP client</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-item-name">AJV</div>
+          <div class="tech-item-desc">Schema validation</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-item-name">Faker.js</div>
+          <div class="tech-item-desc">Test data</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-item-name">pg/mysql2/mongodb</div>
+          <div class="tech-item-desc">DB clients</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>API Test System Architecture Documentation</p>
+    <p style="margin-top: 8px;">Generated: 2026-03-02</p>
+  </footer>
+
+  <script>
+    // Smooth scroll for navigation
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
+</body>
+</html>
