@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "generatedAt": "2026-03-02T03:17:31.355Z",
+    "totalResources": 9,
+    "totalTestableEndpoints": 46,
+    "blacklistedEndpoints": 22
+  },
+  "resources": {
+    "Authentication": {
+      "endpoints": 6,
+      "testable": [
+        "POST /auth/login",
+        "POST /auth/logout",
+        "POST /auth/refresh-token",
+        "POST /auth/admin-refresh-token",
+        "GET /auth/me",
+        "GET /auth/asset"
+      ],
+      "dependencies": []
+    },
+    "Markets": {
+      "endpoints": 13,
+      "testable": [
+        "GET /markets",
+        "GET /markets/proposed",
+        "GET /markets/proposed-detail/{id}",
+        "GET /markets/top-holders/{id}",
+        "GET /markets/category",
+        "GET /markets/favorites",
+        "POST /markets/{marketId}/favorite",
+        "GET /markets/{id}",
+        "GET /markets/ipfs/{id}",
+        "POST /markets/market",
+        "PUT /markets/vote/{id}",
+        "PUT /markets/add-liquidity/{id}",
+        "POST /markets/upload"
+      ],
+      "dependencies": ["Authentication"]
+    },
+    "Orders": {
+      "endpoints": 9,
+      "testable": [
+        "GET /orders",
+        "POST /orders",
+        "PUT /orders/{id}/cancelled",
+        "PUT /orders/{id}/claimed",
+        "GET /orders/position",
+        "GET /orders/position-claims",
+        "POST /orders/position-claims",
+        "POST /orders/add-liquidity",
+        "GET /orders/activity"
+      ],
+      "dependencies": ["Authentication", "Markets"]
+    },
+    "Trades": {
+      "endpoints": 5,
+      "testable": [
+        "GET /trades",
+        "GET /trades/market-trade",
+        "GET /trades/graph",
+        "GET /trades/graph-overrall",
+        "GET /trades/history"
+      ],
+      "dependencies": ["Orders"]
+    },
+    "Comments": {
+      "endpoints": 6,
+      "testable": [
+        "POST /comments",
+        "POST /comments/reply",
+        "GET /comments/market/{marketId}",
+        "GET /comments/reply/{parentId}",
+        "POST /comments/{commentId}/like",
+        "DELETE /comments/{commentId}"
+      ],
+      "dependencies": ["Authentication", "Markets"]
+    },
+    "Orderbook": {
+      "endpoints": 1,
+      "testable": [
+        "GET /orderbook"
+      ],
+      "dependencies": ["Markets"]
+    },
+    "Statistic": {
+      "endpoints": 1,
+      "testable": [
+        "GET /statistic/rank"
+      ],
+      "dependencies": []
+    },
+    "Slack": {
+      "endpoints": 1,
+      "testable": [
+        "GET /slack/{id}"
+      ],
+      "dependencies": []
+    },
+    "Admin": {
+      "endpoints": 3,
+      "testable": [
+        "GET /admin",
+        "POST /admin",
+        "PUT /admin"
+      ],
+      "dependencies": ["Authentication"]
+    }
+  },
+  "executionOrder": [
+    "Authentication",
+    "Statistic",
+    "Slack",
+    "Markets",
+    "Admin",
+    "Orderbook",
+    "Comments",
+    "Orders",
+    "Trades"
+  ],
+  "dependencies": [
+    { "from": "Markets", "to": "Authentication", "reason": "Requires auth token" },
+    { "from": "Orders", "to": "Authentication", "reason": "Requires auth token" },
+    { "from": "Orders", "to": "Markets", "reason": "Orders belong to markets" },
+    { "from": "Trades", "to": "Orders", "reason": "Trades created from orders" },
+    { "from": "Comments", "to": "Authentication", "reason": "Requires auth token" },
+    { "from": "Comments", "to": "Markets", "reason": "Comments belong to markets" },
+    { "from": "Orderbook", "to": "Markets", "reason": "Orderbook per market" },
+    { "from": "Admin", "to": "Authentication", "reason": "Requires admin token" }
+  ]
+}

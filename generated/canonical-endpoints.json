@@ -1,0 +1,1120 @@
+{
+  "metadata": {
+    "generatedAt": "2026-03-02T03:17:31.355Z",
+    "totalEndpoints": 68,
+    "testableEndpoints": 46,
+    "blacklistedEndpoints": 22,
+    "openapiVersion": "3.0.0",
+    "sourceFile": "input/openapi.yaml"
+  },
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/",
+      "operationId": "AppController_getHello",
+      "tags": [],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/admin",
+      "operationId": "AdminController_getAdmin",
+      "tags": [
+        "Admin - Manage Admin"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/admin",
+      "operationId": "AdminController_createAdmin",
+      "tags": [
+        "Admin - Manage Admin"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "PUT",
+      "path": "/admin",
+      "operationId": "AdminController_update",
+      "tags": [
+        "Admin - Manage Admin"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/admin/users",
+      "operationId": "UserManagerController_getUsers",
+      "tags": [
+        "Admin - Manage User "
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/markets",
+      "operationId": "MarketController_getMarkets",
+      "tags": [],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/pending-markets",
+      "operationId": "MarketController_getPendingMarkets",
+      "tags": [],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/market",
+      "operationId": "MarketController_create",
+      "tags": [],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/market/{id}/outcomes",
+      "operationId": "MarketController_getOutcomeByMarket",
+      "tags": [],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/market/{id}/orders",
+      "operationId": "MarketController_getOrderByMarket",
+      "tags": [],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/market/{id}/trades",
+      "operationId": "MarketController_getTradeByMarket",
+      "tags": [],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/market/{id}",
+      "operationId": "MarketController_getMarket",
+      "tags": [],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/market/{id}",
+      "operationId": "MarketController_editMarket",
+      "tags": [],
+      "hasRequestBody": true,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/market/{id}",
+      "operationId": "MarketController_deleteMarket",
+      "tags": [],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/approve-market",
+      "operationId": "MarketController_approveMarket",
+      "tags": [],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/reject-market/{id}",
+      "operationId": "MarketController_rejectMarket",
+      "tags": [],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/approve-pending-market/{id}",
+      "operationId": "MarketController_approvePendingMarket",
+      "tags": [],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/market-status/{id}",
+      "operationId": "MarketController_updateStatusMarket",
+      "tags": [],
+      "hasRequestBody": true,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/upload",
+      "operationId": "MarketController_uploadFile",
+      "tags": [],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/outcome/{id}/outcome-statistic",
+      "operationId": "OutcomeController_getOutcomeByMarket",
+      "tags": [],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/outcome/crawling",
+      "operationId": "OutcomeController_setOutcomeCrawling",
+      "tags": [],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/outcome/reliableUrl",
+      "operationId": "OutcomeController_updateReliableUrl",
+      "tags": [],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/outcome/add-liquidity",
+      "operationId": "OutcomeController_createOrderAddLiquidity",
+      "tags": [],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: /admin/*"
+    },
+    {
+      "method": "GET",
+      "path": "/orders",
+      "operationId": "OrderController_getListOrders",
+      "tags": [
+        "Orders"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/orders",
+      "operationId": "OrderController_createOrder",
+      "tags": [
+        "Orders"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "PUT",
+      "path": "/orders/{id}/cancelled",
+      "operationId": "OrderController_cancelOrder",
+      "tags": [
+        "Orders"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "PUT",
+      "path": "/orders/{id}/claimed",
+      "operationId": "OrderController_claimedOrder",
+      "tags": [
+        "Orders"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/orders/position",
+      "operationId": "OrderController_getPosition",
+      "tags": [
+        "Orders"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/orders/position-claims",
+      "operationId": "OrderController_getPositionClaim",
+      "tags": [
+        "Orders"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/orders/position-claims",
+      "operationId": "OrderController_SavePositionClaim",
+      "tags": [
+        "Orders"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/orders/add-liquidity",
+      "operationId": "OrderController_createOrderByAddLiquidity",
+      "tags": [
+        "Orders"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/orders/activity",
+      "operationId": "OrderController_getActivity",
+      "tags": [
+        "Orders"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/statistic/rank",
+      "operationId": "StatisticController_getRank",
+      "tags": [
+        "Statistic"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/orderbook",
+      "operationId": "OrderbookController_getOrderbook",
+      "tags": [
+        "Orderbook"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/markets",
+      "operationId": "MarketController_findAll",
+      "tags": [
+        "Markets"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/markets/proposed",
+      "operationId": "MarketController_findPropose",
+      "tags": [
+        "Markets"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/markets/proposed-detail/{id}",
+      "operationId": "MarketController_getProposedDetail",
+      "tags": [
+        "Markets"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/markets/top-holders/{id}",
+      "operationId": "MarketController_getTopHolder",
+      "tags": [
+        "Markets"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/markets/category",
+      "operationId": "MarketController_getCategories",
+      "tags": [
+        "Markets"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/markets/favorites",
+      "operationId": "MarketController_getFavorites",
+      "tags": [
+        "Markets"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/markets/{marketId}/favorite",
+      "operationId": "MarketController_toggleFavorite",
+      "tags": [
+        "Markets"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/markets/{id}",
+      "operationId": "MarketController_getDetail",
+      "tags": [
+        "Markets"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/markets/ipfs/{id}",
+      "operationId": "MarketController_getImage",
+      "tags": [
+        "Markets"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/markets/market",
+      "operationId": "MarketController_create",
+      "tags": [
+        "Markets"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "PUT",
+      "path": "/markets/vote/{id}",
+      "operationId": "MarketController_voteMarket",
+      "tags": [
+        "Markets"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "PUT",
+      "path": "/markets/add-liquidity/{id}",
+      "operationId": "MarketController_addLiquidity",
+      "tags": [
+        "Markets"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/markets/upload",
+      "operationId": "MarketController_uploadFile",
+      "tags": [
+        "Markets"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/trades",
+      "operationId": "TradeController_getListTrades",
+      "tags": [
+        "Trades"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/trades/market-trade",
+      "operationId": "TradeController_getMarketTrade",
+      "tags": [
+        "Trades"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/trades/graph",
+      "operationId": "TradeController_getGraphOutcome",
+      "tags": [
+        "Trades"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/trades/graph-overrall",
+      "operationId": "TradeController_getGraphOutcomeOverall",
+      "tags": [
+        "Trades"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/trades/history",
+      "operationId": "TradeController_getUserTradeHistory",
+      "tags": [
+        "Trades"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/auth/login",
+      "operationId": "AuthController_login",
+      "tags": [
+        "Authentication"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/auth/logout",
+      "operationId": "AuthController_logout",
+      "tags": [
+        "Authentication"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/auth/refresh-token",
+      "operationId": "AuthController_refreshToken",
+      "tags": [
+        "Authentication"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/auth/admin/login",
+      "operationId": "AuthController_adminLogin",
+      "tags": [
+        "Authentication"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: */admin/*"
+    },
+    {
+      "method": "POST",
+      "path": "/auth/admin/logout",
+      "operationId": "AuthController_adminLogout",
+      "tags": [
+        "Authentication"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: */admin/*"
+    },
+    {
+      "method": "POST",
+      "path": "/auth/admin-refresh-token",
+      "operationId": "AuthController_adminRefreshToken",
+      "tags": [
+        "Authentication"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/auth/me",
+      "operationId": "AuthController_getProfile",
+      "tags": [
+        "Authentication"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/auth/admin/me",
+      "operationId": "AuthController_getAdminProfile",
+      "tags": [
+        "Authentication"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": false,
+      "blacklistReason": "Matched pattern: */admin/*"
+    },
+    {
+      "method": "GET",
+      "path": "/auth/asset",
+      "operationId": "AuthController_getUserAssets",
+      "tags": [
+        "Authentication"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/slack/{id}",
+      "operationId": "SlackController_testSendMessage",
+      "tags": [
+        "Slack"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/comments",
+      "operationId": "CommentController_createComment",
+      "tags": [
+        "Comments"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/comments/reply",
+      "operationId": "CommentController_replyComment",
+      "tags": [
+        "Comments"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/comments/market/{marketId}",
+      "operationId": "CommentController_getComments",
+      "tags": [
+        "Comments"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": true,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/comments/reply/{parentId}",
+      "operationId": "CommentController_getReplies",
+      "tags": [
+        "Comments"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": true,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/comments/{commentId}/like",
+      "operationId": "CommentController_likeComment",
+      "tags": [
+        "Comments"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/comments/{commentId}",
+      "operationId": "CommentController_deleteComment",
+      "tags": [
+        "Comments"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    }
+  ],
+  "byResource": {
+    "Untagged": [
+      "GET /",
+      "GET /admin/markets",
+      "GET /admin/pending-markets",
+      "POST /admin/market",
+      "GET /admin/market/{id}/outcomes",
+      "GET /admin/market/{id}/orders",
+      "GET /admin/market/{id}/trades",
+      "GET /admin/market/{id}",
+      "PUT /admin/market/{id}",
+      "DELETE /admin/market/{id}",
+      "PUT /admin/approve-market",
+      "PUT /admin/reject-market/{id}",
+      "PUT /admin/approve-pending-market/{id}",
+      "PUT /admin/market-status/{id}",
+      "POST /admin/upload",
+      "GET /admin/outcome/{id}/outcome-statistic",
+      "PUT /admin/outcome/crawling",
+      "PUT /admin/outcome/reliableUrl",
+      "POST /admin/outcome/add-liquidity"
+    ],
+    "Admin - Manage Admin": [
+      "GET /admin",
+      "POST /admin",
+      "PUT /admin"
+    ],
+    "Admin - Manage User ": [
+      "GET /admin/users"
+    ],
+    "Orders": [
+      "GET /orders",
+      "POST /orders",
+      "PUT /orders/{id}/cancelled",
+      "PUT /orders/{id}/claimed",
+      "GET /orders/position",
+      "GET /orders/position-claims",
+      "POST /orders/position-claims",
+      "POST /orders/add-liquidity",
+      "GET /orders/activity"
+    ],
+    "Statistic": [
+      "GET /statistic/rank"
+    ],
+    "Orderbook": [
+      "GET /orderbook"
+    ],
+    "Markets": [
+      "GET /markets",
+      "GET /markets/proposed",
+      "GET /markets/proposed-detail/{id}",
+      "GET /markets/top-holders/{id}",
+      "GET /markets/category",
+      "GET /markets/favorites",
+      "POST /markets/{marketId}/favorite",
+      "GET /markets/{id}",
+      "GET /markets/ipfs/{id}",
+      "POST /markets/market",
+      "PUT /markets/vote/{id}",
+      "PUT /markets/add-liquidity/{id}",
+      "POST /markets/upload"
+    ],
+    "Trades": [
+      "GET /trades",
+      "GET /trades/market-trade",
+      "GET /trades/graph",
+      "GET /trades/graph-overrall",
+      "GET /trades/history"
+    ],
+    "Authentication": [
+      "POST /auth/login",
+      "POST /auth/logout",
+      "POST /auth/refresh-token",
+      "POST /auth/admin/login",
+      "POST /auth/admin/logout",
+      "POST /auth/admin-refresh-token",
+      "GET /auth/me",
+      "GET /auth/admin/me",
+      "GET /auth/asset"
+    ],
+    "Slack": [
+      "GET /slack/{id}"
+    ],
+    "Comments": [
+      "POST /comments",
+      "POST /comments/reply",
+      "GET /comments/market/{marketId}",
+      "GET /comments/reply/{parentId}",
+      "POST /comments/{commentId}/like",
+      "DELETE /comments/{commentId}"
+    ]
+  }
+}
