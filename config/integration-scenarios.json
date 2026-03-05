@@ -5,98 +5,140 @@
   "scenarios": [
     {
       "id": "S01",
-      "name": "User views markets and favorites",
-      "description": "User browses markets, views detail, toggles favorite",
-      "requiresAuth": true,
+      "name": "Health check and readiness",
+      "description": "Verify API health and readiness endpoints",
+      "requiresAuth": false,
       "steps": [
-        { "action": "GET", "endpoint": "/markets", "expect": 200, "saveAs": "marketList" },
-        { "action": "GET", "endpoint": "/markets/${marketList.data[0].id}", "expect": 200, "saveAs": "marketDetail" },
-        { "action": "POST", "endpoint": "/markets/${marketDetail.data.id}/favorite", "expect": [200, 201], "auth": "user" },
-        { "action": "GET", "endpoint": "/markets/favorites", "expect": 200, "auth": "user" }
+        { "action": "GET", "endpoint": "/api/health", "expect": 200, "description": "Health check" },
+        { "action": "GET", "endpoint": "/api/health/ready", "expect": 200, "description": "Readiness check" }
       ]
     },
     {
       "id": "S02",
-      "name": "User views orders and positions",
-      "description": "User checks their orders, positions, and activity",
+      "name": "User profile and organization",
+      "description": "User views profile, organization, and primary owner info",
       "requiresAuth": true,
       "steps": [
-        { "action": "GET", "endpoint": "/orders", "expect": 200, "auth": "user" },
-        { "action": "GET", "endpoint": "/orders/position", "expect": 200, "auth": "user" },
-        { "action": "GET", "endpoint": "/orders/position-claims", "expect": 200, "auth": "user" },
-        { "action": "GET", "endpoint": "/orders/activity", "expect": 200, "auth": "user" }
+        { "action": "GET", "endpoint": "/api/users/profile", "expect": 200, "auth": "user", "saveAs": "profile" },
+        { "action": "GET", "endpoint": "/api/users/primary-owner", "expect": 200, "auth": "user", "saveAs": "primaryOwner" },
+        { "action": "GET", "endpoint": "/api/organization/profile", "expect": 200, "auth": "user", "saveAs": "orgProfile" }
       ]
     },
     {
       "id": "S03",
-      "name": "User views trades",
-      "description": "User views market trades and personal trade history",
+      "name": "Token refresh flow",
+      "description": "Refresh access token using refresh token",
       "requiresAuth": true,
       "steps": [
-        { "action": "GET", "endpoint": "/trades/market-trade", "expect": 200 },
-        { "action": "GET", "endpoint": "/trades", "expect": 200, "auth": "user" },
-        { "action": "GET", "endpoint": "/trades/history", "expect": 200, "auth": "user" }
+        { "action": "POST", "endpoint": "/api/users/auth/refresh-token", "body": { "refreshToken": "${refreshToken}" }, "expect": 200, "auth": "user", "saveAs": "newTokens" },
+        { "action": "GET", "endpoint": "/api/users/profile", "expect": 200, "auth": "user", "description": "Verify new token works" }
       ]
     },
     {
       "id": "S04",
-      "name": "Comment lifecycle",
-      "description": "User views comments, creates comment, likes comment",
+      "name": "Vault accounts listing and detail",
+      "description": "User views vault accounts and their details",
       "requiresAuth": true,
       "steps": [
-        { "action": "GET", "endpoint": "/markets", "expect": 200, "saveAs": "markets" },
-        { "action": "GET", "endpoint": "/comments/market/${markets.data[0].id}", "expect": [200, 404], "saveAs": "comments" },
-        { "action": "POST", "endpoint": "/comments", "body": { "marketId": "${markets.data[0].id}", "content": "Test comment ${timestamp}" }, "expect": [200, 201, 400, 422], "auth": "user" },
-        { "action": "POST", "endpoint": "/comments/1/like", "expect": [200, 201, 404], "auth": "user" }
+        { "action": "GET", "endpoint": "/api/vault", "expect": 200, "auth": "user", "saveAs": "vaultList" },
+        { "action": "GET", "endpoint": "/api/vault/${vaultList.data[0].id}", "expect": [200, 404], "auth": "user", "saveAs": "vaultDetail" },
+        { "action": "GET", "endpoint": "/api/vault/${vaultList.data[0].id}/assets", "expect": [200, 404], "auth": "user", "saveAs": "vaultAssets" }
       ]
     },
     {
       "id": "S05",
-      "name": "Orderbook and statistics",
-      "description": "User views orderbook and ranking",
-      "requiresAuth": false,
+      "name": "Assets and countries lookup",
+      "description": "View available assets and countries list",
+      "requiresAuth": true,
       "steps": [
-        { "action": "GET", "endpoint": "/orderbook", "expect": 200 },
-        { "action": "GET", "endpoint": "/statistic/rank", "expect": 200 }
+        { "action": "GET", "endpoint": "/api/assets", "expect": 200, "auth": "user", "saveAs": "assets" },
+        { "action": "GET", "endpoint": "/api/countries", "expect": 200, "description": "Public endpoint - countries list" }
       ]
     },
     {
       "id": "S06",
-      "name": "User profile and assets",
-      "description": "User views their profile and assets",
+      "name": "Transactions listing and detail",
+      "description": "User views transactions list and individual transaction detail",
       "requiresAuth": true,
       "steps": [
-        { "action": "GET", "endpoint": "/auth/me", "expect": 200, "auth": "user" },
-        { "action": "GET", "endpoint": "/auth/asset", "expect": 200, "auth": "user" }
+        { "action": "GET", "endpoint": "/api/transactions", "expect": 200, "auth": "user", "saveAs": "txList" },
+        { "action": "GET", "endpoint": "/api/transactions/${txList.data[0].id}", "expect": [200, 404], "auth": "user", "saveAs": "txDetail" }
       ]
     },
     {
       "id": "S07",
-      "name": "Proposed markets flow",
-      "description": "User views and votes on proposed markets",
+      "name": "KYC and KYB status check",
+      "description": "User checks KYC status and KYB status/detail",
       "requiresAuth": true,
       "steps": [
-        { "action": "GET", "endpoint": "/markets/proposed", "expect": 200, "auth": "user" },
-        { "action": "GET", "endpoint": "/markets/proposed-detail/1", "expect": [200, 404, 500], "auth": "user" }
+        { "action": "GET", "endpoint": "/api/users/kyc/status", "expect": 200, "auth": "user", "saveAs": "kycStatus" },
+        { "action": "GET", "endpoint": "/api/users/organization/kyb/status", "expect": 200, "auth": "user", "saveAs": "kybStatus" },
+        { "action": "GET", "endpoint": "/api/users/organization/kyb/detail", "expect": [200, 404], "auth": "user", "saveAs": "kybDetail" }
       ]
     },
     {
       "id": "S08",
+      "name": "File presigned URL flow",
+      "description": "Get presigned URL for file upload",
+      "requiresAuth": true,
+      "steps": [
+        { "action": "POST", "endpoint": "/api/files/presigned-post", "body": { "type": "kyb", "fileName": "test_document.pdf" }, "expect": [200, 201], "auth": "user", "saveAs": "presigned" },
+        { "action": "GET", "endpoint": "/api/files/presigned-get/${presigned.data.id}", "expect": [200, 404], "auth": "user" }
+      ]
+    },
+    {
+      "id": "S09",
+      "name": "Deposit address retrieval",
+      "description": "Get deposit address for a vault asset",
+      "requiresAuth": true,
+      "steps": [
+        { "action": "GET", "endpoint": "/api/vault", "expect": 200, "auth": "user", "saveAs": "vaults" },
+        { "action": "GET", "endpoint": "/api/vault/${vaults.data[0].id}/assets", "expect": [200, 404], "auth": "user", "saveAs": "vaultAssets" },
+        { "action": "GET", "endpoint": "/api/vault/deposit-address/${vaultAssets.data[0].id}", "expect": [200, 404], "auth": "user", "saveAs": "depositAddr" }
+      ]
+    },
+    {
+      "id": "S10",
       "name": "Guest vs authenticated access",
       "description": "Verify public endpoints work without auth, protected require auth",
       "requiresAuth": false,
       "steps": [
-        { "action": "GET", "endpoint": "/markets", "expect": 200, "auth": null, "description": "Public: should succeed" },
-        { "action": "GET", "endpoint": "/orderbook", "expect": 200, "auth": null, "description": "Public: should succeed" },
-        { "action": "GET", "endpoint": "/orders", "expect": 401, "auth": null, "description": "Protected: should fail" },
-        { "action": "POST", "endpoint": "/comments", "body": { "content": "test" }, "expect": 401, "auth": null, "description": "Protected: should fail" }
+        { "action": "GET", "endpoint": "/api/health", "expect": 200, "auth": null, "description": "Public: should succeed" },
+        { "action": "GET", "endpoint": "/api/countries", "expect": 200, "auth": null, "description": "Public: should succeed" },
+        { "action": "GET", "endpoint": "/api/users/profile", "expect": 401, "auth": null, "description": "Protected: should fail" },
+        { "action": "GET", "endpoint": "/api/vault", "expect": 401, "auth": null, "description": "Protected: should fail" },
+        { "action": "GET", "endpoint": "/api/transactions", "expect": 401, "auth": null, "description": "Protected: should fail" },
+        { "action": "GET", "endpoint": "/api/assets", "expect": 401, "auth": null, "description": "Protected: should fail" }
+      ]
+    },
+    {
+      "id": "S11",
+      "name": "RBAC - User cannot perform admin actions",
+      "description": "Regular user cannot create/update vaults or submit KYB",
+      "requiresAuth": true,
+      "steps": [
+        { "action": "POST", "endpoint": "/api/vault", "body": { "name": "Unauthorized Vault", "otp": "000000" }, "expect": [401, 403], "auth": "user", "description": "User cannot create vault" },
+        { "action": "POST", "endpoint": "/api/users/organization/kyb", "body": {}, "expect": [401, 403], "auth": "user", "description": "User cannot submit KYB" },
+        { "action": "PUT", "endpoint": "/api/organization/profile", "body": { "name": "Hacked Org" }, "expect": [401, 403], "auth": "user", "description": "User cannot update org profile" }
+      ]
+    },
+    {
+      "id": "S12",
+      "name": "Organization profile view and update",
+      "description": "Admin views and updates organization profile",
+      "requiresAuth": true,
+      "steps": [
+        { "action": "GET", "endpoint": "/api/organization/profile", "expect": 200, "auth": "admin", "saveAs": "orgProfile" },
+        { "action": "PUT", "endpoint": "/api/organization/profile", "body": { "name": "Updated Org ${timestamp}" }, "expect": 200, "auth": "admin" },
+        { "action": "GET", "endpoint": "/api/organization/profile", "expect": 200, "auth": "admin", "description": "Verify update persisted" }
       ]
     }
   ],
 
   "variables": {
     "timestamp": "${Date.now()}",
-    "randomId": "${Math.floor(Math.random() * 1000)}"
+    "randomId": "${Math.floor(Math.random() * 1000)}",
+    "refreshToken": "${AUTH_REFRESH_TOKEN}"
   },
 
   "settings": {
