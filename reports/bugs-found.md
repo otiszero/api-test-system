@@ -1,317 +1,250 @@
-# Bug Reports - Foreon Prediction Market API
+# Bug Reports — Upmount Custody Platform
 
-**Ngày phát hiện:** 2026-03-02
-**Tổng số bugs:** 8
+**Ngày phát hiện:** 2026-03-05
+**Môi trường:** DEV (`https://dev.api.upmount.sotatek.works`)
+**Tổng bugs:** 8
 
 ---
 
-## BUG-001: JWT Expired Token Được Chấp Nhận
+## BUG-001: Server 500 trên POST /api/users/files/upload-image
 
-### Severity: 🔴 CRITICAL
-
-### Endpoint
-`GET /orders`
-
-### Mô tả
-API chấp nhận JWT token đã expired và trả về data bình thường thay vì reject với 401 Unauthorized.
+| Field | Value |
+|-------|-------|
+| **Severity** | 🔴 Critical |
+| **Endpoint** | `POST /api/users/files/upload-image` |
+| **Layer** | Smoke |
+| **Status** | Open |
 
 ### Steps to Reproduce
 ```bash
-# Token với exp timestamp đã qua
-curl -X GET "https://api.foreon.network/orders" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxMDAwMDAwMDAwfQ.invalid" \
-  -H "Content-Type: application/json"
+curl -X POST https://dev.api.upmount.sotatek.works/api/users/files/upload-image \
+  -H "Authorization: Bearer <owner_token>" \
+  -H "Content-Type: application/json" \
+  -d '{}'
 ```
 
 ### Expected
-- Status: 401 Unauthorized
-- Body: `{"message": "Expired token"}`
+HTTP 400 hoặc 422 (validation error khi không có file)
 
 ### Actual
-- Status: 200 OK
-- Body: Data được trả về bình thường
+HTTP 500 — Internal Server Error
 
 ### Impact
-- Attacker có thể sử dụng token cũ vô thời hạn
-- Không thể revoke access của user bị compromise
-- Session không bao giờ expire
-
-### Recommendation
-- Verify `exp` claim trong JWT middleware
-- Reject tokens với `exp < current_timestamp`
-- Implement token refresh flow đúng cách
+Server crash khi nhận request upload không có file. Có thể là unhandled null/undefined khi parse multipart body.
 
 ---
 
-## BUG-002: Malformed Token Gây Server Error 500
+## BUG-002: Server 500 trên GET /api/users/vault-accounts/{id}/users
 
-### Severity: 🔴 HIGH
-
-### Endpoint
-`GET /orders` (và tất cả protected endpoints)
-
-### Mô tả
-Khi gửi token không phải JWT format, server crash và trả về 500 Internal Server Error thay vì 401.
+| Field | Value |
+|-------|-------|
+| **Severity** | 🔴 Critical |
+| **Endpoint** | `GET /api/users/vault-accounts/{id}/users` |
+| **Layer** | Smoke |
+| **Status** | Open |
 
 ### Steps to Reproduce
 ```bash
-curl -X GET "https://api.foreon.network/orders" \
-  -H "Authorization: Bearer malformed-not-a-jwt" \
-  -H "Content-Type: application/json"
+curl -X GET https://dev.api.upmount.sotatek.works/api/users/vault-accounts/1/users \
+  -H "Authorization: Bearer <owner_token>"
 ```
 
 ### Expected
-- Status: 401 Unauthorized
-- Body: `{"message": "Invalid token format"}`
+HTTP 200 (danh sách users) hoặc 404 (vault not found)
 
 ### Actual
-- Status: 500 Internal Server Error
-- Có thể leak stack trace
+HTTP 500 — Internal Server Error
 
 ### Impact
-- Có thể bị khai thác để DoS
-- Leak thông tin internal (stack trace)
-- Log pollution
-
-### Recommendation
-- Wrap JWT parsing trong try-catch
-- Return 401 cho mọi token parsing errors
-- Không expose internal errors ra client
+Không thể xem users thuộc vault. Có thể do query join lỗi hoặc null reference.
 
 ---
 
-## BUG-003: Non-numeric ID Gây Server Error 500
+## BUG-003: Server 500 trên GET /api/users/transactions/{transactionId}
 
-### Severity: 🔴 HIGH
-
-### Endpoint
-`GET /markets/{id}`
-
-### Mô tả
-Khi truyền ID không phải số vào path param, server crash thay vì trả về 400 Bad Request.
+| Field | Value |
+|-------|-------|
+| **Severity** | 🔴 Critical |
+| **Endpoint** | `GET /api/users/transactions/{transactionId}` |
+| **Layer** | Smoke |
+| **Status** | Open |
 
 ### Steps to Reproduce
 ```bash
-curl -X GET "https://api.foreon.network/markets/not-a-number" \
-  -H "Content-Type: application/json"
+curl -X GET https://dev.api.upmount.sotatek.works/api/users/transactions/1 \
+  -H "Authorization: Bearer <owner_token>"
 ```
 
 ### Expected
-- Status: 400 Bad Request
-- Body: `{"message": "Invalid ID format"}`
+HTTP 200 (transaction detail) hoặc 404 (not found)
 
 ### Actual
-- Status: 500 Internal Server Error
+HTTP 500 — Internal Server Error
 
 ### Impact
-- Có thể bị khai thác để DoS
-- SQL injection vector (nếu không sanitize)
-- Application instability
-
-### Recommendation
-- Validate path params trước khi xử lý
-- Use NestJS ParseIntPipe hoặc custom validation
-- Return 400 cho invalid format
+Không thể xem chi tiết transaction. Possible null dereference hoặc missing DB relation.
 
 ---
 
-## BUG-004: Logout Returns Wrong Status Code
+## BUG-004: Error response thiếu field `message`
 
-### Severity: 🟢 LOW
-
-### Endpoint
-`POST /auth/logout`
-
-### Mô tả
-API trả về 201 Created cho logout action thay vì 200 OK hoặc 204 No Content.
+| Field | Value |
+|-------|-------|
+| **Severity** | 🟡 Medium |
+| **Endpoint** | Tất cả endpoints trả error |
+| **Layer** | Contract |
+| **Status** | Open |
 
 ### Steps to Reproduce
 ```bash
-curl -X POST "https://api.foreon.network/auth/logout" \
-  -H "Authorization: Bearer <valid_token>" \
-  -H "Content-Type: application/json"
+curl -X POST https://dev.api.upmount.sotatek.works/api/users/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{}'
+```
+
+### Expected (theo OpenAPI spec)
+```json
+{
+  "statusCode": 400,
+  "message": "Validation failed",
+  "data": null
+}
+```
+
+### Actual
+```json
+{
+  "success": false,
+  "errorCode": "VALIDATION_ERROR",
+  "statusCode": 400,
+  "data": null
+}
+```
+
+### Impact
+Error response không có field `message` — vi phạm ResponseDto contract trong OpenAPI spec. 44 contract tests fail. Frontend có thể không hiển thị error message cho user.
+
+### Note
+Có thể API đã thay đổi error format (thêm `success` + `errorCode`, bỏ `message`). Cần confirm với dev team: đây là intentional change hay bug.
+
+---
+
+## BUG-005: IDOR — GET /api/users/organization/999999 trả 400 thay vì 403/404
+
+| Field | Value |
+|-------|-------|
+| **Severity** | 🟡 Medium |
+| **Endpoint** | `GET /api/users/organization/{id}` |
+| **Layer** | Security |
+| **Status** | Open |
+
+### Steps to Reproduce
+```bash
+curl -X GET https://dev.api.upmount.sotatek.works/api/users/organization/999999 \
+  -H "Authorization: Bearer <owner_token>"
 ```
 
 ### Expected
-- Status: 200 OK hoặc 204 No Content
+HTTP 403 (forbidden — không phải org của user) hoặc 404 (not found)
 
 ### Actual
-- Status: 201 Created
+HTTP 400 — Bad Request
 
 ### Impact
-- Không ảnh hưởng functionality
-- Không đúng REST conventions
-- Có thể gây confusion cho API consumers
-
-### Recommendation
-- Change response status to 200 hoặc 204
-- 201 chỉ nên dùng khi tạo resource mới
+Status code 400 không chính xác cho trường hợp này. Nên trả 404 (ẩn sự tồn tại) hoặc 403 (access denied). Trả 400 có thể leak thông tin cho attacker biết API nhận org ID nhưng ID format sai, giúp họ probe valid format.
 
 ---
 
-## BUG-005: GET /trades/graph Thiếu Required Params Documentation
+## BUG-006: Oversized Content-Length gây timeout thay vì reject
 
-### Severity: 🟡 MEDIUM
-
-### Endpoint
-`GET /trades/graph`
-
-### Mô tả
-Endpoint trả về 400 khi không có query params, nhưng OpenAPI spec không document required params.
+| Field | Value |
+|-------|-------|
+| **Severity** | 🟡 Medium |
+| **Endpoint** | `POST /api/users/auth/login` |
+| **Layer** | Security |
+| **Status** | Open |
 
 ### Steps to Reproduce
 ```bash
-curl -X GET "https://api.foreon.network/trades/graph" \
-  -H "Content-Type: application/json"
+curl -X POST https://dev.api.upmount.sotatek.works/api/users/auth/login \
+  -H "Content-Type: application/json" \
+  -H "Content-Length: 99999999" \
+  -d '{"email":"test@test.com","password":"test"}'
 ```
 
-### Expected (theo OpenAPI)
-- Status: 200 OK
+### Expected
+Server reject nhanh (413 Payload Too Large hoặc 400) trong <2s
 
 ### Actual
-- Status: 400 Bad Request
-- Body: Missing required params
+Request timeout sau 10s — server chờ đọc 99MB data không tồn tại
 
 ### Impact
-- API consumers không biết params nào required
-- Test cases fail do thiếu documentation
-- Integration khó khăn
-
-### Recommendation
-- Update OpenAPI spec với required params
-- Add clear error message chỉ ra params nào thiếu
+Potential DoS vector. Attacker gửi nhiều request với Content-Length lớn → server giữ connections chờ → resource exhaustion. Cần set `maxBodyLength` limit ở reverse proxy hoặc Express.
 
 ---
 
-## BUG-006: GET /trades/graph-overrall Thiếu Required Params Documentation
+## BUG-007: 2FA endpoints trả 403 thay vì 400/422 cho invalid OTP
 
-### Severity: 🟡 MEDIUM
-
-### Endpoint
-`GET /trades/graph-overrall`
-
-### Mô tả
-Tương tự BUG-005. Endpoint yêu cầu query params nhưng không document.
+| Field | Value |
+|-------|-------|
+| **Severity** | 🟢 Low |
+| **Endpoint** | `POST /api/users/auth/two-factor/*` |
+| **Layer** | Single API |
+| **Status** | Open |
 
 ### Steps to Reproduce
 ```bash
-curl -X GET "https://api.foreon.network/trades/graph-overrall" \
-  -H "Content-Type: application/json"
+curl -X POST https://dev.api.upmount.sotatek.works/api/users/auth/two-factor/verify-setup \
+  -H "Authorization: Bearer <owner_token>" \
+  -H "Content-Type: application/json" \
+  -d '{"otp":"000000"}'
 ```
 
-### Expected (theo OpenAPI)
-- Status: 200 OK
+### Expected
+HTTP 400 hoặc 422 (invalid OTP format/value)
 
 ### Actual
-- Status: 400 Bad Request
-
-### Recommendation
-- Update OpenAPI spec
-- Document required query parameters
-
----
-
-## BUG-007: Orphan Orders - Foreign Key Integrity Violation
-
-### Severity: 🔴 HIGH
-
-### Source
-DB Verification Test - Direct Database Query
-
-### Mô tả
-Có 4 orders trong database tham chiếu đến market_id=155, nhưng market này không tồn tại trong bảng markets.
-
-### Evidence
-```sql
-SELECT o.id, o.market_id
-FROM orders o
-LEFT JOIN markets m ON o.market_id = m.id
-WHERE m.id IS NULL;
-
--- Results:
--- id: 1342, market_id: 155
--- id: 1343, market_id: 155
--- id: 1344, market_id: 155
--- id: 1345, market_id: 155
-```
+HTTP 403 — Forbidden
 
 ### Impact
-- Data integrity violation
-- Application có thể crash khi load orders với invalid market reference
-- Business logic errors khi process orders
-- Reports và analytics bị sai
-
-### Root Cause
-- Market 155 có thể đã bị hard delete thay vì soft delete
-- Hoặc orders được tạo với invalid market_id
-- Foreign key constraint không được enforce ở DB level
-
-### Recommendation
-1. Add foreign key constraint: `orders.market_id → markets.id`
-2. Investigate tại sao market 155 bị delete mà orders còn
-3. Implement soft delete cho markets thay vì hard delete
-4. Clean up orphan orders hoặc restore market 155
+Không nghiêm trọng, nhưng 403 semantically sai cho invalid input. 403 = "bạn không có quyền", 400 = "input sai". User/frontend có thể hiểu nhầm nguyên nhân lỗi.
 
 ---
 
-## BUG-008: Markets với ended_at = NULL (Invalid Date)
+## BUG-008: POST /api/users/profile/me trả 201 thay vì 200
 
-### Severity: 🟡 MEDIUM
+| Field | Value |
+|-------|-------|
+| **Severity** | 🟢 Low |
+| **Endpoint** | `POST /api/users/profile/me` |
+| **Layer** | Single API |
+| **Status** | Open |
 
-### Source
-DB Verification Test - Direct Database Query
-
-### Mô tả
-Có ít nhất 5 markets có field `ended_at` = NULL hoặc invalid, dẫn đến Invalid Date khi parse.
-
-### Evidence
-```sql
-SELECT id, title, ended_at, created_at
-FROM markets
-WHERE ended_at IS NULL OR ended_at <= created_at;
-
--- Results (sample):
--- id: 566, title: 'Market-7V4pVj-1772177948972', ended_at: NULL
--- id: 578, title: 'Market-xWkn8M-1772177961644', ended_at: NULL
--- id: 635, title: 'Market-WCX7CG-1772180658040', ended_at: NULL
--- id: 647, title: 'Market-FXMADp-1772180666976', ended_at: NULL
--- id: 699, title: 'Market-D0PePX-1772180715148', ended_at: NULL
+### Steps to Reproduce
+```bash
+curl -X POST https://dev.api.upmount.sotatek.works/api/users/profile/me \
+  -H "Authorization: Bearer <owner_token>" \
+  -H "Content-Type: application/json" \
+  -d '{}'
 ```
 
+### Expected
+HTTP 200 (update thành công) hoặc 400 (validation error)
+
+### Actual
+HTTP 201 — Created
+
 ### Impact
-- Markets không có end date sẽ không bao giờ resolve
-- Business logic errors khi check market status
-- UI có thể hiển thị "Invalid Date"
-- Reports bị ảnh hưởng
-
-### Root Cause
-- Validation thiếu khi tạo market
-- `ended_at` không được mark as required
-- Test data không clean up
-
-### Recommendation
-1. Add NOT NULL constraint cho `ended_at` column
-2. Add validation: `ended_at > created_at`
-3. Clean up hoặc set proper ended_at cho affected markets
-4. Review market creation flow để ensure ended_at always set
+Profile update nên trả 200 (OK) vì đang update resource, không tạo mới. 201 (Created) chỉ dùng cho POST tạo resource mới. Vi phạm REST convention nhưng không ảnh hưởng chức năng.
 
 ---
 
-## Summary by Severity
+## Tổng hợp theo Severity
 
 | Severity | Count | Bugs |
 |----------|-------|------|
-| 🔴 CRITICAL | 1 | BUG-001 |
-| 🔴 HIGH | 3 | BUG-002, BUG-003, BUG-007 |
-| 🟡 MEDIUM | 3 | BUG-005, BUG-006, BUG-008 |
-| 🟢 LOW | 1 | BUG-004 |
+| 🔴 Critical | 3 | BUG-001, BUG-002, BUG-003 (Server 500) |
+| 🟡 Medium | 3 | BUG-004 (error envelope), BUG-005 (IDOR), BUG-006 (DoS) |
+| 🟢 Low | 2 | BUG-007 (403 vs 400), BUG-008 (201 vs 200) |
 
-## Priority Order
-
-1. **BUG-001** - Fix JWT expiration validation ngay lập tức
-2. **BUG-002** - Add error handling cho token parsing
-3. **BUG-003** - Add input validation cho path params
-4. **BUG-007** - Fix FK integrity + investigate orphan orders
-5. **BUG-008** - Fix markets với invalid ended_at
-6. **BUG-005, BUG-006** - Update OpenAPI documentation
-7. **BUG-004** - Fix status code (low priority)
+> ⚠️ **Lưu ý:** ~80 test failures khác do JWT token hết hạn — KHÔNG phải bug API. Cần refresh token rồi chạy lại test.

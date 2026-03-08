@@ -1,157 +1,179 @@
 import { faker } from '@faker-js/faker';
 
 /**
- * Test data factory using Faker for realistic test data
+ * Test data factory for Upmount Custody Platform
+ * Generates realistic test data for all API resources
  */
 class TestDataFactory {
-  /**
-   * Generate market data based on CreateMarketDto schema
-   */
-  createMarket(overrides: Partial<any> = {}) {
-    const now = new Date();
-    const publishedAt = faker.date.soon({ days: 1, refDate: now });
-    const endTime = faker.date.soon({ days: 30, refDate: publishedAt });
-    const startVoteTime = new Date(endTime.getTime() + 1000); // After endTime
-    const endVoteTime = faker.date.soon({ days: 7, refDate: startVoteTime });
+  // =========================================================================
+  // AUTH
+  // =========================================================================
 
+  createRegisterPayload(overrides: Partial<any> = {}) {
     return {
-      title: faker.lorem.sentence({ min: 5, max: 10 }),
-      endTime: endTime.toISOString(),
-      publishedAt: publishedAt.toISOString(),
-      startVoteTime: startVoteTime.toISOString(),
-      endVoteTime: endVoteTime.toISOString(),
-      marketFilePath: faker.system.filePath(),
-      category: [faker.word.noun(), faker.word.noun()],
-      marketRule: faker.lorem.paragraph(),
-      type: faker.helpers.arrayElement(['SINGLE', 'MULTIPLE']),
-      outcomes: [
-        {
-          title: 'Yes',
-          probability: 50,
-        },
-        {
-          title: 'No',
-          probability: 50,
-        },
-      ],
-      resoldMethod: faker.helpers.arrayElement(['AUTOMATICALLY', 'MANUALLY']),
+      email: faker.internet.email({ provider: 'smoke-test.example.com' }),
+      password: `Test${faker.string.alphanumeric(8)}!1`,
+      ...overrides,
+    };
+  }
+
+  createLoginPayload(email: string, password: string) {
+    return { email, password };
+  }
+
+  // =========================================================================
+  // KYB (Know Your Business)
+  // =========================================================================
+
+  createKybPayload(overrides: Partial<any> = {}) {
+    return {
+      legalBusinessName: faker.company.name(),
+      countryId: 1,
+      contactEmail: faker.internet.email(),
+      businessAddress: faker.location.streetAddress({ useFullAddress: true }),
+      businessDescription: faker.company.catchPhrase(),
+      registrationNumber: faker.string.alphanumeric(10).toUpperCase(),
+      dateOfIncorporation: faker.date.past({ years: 5 }).toISOString().split('T')[0],
+      businessType: faker.helpers.arrayElement(['company', 'partnership', 'other']),
+      ownerships: [this.createKybOwnership()],
+      fileIds: [],
+      ...overrides,
+    };
+  }
+
+  createKybOwnership(overrides: Partial<any> = {}) {
+    return {
+      fullName: faker.person.fullName(),
+      dateOfBirth: faker.date.birthdate({ min: 18, max: 70, mode: 'age' }).toISOString().split('T')[0],
+      countryId: 1,
       email: faker.internet.email(),
+      ownerRole: 'primary_owner',
+      organizationRole: faker.person.jobTitle(),
       ...overrides,
     };
   }
 
-  /**
-   * Generate order data
-   */
-  createOrder(marketId: number, outcomeId: number, overrides: Partial<any> = {}) {
+  // =========================================================================
+  // VAULT
+  // =========================================================================
+
+  createVaultPayload(otp: string, overrides: Partial<any> = {}) {
     return {
-      marketId,
-      outcomeId,
-      amount: faker.number.float({ min: 0.01, max: 1000, fractionDigits: 2 }),
+      name: `Vault-${faker.string.alphanumeric(6)}`,
+      otp,
       ...overrides,
     };
   }
 
-  /**
-   * Generate comment data
-   */
-  createComment(marketId: number, overrides: Partial<any> = {}) {
+  createVaultUpdatePayload(otp: string, overrides: Partial<any> = {}) {
     return {
-      marketId,
-      content: faker.lorem.sentence({ min: 10, max: 50 }),
+      name: `Updated-Vault-${faker.string.alphanumeric(6)}`,
+      otp,
       ...overrides,
     };
   }
 
-  /**
-   * Generate invalid data for validation testing
-   */
+  createAddAssetsPayload(otp: string, assetIds: number[]) {
+    return { otp, assetIds };
+  }
+
+  createAssignUsersPayload(otp: string, userIds: string[]) {
+    return { otp, userIds };
+  }
+
+  // =========================================================================
+  // WITHDRAW
+  // =========================================================================
+
+  createWithdrawPayload(otp: string, overrides: Partial<any> = {}) {
+    return {
+      otp,
+      amount: '0.001',
+      ...overrides,
+    };
+  }
+
+  // =========================================================================
+  // FILES
+  // =========================================================================
+
+  createPresignedPostPayload(overrides: Partial<any> = {}) {
+    return {
+      type: 'kyb',
+      fileName: `doc-${faker.string.alphanumeric(8)}.pdf`,
+      ...overrides,
+    };
+  }
+
+  // =========================================================================
+  // ORGANIZATION
+  // =========================================================================
+
+  createOrgUpdatePayload(overrides: Partial<any> = {}) {
+    return {
+      name: faker.company.name(),
+      ...overrides,
+    };
+  }
+
+  createInvitePayload(overrides: Partial<any> = {}) {
+    return {
+      email: faker.internet.email({ provider: 'invite-test.example.com' }),
+      ...overrides,
+    };
+  }
+
+  // =========================================================================
+  // INVALID DATA (for security/validation tests)
+  // =========================================================================
+
   getInvalidValues() {
     return {
-      // String validation
       emptyString: '',
       nullValue: null,
       undefinedValue: undefined,
-      longString: 'a'.repeat(1000),
+      longString: 'a'.repeat(10000),
       sqlInjection: "'; DROP TABLE users; --",
       xssPayload: '<script>alert("XSS")</script>',
       specialChars: '!@#$%^&*()_+{}[]|:";\'<>?,./~`',
-
-      // Number validation
       zero: 0,
       negativeNumber: -1,
-      floatForInteger: 3.14159,
       maxInt: Number.MAX_SAFE_INTEGER + 1,
-      stringNumber: 'abc123',
-      infinityValue: Infinity,
-
-      // Email validation
-      invalidEmail: [
-        'notanemail',
-        '@example.com',
-        'user@@example.com',
-        'user@',
-        '@',
-        '',
-      ],
-
-      // Array validation
+      invalidEmail: ['notanemail', '@example.com', 'user@@example.com', 'user@', ''],
       emptyArray: [],
-      tooManyItems: Array(1000).fill('item'),
+      invalidOtp: ['00000', '1234567', 'abcdef', '', null],
+      invalidUuid: ['not-a-uuid', '123', '', null],
     };
   }
 
-  /**
-   * Generate pagination params
-   */
-  getPaginationParams(page: number = 1, limit: number = 10) {
-    return {
-      page,
-      limit,
-    };
-  }
+  // =========================================================================
+  // UTILITIES
+  // =========================================================================
 
-  /**
-   * Generate random wallet address (Cardano testnet format)
-   */
-  generateWalletAddress(): string {
-    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    let address = 'addr_test1';
-    for (let i = 0; i < 90; i++) {
-      address += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return address;
-  }
-
-  /**
-   * Generate random ID
-   */
-  generateId(): number {
-    return faker.number.int({ min: 1, max: 1000000 });
-  }
-
-  /**
-   * Generate fake UUID
-   */
   generateUuid(): string {
     return faker.string.uuid();
   }
 
-  /**
-   * Generate past date
-   */
-  pastDate(days: number = 30): string {
-    return faker.date.past({ years: 0, refDate: new Date() }).toISOString();
+  generateId(): number {
+    return faker.number.int({ min: 1, max: 999999 });
   }
 
-  /**
-   * Generate future date
-   */
+  generateEmail(): string {
+    return faker.internet.email();
+  }
+
+  generateOtp(): string {
+    return faker.string.numeric(6);
+  }
+
+  pastDate(days: number = 30): string {
+    return faker.date.recent({ days }).toISOString();
+  }
+
   futureDate(days: number = 30): string {
-    return faker.date.future({ years: 0, refDate: new Date() }).toISOString();
+    return faker.date.soon({ days }).toISOString();
   }
 }
 
-// Export singleton instance
 export const testDataFactory = new TestDataFactory();
 export default testDataFactory;

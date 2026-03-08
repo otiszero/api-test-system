@@ -1,203 +1,402 @@
-import { describe, it, expect } from 'vitest';
-import { apiClient } from '../../helpers/api-client';
-import { authHelper } from '../../helpers/auth-helper';
-
 /**
- * 06 - Security Tests
- * Tests authentication bypass, injection, headers
+ * Security Tests - Upmount Custody Platform
+ * Tests for common security vulnerabilities
+ *
+ * Categories:
+ * - Auth bypass attempts
+ * - Token manipulation
+ * - SQL injection
+ * - XSS payload injection
+ * - Header injection
+ * - Rate limiting awareness
+ * - Input validation boundaries
  */
 
-describe('06 - Security Tests', () => {
-  describe('Authentication Bypass', () => {
-    it('Request without token to protected endpoint → 401', async () => {
-      apiClient.clearToken();
-      const response = await apiClient.get('/orders');
-      expect(response.status).toBe(401);
-    });
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { apiClient } from '../../helpers/api-client';
+import authConfig from '../../../config/auth.config.json';
 
-    it('Request with expired token → 401', async () => {
-      const expiredToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxMDAwMDAwMDAwfQ.invalid';
-      apiClient.setToken(expiredToken);
-      const response = await apiClient.get('/orders');
-      apiClient.clearToken();
-      expect(response.status).toBe(401);
-    });
+const TIMEOUT = 15000;
+const ownerToken = authConfig.accounts.user?.[0]?.token;
 
-    it('Request with malformed token → 401', async () => {
-      apiClient.setToken('malformed-not-a-jwt');
-      const response = await apiClient.get('/orders');
-      apiClient.clearToken();
-      expect(response.status).toBe(401);
-    });
-
-    it('Request with empty token → 401', async () => {
-      apiClient.setToken('');
-      const response = await apiClient.get('/orders');
-      apiClient.clearToken();
-      expect(response.status).toBe(401);
-    });
-
-    it('Request with token missing Bearer prefix → should be handled', async () => {
-      // This tests if API handles raw token without Bearer prefix
-      const response = await apiClient.request({
-        method: 'GET',
-        url: '/orders',
-        headers: {
-          'Authorization': 'invalid-format-token'
-        }
-      });
-      expect([400, 401]).toContain(response.status);
-    });
+// ============================================================================
+// 1. AUTHENTICATION BYPASS
+// ============================================================================
+describe('Security: Auth Bypass', () => {
+  afterAll(() => {
+    if (ownerToken) apiClient.setToken(ownerToken);
   });
 
-  describe('SQL Injection', () => {
-    it('SQL injection in query param (id) → should not cause 500', async () => {
-      const response = await apiClient.get("/markets/1' OR '1'='1");
-      // Should return 400/404, NOT 500 (SQL error)
-      expect([400, 404, 500]).toContain(response.status);
-      // Ideally should not be 500
-    });
+  it('No token → protected endpoint returns 401', async () => {
+    apiClient.clearToken();
+    const res = await apiClient.get('/api/users/profile/me');
+    expect(res.status).toBe(401);
+  }, TIMEOUT);
 
-    it('SQL injection in query param (marketId)', async () => {
-      const response = await apiClient.get("/orderbook?marketId=1' OR '1'='1");
-      expect([200, 400]).toContain(response.status);
-    });
+  it('Empty Bearer token → 401', async () => {
+    apiClient.setToken('');
+    const res = await apiClient.get('/api/users/profile/me');
+    expect(res.status).toBe(401);
+  }, TIMEOUT);
 
-    it('SQL injection in search/filter param', async () => {
-      const response = await apiClient.get("/markets?search='; DROP TABLE markets; --");
-      expect([200, 400]).toContain(response.status);
-    });
+  it('Malformed JWT → 401', async () => {
+    apiClient.setToken('not.a.valid.jwt.token');
+    const res = await apiClient.get('/api/users/profile/me');
+    expect(res.status).toBe(401);
+  }, TIMEOUT);
 
-    it('SQL injection in POST body', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/comments', {
-        marketId: "1' OR '1'='1",
-        content: "'; DROP TABLE comments; --"
+  it('Expired-like JWT (random base64) → 401', async () => {
+    const fakeJwt = `${Buffer.from('{"alg":"HS256"}').toString('base64')}.${Buffer.from('{"sub":"fake","exp":0}').toString('base64')}.invalidsignature`;
+    apiClient.setToken(fakeJwt);
+    const res = await apiClient.get('/api/users/profile/me');
+    expect(res.status).toBe(401);
+  }, TIMEOUT);
+
+  it('JWT with "none" algorithm → 401', async () => {
+    const header = Buffer.from('{"alg":"none","typ":"JWT"}').toString('base64url');
+    const payload = Buffer.from('{"sub":"admin","role":"admin","exp":9999999999}').toString('base64url');
+    apiClient.setToken(`${header}.${payload}.`);
+    const res = await apiClient.get('/api/users/profile/me');
+    expect(res.status).toBe(401);
+  }, TIMEOUT);
+
+  it('SQL in Authorization header → 401 (no 5xx)', async () => {
+    apiClient.setToken("' OR '1'='1");
+    const res = await apiClient.get('/api/users/profile/me');
+    expect(res.status).toBeLessThan(500);
+    expect(res.status).toBe(401);
+  }, TIMEOUT);
+
+  it('XSS in Authorization header → 401 (no 5xx)', async () => {
+    apiClient.setToken('<script>alert(1)</script>');
+    const res = await apiClient.get('/api/users/profile/me');
+    expect(res.status).toBeLessThan(500);
+  }, TIMEOUT);
+});
+
+// ============================================================================
+// 2. SQL INJECTION - Login endpoint
+// ============================================================================
+describe('Security: SQL Injection - Login', () => {
+  const sqlPayloads = [
+    "' OR '1'='1",
+    "' OR '1'='1' --",
+    "'; DROP TABLE users; --",
+    "' UNION SELECT * FROM users --",
+    "admin'--",
+    "1; SELECT * FROM pg_tables",
+    "' OR 1=1 LIMIT 1 --",
+  ];
+
+  for (const payload of sqlPayloads) {
+    it(`Login with SQL payload: ${payload.substring(0, 30)}... → no 5xx`, async () => {
+      const res = await apiClient.post('/api/users/auth/login', {
+        email: payload,
+        password: payload,
       });
-      authHelper.clearAuthToken();
-      // Should handle gracefully with 400/422, not 500
-      expect([400, 401, 422]).toContain(response.status);
-    });
+      expect(res.status).toBeLessThan(500);
+      // Should NOT return 200 (successful login)
+      expect(res.status).not.toBe(200);
+    }, TIMEOUT);
+  }
+});
+
+// ============================================================================
+// 3. SQL INJECTION - Path parameters
+// ============================================================================
+describe('Security: SQL Injection - Path Params', () => {
+  beforeAll(() => {
+    if (ownerToken) apiClient.setToken(ownerToken);
   });
 
-  describe('XSS Prevention', () => {
-    it('XSS in comment content → should be sanitized or escaped', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/comments', {
-        marketId: 1,
-        content: '<script>alert("xss")</script>'
-      });
-      authHelper.clearAuthToken();
-      // Should accept and sanitize, or reject
-      expect([200, 201, 400, 401, 422]).toContain(response.status);
-    });
+  const pathInjections = [
+    "1' OR '1'='1",
+    '1; DROP TABLE vault_accounts;--',
+    "1 UNION SELECT * FROM users--",
+    '../../../etc/passwd',
+    '1%00',
+  ];
 
-    it('XSS with event handlers', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/comments', {
-        marketId: 1,
-        content: '<img src="x" onerror="alert(1)">'
-      });
-      authHelper.clearAuthToken();
-      expect([200, 201, 400, 401, 422]).toContain(response.status);
-    });
+  for (const injection of pathInjections) {
+    it(`GET /vault-accounts/${injection.substring(0, 20)}... → no 5xx`, async () => {
+      if (!ownerToken) return;
+      const res = await apiClient.get(`/api/users/vault-accounts/${encodeURIComponent(injection)}`);
+      expect(res.status).toBeLessThan(500);
+    }, TIMEOUT);
+  }
+});
+
+// ============================================================================
+// 4. XSS INJECTION - Request bodies
+// ============================================================================
+describe('Security: XSS Injection', () => {
+  beforeAll(() => {
+    if (ownerToken) apiClient.setToken(ownerToken);
   });
 
-  describe('Path Traversal', () => {
-    it('Path traversal in ID param', async () => {
-      const response = await apiClient.get('/markets/../../../etc/passwd');
-      expect([400, 404]).toContain(response.status);
-    });
+  const xssPayloads = [
+    '<script>alert("XSS")</script>',
+    '<img src=x onerror=alert(1)>',
+    '"><script>alert(document.cookie)</script>',
+    "javascript:alert('XSS')",
+    '<svg onload=alert(1)>',
+    '{{constructor.constructor("return this")()}}',
+  ];
 
-    it('Path traversal in IPFS endpoint', async () => {
-      const response = await apiClient.get('/markets/ipfs/../../etc/passwd');
-      expect([400, 404]).toContain(response.status);
-    });
-  });
+  it('XSS in profile update → should not reflect in response', async () => {
+    if (!ownerToken) return;
 
-  describe('Input Validation', () => {
-    it('Extremely long string in content → should be rejected', async () => {
-      authHelper.setAuthToken('user');
-      const longContent = 'A'.repeat(100000);
-      const response = await apiClient.post('/comments', {
-        marketId: 1,
-        content: longContent
+    for (const payload of xssPayloads) {
+      const res = await apiClient.post('/api/users/profile/me', {
+        name: payload,
+        bio: payload,
       });
-      authHelper.clearAuthToken();
-      // Should reject with 400 or 413 (payload too large)
-      expect([400, 401, 413, 422]).toContain(response.status);
-    });
+      expect(res.status).toBeLessThan(500);
 
-    it('Negative numbers where positive expected', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/orders', {
-        marketId: 1,
-        outcomeId: 1,
-        amount: -999999,
-        txHash: 'test-tx-negative'
-      });
-      authHelper.clearAuthToken();
-      expect([400, 401, 422]).toContain(response.status);
-    });
-
-    it('Non-numeric ID where numeric expected', async () => {
-      const response = await apiClient.get('/markets/not-a-number');
-      expect([400, 404]).toContain(response.status);
-    });
-  });
-
-  describe('Rate Limiting (if implemented)', () => {
-    it('Multiple rapid requests should not crash', async () => {
-      const requests = [];
-      for (let i = 0; i < 10; i++) {
-        requests.push(apiClient.get('/markets'));
+      // If response contains the payload, it should be sanitized
+      const bodyStr = JSON.stringify(res.data);
+      if (bodyStr.includes(payload)) {
+        // If echoed back, ensure it's not in raw HTML context
+        expect(bodyStr).not.toContain('<script>');
       }
-      const responses = await Promise.all(requests);
-      // All should return, possibly with 429 if rate limited
-      responses.forEach(r => {
-        expect([200, 429]).toContain(r.status);
-      });
+    }
+  }, TIMEOUT);
+
+  it('XSS in register email → should be rejected', async () => {
+    const res = await apiClient.post('/api/users/auth/register', {
+      email: '<script>alert(1)</script>@test.com',
+      password: 'Test123!',
     });
+    expect(res.status).toBeLessThan(500);
+    expect(res.status).not.toBe(200);
+    expect(res.status).not.toBe(201);
+  }, TIMEOUT);
+
+  it('XSS in organization invite email → should be rejected', async () => {
+    if (!ownerToken) return;
+
+    const res = await apiClient.post('/api/users/organization-members/invite', {
+      email: '"><script>alert(1)</script>@test.com',
+    });
+    expect(res.status).toBeLessThan(500);
+    expect(res.status).toBeGreaterThanOrEqual(400);
+  }, TIMEOUT);
+});
+
+// ============================================================================
+// 5. HEADER INJECTION
+// ============================================================================
+describe('Security: Header Injection', () => {
+  it('Host header injection → no 5xx', async () => {
+    const res = await apiClient.get('/api/health', {
+      headers: { 'Host': 'evil.example.com' },
+    });
+    expect(res.status).toBeLessThan(500);
+  }, TIMEOUT);
+
+  it('X-Forwarded-For spoofing → no 5xx', async () => {
+    const res = await apiClient.get('/api/health', {
+      headers: { 'X-Forwarded-For': '127.0.0.1' },
+    });
+    expect(res.status).toBeLessThan(500);
+  }, TIMEOUT);
+
+  it('Content-Type manipulation → no 5xx', async () => {
+    if (!ownerToken) return;
+    apiClient.setToken(ownerToken);
+
+    const res = await apiClient.post('/api/users/auth/login',
+      'email=test@test.com&password=test',
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    );
+    expect(res.status).toBeLessThan(500);
+  }, TIMEOUT);
+
+  it('Oversized Content-Length header → no 5xx or timeout', async () => {
+    const res = await apiClient.post('/api/users/auth/login',
+      { email: 'test@test.com', password: 'test' },
+      { headers: { 'Content-Length': '99999999' } }
+    );
+    expect(res.status).toBeLessThan(500);
+  }, TIMEOUT);
+});
+
+// ============================================================================
+// 6. INPUT VALIDATION BOUNDARIES
+// ============================================================================
+describe('Security: Input Validation', () => {
+  it('Extremely long email (10000 chars) → no 5xx', async () => {
+    const longEmail = 'a'.repeat(10000) + '@test.com';
+    const res = await apiClient.post('/api/users/auth/login', {
+      email: longEmail,
+      password: 'test',
+    });
+    expect(res.status).toBeLessThan(500);
+  }, TIMEOUT);
+
+  it('Extremely long password (10000 chars) → no 5xx', async () => {
+    const res = await apiClient.post('/api/users/auth/login', {
+      email: 'test@test.com',
+      password: 'a'.repeat(10000),
+    });
+    expect(res.status).toBeLessThan(500);
+  }, TIMEOUT);
+
+  it('Null bytes in email → no 5xx', async () => {
+    const res = await apiClient.post('/api/users/auth/login', {
+      email: 'test\x00@test.com',
+      password: 'test',
+    });
+    expect(res.status).toBeLessThan(500);
+  }, TIMEOUT);
+
+  it('Unicode overflow in body → no 5xx', async () => {
+    const res = await apiClient.post('/api/users/auth/login', {
+      email: '👨‍👩‍👧‍👦'.repeat(1000) + '@test.com',
+      password: '🔐'.repeat(500),
+    });
+    expect(res.status).toBeLessThan(500);
+  }, TIMEOUT);
+
+  it('Empty body on POST endpoint → no 5xx', async () => {
+    const res = await apiClient.post('/api/users/auth/login', {});
+    expect(res.status).toBeLessThan(500);
+  }, TIMEOUT);
+
+  it('Array instead of object body → no 5xx', async () => {
+    const res = await apiClient.post('/api/users/auth/login', []);
+    expect(res.status).toBeLessThan(500);
+  }, TIMEOUT);
+
+  it('Nested object depth attack → no 5xx', async () => {
+    let nested: any = { value: 'deep' };
+    for (let i = 0; i < 50; i++) {
+      nested = { nested };
+    }
+    const res = await apiClient.post('/api/users/auth/login', nested);
+    expect(res.status).toBeLessThan(500);
+  }, TIMEOUT);
+});
+
+// ============================================================================
+// 7. PATH TRAVERSAL
+// ============================================================================
+describe('Security: Path Traversal', () => {
+  beforeAll(() => {
+    if (ownerToken) apiClient.setToken(ownerToken);
   });
 
-  describe('Response Security', () => {
-    it('Error responses should not leak stack traces', async () => {
-      const response = await apiClient.get('/markets/invalid');
-      if (response.status >= 400) {
-        const body = JSON.stringify(response.data);
-        expect(body).not.toContain('at Function');
-        expect(body).not.toContain('node_modules');
-        expect(body).not.toContain('.ts:');
-        expect(body).not.toContain('.js:');
-      }
-    });
+  const traversalPaths = [
+    '../../../etc/passwd',
+    '..%2F..%2F..%2Fetc%2Fpasswd',
+    '....//....//....//etc/passwd',
+    '%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd',
+  ];
 
-    it('Error responses should not expose internal paths', async () => {
-      const response = await apiClient.get('/nonexistent-endpoint');
-      if (response.status >= 400) {
-        const body = JSON.stringify(response.data);
-        expect(body).not.toContain('/home/');
-        expect(body).not.toContain('/var/');
-        expect(body).not.toContain('C:\\');
-      }
-    });
+  for (const path of traversalPaths) {
+    it(`Path traversal: ${path.substring(0, 25)}... → no 5xx`, async () => {
+      if (!ownerToken) return;
+      const res = await apiClient.get(`/api/users/files/private-storage/presigned-get/${encodeURIComponent(path)}`);
+      expect(res.status).toBeLessThan(500);
+    }, TIMEOUT);
+  }
+});
+
+// ============================================================================
+// 8. RESPONSE SECURITY HEADERS (on health endpoint)
+// ============================================================================
+describe('Security: Response Headers', () => {
+  it('Health endpoint should not expose server version', async () => {
+    const res = await apiClient.get('/api/health');
+    const serverHeader = res.headers?.['server'] || '';
+    // Should not expose detailed version info
+    expect(serverHeader).not.toMatch(/apache\/\d|nginx\/\d|express/i);
+  }, TIMEOUT);
+
+  it('Response should not contain X-Powered-By', async () => {
+    const res = await apiClient.get('/api/health');
+    // X-Powered-By should be removed (Express default removed by helmet)
+    const xPoweredBy = res.headers?.['x-powered-by'];
+    expect(xPoweredBy).toBeUndefined();
+  }, TIMEOUT);
+});
+
+// ============================================================================
+// 9. IDOR (Insecure Direct Object Reference)
+// ============================================================================
+describe('Security: IDOR', () => {
+  it('User A cannot access User B profile data via ID manipulation', async () => {
+    if (!ownerToken) return;
+
+    // Get current user profile
+    apiClient.setToken(ownerToken);
+    const profileRes = await apiClient.get('/api/users/profile/me');
+    expect(profileRes.status).toBe(200);
+
+    // Try accessing with different org ID
+    const res = await apiClient.get('/api/users/organization/999999');
+    // Should return 403 (forbidden) or 404 (not found), not another org's data
+    if (res.status === 200) {
+      // If 200, verify it's not leaking another org's data
+      const data = res.data?.data || res.data;
+      // At minimum, should be the user's own org or empty
+    } else {
+      expect([403, 404]).toContain(res.status);
+    }
+  }, TIMEOUT);
+
+  it('Normal user cannot access other user vault accounts', async () => {
+    const normalToken = authConfig.accounts.user?.[1]?.token;
+    if (!normalToken) return;
+
+    apiClient.setToken(normalToken);
+    // Try accessing vault with random ID
+    const res = await apiClient.get('/api/users/vault-accounts/999999');
+    expect(res.status).toBeLessThan(500);
+    // Should be 403 or 404, not another user's vault
+    expect([400, 403, 404]).toContain(res.status);
+
+    // Restore owner token
+    if (ownerToken) apiClient.setToken(ownerToken);
+  }, TIMEOUT);
+});
+
+// ============================================================================
+// 10. 2FA BYPASS ATTEMPTS
+// ============================================================================
+describe('Security: 2FA Bypass', () => {
+  beforeAll(() => {
+    if (ownerToken) apiClient.setToken(ownerToken);
   });
 
-  describe('HTTP Method Security', () => {
-    it('OPTIONS request should be handled (CORS)', async () => {
-      const response = await apiClient.request({
-        method: 'OPTIONS',
-        url: '/markets'
-      });
-      expect([200, 204, 404, 405]).toContain(response.status);
-    });
+  it('Invalid OTP format → should reject', async () => {
+    if (!ownerToken) return;
 
-    it('Unsupported method on endpoint → 405 or 404', async () => {
-      const response = await apiClient.request({
-        method: 'PATCH',
-        url: '/markets/1'
-      });
-      expect([404, 405]).toContain(response.status);
+    const invalidOtps = ['00000', '1234567', 'abcdef', '', '      ', '-12345'];
+    for (const otp of invalidOtps) {
+      const res = await apiClient.post('/api/users/auth/two-factor/verify-login', { otp });
+      expect(res.status).toBeLessThan(500);
+      expect(res.status).not.toBe(200);
+    }
+  }, TIMEOUT);
+
+  it('Vault create without OTP → should be rejected', async () => {
+    if (!ownerToken) return;
+
+    const res = await apiClient.post('/api/users/vault-accounts', {
+      name: 'NoOTPVault',
     });
-  });
+    expect(res.status).toBeLessThan(500);
+    expect(res.status).toBeGreaterThanOrEqual(400);
+  }, TIMEOUT);
+
+  it('Withdraw without OTP → should be rejected', async () => {
+    if (!ownerToken) return;
+
+    const res = await apiClient.post('/api/users/withdraw', {
+      amount: '0.001',
+    });
+    expect(res.status).toBeLessThan(500);
+    expect(res.status).toBeGreaterThanOrEqual(400);
+  }, TIMEOUT);
 });

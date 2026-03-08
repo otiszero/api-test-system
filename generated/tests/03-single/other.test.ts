@@ -1,85 +1,229 @@
-import { describe, it, expect } from 'vitest';
-import { apiClient } from '../../helpers/api-client';
-import { authHelper } from '../../helpers/auth-helper';
-
 /**
- * 03 - Single API Tests: Other endpoints
- * Orderbook, Statistic, Slack, Admin, Root
+ * 03-single: Files, RBAC, Action Logs, Ledger, Country API Tests
+ * Endpoints (Files):
+ *   POST /api/users/files/upload-image
+ *   POST /api/users/files/private-storage/presigned-post
+ *   GET  /api/users/files/private-storage/presigned-get/{id}
+ * Endpoints (RBAC):
+ *   GET  /api/users/rbac/roles
+ * Endpoints (Action Logs):
+ *   GET  /api/users/action-logs
+ *   GET  /api/users/action-logs/export    (admin only)
+ * Endpoints (Ledger):
+ *   GET  /api/users/ledgers/export
+ * Endpoints (Country):
+ *   GET  /api/countries                   (public)
  */
+import { describe, it, expect, afterAll } from 'vitest';
+import { apiClient } from '../../helpers/api-client';
+import authConfig from '../../../config/auth.config.json';
 
-describe('Other Endpoints - Single API Tests', () => {
-  describe('Root', () => {
-    it('GET / - should return health status', async () => {
-      const response = await apiClient.get('/');
-      expect(response.status).toBe(200);
-    });
+const OWNER_TOKEN = authConfig.accounts.user[0].token;  // owner/admin
+const USER_TOKEN = authConfig.accounts.user[1].token;   // normal user
+
+describe('03-single: Files API', () => {
+  afterAll(() => {
+    apiClient.clearToken();
   });
 
-  describe('Orderbook', () => {
-    it('GET /orderbook - should return orderbook data', async () => {
-      const response = await apiClient.get('/orderbook');
-      expect(response.status).toBe(200);
-      expect(response.data).toHaveProperty('data');
-    });
-
-    it('GET /orderbook - should support marketId query', async () => {
-      const response = await apiClient.get('/orderbook?marketId=1');
-      expect(response.status).toBe(200);
-    });
-  });
-
-  describe('Statistic', () => {
-    it('GET /statistic/rank - should return ranking data', async () => {
-      const response = await apiClient.get('/statistic/rank');
-      expect(response.status).toBe(200);
-      expect(response.data).toHaveProperty('data');
-    });
-
-    it('GET /statistic/rank - should support pagination', async () => {
-      const response = await apiClient.get('/statistic/rank?limit=10&page=1');
-      expect(response.status).toBe(200);
-    });
-  });
-
-  describe('Slack', () => {
-    it('GET /slack/{id} - should handle test endpoint', async () => {
-      const response = await apiClient.get('/slack/test');
-      expect([200, 404]).toContain(response.status);
-    });
-  });
-
-  describe('Admin', () => {
-    it('GET /admin - should require authentication', async () => {
+  // ─── POST /api/users/files/upload-image ───────────────────────────────────
+  describe('POST /api/users/files/upload-image', () => {
+    it('no auth token → 401', async () => {
       apiClient.clearToken();
-      const response = await apiClient.get('/admin');
-      expect(response.status).toBe(401);
-    });
+      const res = await apiClient.post('/api/users/files/upload-image', {});
+      expect(res.status).toBe(401);
+    }, 15000);
 
-    it('GET /admin - should return admin list (auth)', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.get('/admin');
-      authHelper.clearAuthToken();
-      // User might not have admin access
-      expect([200, 401, 403]).toContain(response.status);
-    });
+    it('with token, empty body (no file) → 400/422', async () => {
+      apiClient.setToken(USER_TOKEN);
+      const res = await apiClient.post('/api/users/files/upload-image', {});
+      expect([400, 422]).toContain(res.status);
+    }, 15000);
+  });
 
-    it('POST /admin - should require authentication', async () => {
+  // ─── POST /api/users/files/private-storage/presigned-post ─────────────────
+  describe('POST /api/users/files/private-storage/presigned-post', () => {
+    it('no auth token → 401', async () => {
       apiClient.clearToken();
-      const response = await apiClient.post('/admin', {});
-      expect(response.status).toBe(401);
-    });
+      const res = await apiClient.post('/api/users/files/private-storage/presigned-post', {
+        type: 'kyb',
+        fileName: 'test.pdf',
+      });
+      expect(res.status).toBe(401);
+    }, 15000);
 
-    it('POST /admin - should validate input (auth)', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/admin', {});
-      authHelper.clearAuthToken();
-      expect([400, 401, 403, 422]).toContain(response.status);
-    });
+    it('with token, valid payload → 200/201', async () => {
+      apiClient.setToken(USER_TOKEN);
+      const res = await apiClient.post('/api/users/files/private-storage/presigned-post', {
+        type: 'kyb',
+        fileName: 'business-license.pdf',
+      });
+      expect([200, 201]).toContain(res.status);
+    }, 15000);
 
-    it('PUT /admin - should require authentication', async () => {
+    it('with token, missing type → 400/422', async () => {
+      apiClient.setToken(USER_TOKEN);
+      const res = await apiClient.post('/api/users/files/private-storage/presigned-post', {
+        fileName: 'test.pdf',
+      });
+      expect([400, 422]).toContain(res.status);
+    }, 15000);
+
+    it('with token, invalid type enum → 400/422', async () => {
+      apiClient.setToken(USER_TOKEN);
+      const res = await apiClient.post('/api/users/files/private-storage/presigned-post', {
+        type: 'invalid_type',
+        fileName: 'test.pdf',
+      });
+      expect([400, 422]).toContain(res.status);
+    }, 15000);
+
+    it('with token, missing fileName → 400/422', async () => {
+      apiClient.setToken(USER_TOKEN);
+      const res = await apiClient.post('/api/users/files/private-storage/presigned-post', {
+        type: 'kyb',
+      });
+      expect([400, 422]).toContain(res.status);
+    }, 15000);
+  });
+
+  // ─── GET /api/users/files/private-storage/presigned-get/{id} ──────────────
+  describe('GET /api/users/files/private-storage/presigned-get/{id}', () => {
+    it('no auth token → 401', async () => {
       apiClient.clearToken();
-      const response = await apiClient.put('/admin', {});
-      expect(response.status).toBe(401);
-    });
+      const res = await apiClient.get('/api/users/files/private-storage/presigned-get/test-file-id');
+      expect(res.status).toBe(401);
+    }, 15000);
+
+    it('with token, non-existent file id → 404', async () => {
+      apiClient.setToken(USER_TOKEN);
+      const res = await apiClient.get('/api/users/files/private-storage/presigned-get/non-existent-file-id-00000');
+      expect([400, 404]).toContain(res.status);
+    }, 15000);
+  });
+});
+
+describe('03-single: Organization RBAC Management API', () => {
+  afterAll(() => {
+    apiClient.clearToken();
+  });
+
+  // ─── GET /api/users/rbac/roles ────────────────────────────────────────────
+  describe('GET /api/users/rbac/roles', () => {
+    it('no auth token → 401', async () => {
+      apiClient.clearToken();
+      const res = await apiClient.get('/api/users/rbac/roles');
+      expect(res.status).toBe(401);
+    }, 15000);
+
+    it('owner token → 200', async () => {
+      apiClient.setToken(OWNER_TOKEN);
+      const res = await apiClient.get('/api/users/rbac/roles');
+      expect(res.status).toBe(200);
+    }, 15000);
+
+    it('normal user token → 200', async () => {
+      apiClient.setToken(USER_TOKEN);
+      const res = await apiClient.get('/api/users/rbac/roles');
+      expect(res.status).toBe(200);
+    }, 15000);
+
+    it('owner token → response has data', async () => {
+      apiClient.setToken(OWNER_TOKEN);
+      const res = await apiClient.get('/api/users/rbac/roles');
+      expect(res.data).toBeDefined();
+    }, 15000);
+  });
+});
+
+describe('03-single: User Action Logs API', () => {
+  afterAll(() => {
+    apiClient.clearToken();
+  });
+
+  // ─── GET /api/users/action-logs ───────────────────────────────────────────
+  describe('GET /api/users/action-logs', () => {
+    it('no auth token → 401', async () => {
+      apiClient.clearToken();
+      const res = await apiClient.get('/api/users/action-logs');
+      expect(res.status).toBe(401);
+    }, 15000);
+
+    it('owner token → 200', async () => {
+      apiClient.setToken(OWNER_TOKEN);
+      const res = await apiClient.get('/api/users/action-logs');
+      expect(res.status).toBe(200);
+    }, 15000);
+
+    it('normal user token → 200', async () => {
+      apiClient.setToken(USER_TOKEN);
+      const res = await apiClient.get('/api/users/action-logs');
+      expect(res.status).toBe(200);
+    }, 15000);
+  });
+
+  // ─── GET /api/users/action-logs/export ────────────────────────────────────
+  describe('GET /api/users/action-logs/export', () => {
+    it('no auth token → 401', async () => {
+      apiClient.clearToken();
+      const res = await apiClient.get('/api/users/action-logs/export');
+      expect(res.status).toBe(401);
+    }, 15000);
+
+    it('normal user → 403 (admin only)', async () => {
+      apiClient.setToken(USER_TOKEN);
+      const res = await apiClient.get('/api/users/action-logs/export');
+      expect(res.status).toBe(403);
+    }, 15000);
+
+    it('owner token → 200', async () => {
+      apiClient.setToken(OWNER_TOKEN);
+      const res = await apiClient.get('/api/users/action-logs/export');
+      expect(res.status).toBe(200);
+    }, 15000);
+  });
+});
+
+describe('03-single: Ledger API', () => {
+  afterAll(() => {
+    apiClient.clearToken();
+  });
+
+  // ─── GET /api/users/ledgers/export ────────────────────────────────────────
+  describe('GET /api/users/ledgers/export', () => {
+    it('no auth token → 401', async () => {
+      apiClient.clearToken();
+      const res = await apiClient.get('/api/users/ledgers/export');
+      expect(res.status).toBe(401);
+    }, 15000);
+
+    it('owner token → 200', async () => {
+      apiClient.setToken(OWNER_TOKEN);
+      const res = await apiClient.get('/api/users/ledgers/export');
+      expect(res.status).toBe(200);
+    }, 15000);
+
+    it('normal user token → 200', async () => {
+      apiClient.setToken(USER_TOKEN);
+      const res = await apiClient.get('/api/users/ledgers/export');
+      expect(res.status).toBe(200);
+    }, 15000);
+  });
+});
+
+describe('03-single: Country API', () => {
+  // ─── GET /api/countries ───────────────────────────────────────────────────
+  describe('GET /api/countries', () => {
+    it('no auth token → 200 (public endpoint)', async () => {
+      apiClient.clearToken();
+      const res = await apiClient.get('/api/countries');
+      expect(res.status).toBe(200);
+    }, 15000);
+
+    it('response has data', async () => {
+      apiClient.clearToken();
+      const res = await apiClient.get('/api/countries');
+      expect(res.data).toBeDefined();
+    }, 15000);
   });
 });

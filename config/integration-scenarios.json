@@ -15,13 +15,11 @@
     },
     {
       "id": "S02",
-      "name": "User profile and organization",
-      "description": "User views profile, organization, and primary owner info",
+      "name": "User profile view",
+      "description": "User views their profile",
       "requiresAuth": true,
       "steps": [
-        { "action": "GET", "endpoint": "/api/users/profile", "expect": 200, "auth": "user", "saveAs": "profile" },
-        { "action": "GET", "endpoint": "/api/users/primary-owner", "expect": 200, "auth": "user", "saveAs": "primaryOwner" },
-        { "action": "GET", "endpoint": "/api/organization/profile", "expect": 200, "auth": "user", "saveAs": "orgProfile" }
+        { "action": "GET", "endpoint": "/api/users/profile/me", "expect": 200, "auth": "user", "saveAs": "profile" }
       ]
     },
     {
@@ -31,7 +29,7 @@
       "requiresAuth": true,
       "steps": [
         { "action": "POST", "endpoint": "/api/users/auth/refresh-token", "body": { "refreshToken": "${refreshToken}" }, "expect": 200, "auth": "user", "saveAs": "newTokens" },
-        { "action": "GET", "endpoint": "/api/users/profile", "expect": 200, "auth": "user", "description": "Verify new token works" }
+        { "action": "GET", "endpoint": "/api/users/profile/me", "expect": 200, "auth": "user", "description": "Verify new token works" }
       ]
     },
     {
@@ -40,18 +38,17 @@
       "description": "User views vault accounts and their details",
       "requiresAuth": true,
       "steps": [
-        { "action": "GET", "endpoint": "/api/vault", "expect": 200, "auth": "user", "saveAs": "vaultList" },
-        { "action": "GET", "endpoint": "/api/vault/${vaultList.data[0].id}", "expect": [200, 404], "auth": "user", "saveAs": "vaultDetail" },
-        { "action": "GET", "endpoint": "/api/vault/${vaultList.data[0].id}/assets", "expect": [200, 404], "auth": "user", "saveAs": "vaultAssets" }
+        { "action": "GET", "endpoint": "/api/users/vault-accounts", "expect": 200, "auth": "user", "saveAs": "vaultList" },
+        { "action": "GET", "endpoint": "/api/users/vault-accounts/${vaultList.data[0].id}", "expect": [200, 404], "auth": "user", "saveAs": "vaultDetail", "condition": "vaultList.data.length > 0" },
+        { "action": "GET", "endpoint": "/api/users/vault-accounts/${vaultList.data[0].id}/users", "expect": [200, 404], "auth": "user", "saveAs": "vaultUsers", "condition": "vaultList.data.length > 0" }
       ]
     },
     {
       "id": "S05",
-      "name": "Assets and countries lookup",
-      "description": "View available assets and countries list",
-      "requiresAuth": true,
+      "name": "Countries lookup",
+      "description": "View countries list (public endpoint)",
+      "requiresAuth": false,
       "steps": [
-        { "action": "GET", "endpoint": "/api/assets", "expect": 200, "auth": "user", "saveAs": "assets" },
         { "action": "GET", "endpoint": "/api/countries", "expect": 200, "description": "Public endpoint - countries list" }
       ]
     },
@@ -61,8 +58,9 @@
       "description": "User views transactions list and individual transaction detail",
       "requiresAuth": true,
       "steps": [
-        { "action": "GET", "endpoint": "/api/transactions", "expect": 200, "auth": "user", "saveAs": "txList" },
-        { "action": "GET", "endpoint": "/api/transactions/${txList.data[0].id}", "expect": [200, 404], "auth": "user", "saveAs": "txDetail" }
+        { "action": "GET", "endpoint": "/api/users/transactions", "expect": 200, "auth": "user", "saveAs": "txList" },
+        { "action": "GET", "endpoint": "/api/users/transactions/${txList.data[0].id}", "expect": [200, 404], "auth": "user", "saveAs": "txDetail", "condition": "txList.data.length > 0" },
+        { "action": "GET", "endpoint": "/api/users/transactions/export", "expect": 200, "auth": "user", "description": "Export transactions" }
       ]
     },
     {
@@ -71,9 +69,9 @@
       "description": "User checks KYC status and KYB status/detail",
       "requiresAuth": true,
       "steps": [
-        { "action": "GET", "endpoint": "/api/users/kyc/status", "expect": 200, "auth": "user", "saveAs": "kycStatus" },
-        { "action": "GET", "endpoint": "/api/users/organization/kyb/status", "expect": 200, "auth": "user", "saveAs": "kybStatus" },
-        { "action": "GET", "endpoint": "/api/users/organization/kyb/detail", "expect": [200, 404], "auth": "user", "saveAs": "kybDetail" }
+        { "action": "GET", "endpoint": "/api/users/identity-verification/kyc/status", "expect": 200, "auth": "user", "saveAs": "kycStatus" },
+        { "action": "GET", "endpoint": "/api/users/organization-kyb/kyb-status", "expect": 200, "auth": "user", "saveAs": "kybStatus" },
+        { "action": "GET", "endpoint": "/api/users/organization-kyb/primary-owner-data", "expect": 200, "auth": "user", "saveAs": "primaryOwner" }
       ]
     },
     {
@@ -82,19 +80,17 @@
       "description": "Get presigned URL for file upload",
       "requiresAuth": true,
       "steps": [
-        { "action": "POST", "endpoint": "/api/files/presigned-post", "body": { "type": "kyb", "fileName": "test_document.pdf" }, "expect": [200, 201], "auth": "user", "saveAs": "presigned" },
-        { "action": "GET", "endpoint": "/api/files/presigned-get/${presigned.data.id}", "expect": [200, 404], "auth": "user" }
+        { "action": "POST", "endpoint": "/api/users/files/private-storage/presigned-post", "body": { "type": "kyb", "fileName": "test_document.pdf" }, "expect": [200, 201], "auth": "user", "saveAs": "presigned" },
+        { "action": "GET", "endpoint": "/api/users/files/private-storage/presigned-get/${presigned.data.id}", "expect": [200, 404], "auth": "user", "condition": "presigned.data && presigned.data.id" }
       ]
     },
     {
       "id": "S09",
-      "name": "Deposit address retrieval",
-      "description": "Get deposit address for a vault asset",
+      "name": "Organization members listing",
+      "description": "View organization members",
       "requiresAuth": true,
       "steps": [
-        { "action": "GET", "endpoint": "/api/vault", "expect": 200, "auth": "user", "saveAs": "vaults" },
-        { "action": "GET", "endpoint": "/api/vault/${vaults.data[0].id}/assets", "expect": [200, 404], "auth": "user", "saveAs": "vaultAssets" },
-        { "action": "GET", "endpoint": "/api/vault/deposit-address/${vaultAssets.data[0].id}", "expect": [200, 404], "auth": "user", "saveAs": "depositAddr" }
+        { "action": "GET", "endpoint": "/api/users/organization-members/members", "expect": 200, "auth": "user", "saveAs": "membersList" }
       ]
     },
     {
@@ -105,10 +101,9 @@
       "steps": [
         { "action": "GET", "endpoint": "/api/health", "expect": 200, "auth": null, "description": "Public: should succeed" },
         { "action": "GET", "endpoint": "/api/countries", "expect": 200, "auth": null, "description": "Public: should succeed" },
-        { "action": "GET", "endpoint": "/api/users/profile", "expect": 401, "auth": null, "description": "Protected: should fail" },
-        { "action": "GET", "endpoint": "/api/vault", "expect": 401, "auth": null, "description": "Protected: should fail" },
-        { "action": "GET", "endpoint": "/api/transactions", "expect": 401, "auth": null, "description": "Protected: should fail" },
-        { "action": "GET", "endpoint": "/api/assets", "expect": 401, "auth": null, "description": "Protected: should fail" }
+        { "action": "GET", "endpoint": "/api/users/profile/me", "expect": 401, "auth": null, "description": "Protected: should fail" },
+        { "action": "GET", "endpoint": "/api/users/vault-accounts", "expect": 401, "auth": null, "description": "Protected: should fail" },
+        { "action": "GET", "endpoint": "/api/users/transactions", "expect": 401, "auth": null, "description": "Protected: should fail" }
       ]
     },
     {
@@ -117,20 +112,88 @@
       "description": "Regular user cannot create/update vaults or submit KYB",
       "requiresAuth": true,
       "steps": [
-        { "action": "POST", "endpoint": "/api/vault", "body": { "name": "Unauthorized Vault", "otp": "000000" }, "expect": [401, 403], "auth": "user", "description": "User cannot create vault" },
-        { "action": "POST", "endpoint": "/api/users/organization/kyb", "body": {}, "expect": [401, 403], "auth": "user", "description": "User cannot submit KYB" },
-        { "action": "PUT", "endpoint": "/api/organization/profile", "body": { "name": "Hacked Org" }, "expect": [401, 403], "auth": "user", "description": "User cannot update org profile" }
+        { "action": "POST", "endpoint": "/api/users/vault-accounts", "body": { "name": "Unauthorized Vault", "otp": "000000" }, "expect": [401, 403], "auth": "user", "description": "User cannot create vault" },
+        { "action": "POST", "endpoint": "/api/users/organization-kyb", "body": {}, "expect": [401, 403], "auth": "user", "description": "User cannot submit KYB" },
+        { "action": "POST", "endpoint": "/api/users/withdraw", "body": {}, "expect": [401, 403], "auth": "user", "description": "User cannot initiate withdrawal" },
+        { "action": "POST", "endpoint": "/api/users/organization-members/invite", "body": { "email": "test@test.com" }, "expect": [401, 403], "auth": "user", "description": "User cannot invite members" }
       ]
     },
     {
       "id": "S12",
-      "name": "Organization profile view and update",
-      "description": "Admin views and updates organization profile",
+      "name": "Action logs view",
+      "description": "User views action logs",
       "requiresAuth": true,
       "steps": [
-        { "action": "GET", "endpoint": "/api/organization/profile", "expect": 200, "auth": "admin", "saveAs": "orgProfile" },
-        { "action": "PUT", "endpoint": "/api/organization/profile", "body": { "name": "Updated Org ${timestamp}" }, "expect": 200, "auth": "admin" },
-        { "action": "GET", "endpoint": "/api/organization/profile", "expect": 200, "auth": "admin", "description": "Verify update persisted" }
+        { "action": "GET", "endpoint": "/api/users/action-logs", "expect": 200, "auth": "user", "saveAs": "actionLogs" }
+      ]
+    },
+    {
+      "id": "S13",
+      "name": "RBAC roles listing",
+      "description": "View available RBAC roles",
+      "requiresAuth": true,
+      "steps": [
+        { "action": "GET", "endpoint": "/api/users/rbac/roles", "expect": 200, "auth": "user", "saveAs": "rbacRoles" }
+      ]
+    },
+    {
+      "id": "S14",
+      "name": "Vault create → assign user → verify user access",
+      "description": "Admin creates vault, assigns a user, then that user verifies access to the vault",
+      "requiresAuth": true,
+      "requires2FA": true,
+      "steps": [
+        { "action": "POST", "endpoint": "/api/users/vault-accounts", "body": { "name": "User Access Vault ${timestamp}", "otp": "${totp}" }, "expect": [200, 201], "auth": "admin", "saveAs": "createdVault", "description": "Step 1: Admin creates vault" },
+        { "action": "GET", "endpoint": "/api/users/profile/me", "expect": 200, "auth": "user", "saveAs": "userProfile", "description": "Step 2: Get user profile to obtain userId" },
+        { "action": "POST", "endpoint": "/api/users/vault-accounts/${createdVault.data.id}/assign-users", "body": { "otp": "${totp}", "userIds": ["${userProfile.data.id}"] }, "expect": 200, "auth": "admin", "description": "Step 3: Assign user (from step 2) to vault (from step 1)" },
+        { "action": "GET", "endpoint": "/api/users/vault-accounts/${createdVault.data.id}", "expect": 200, "auth": "user", "description": "Step 4: User verifies they can access the assigned vault" }
+      ]
+    },
+    {
+      "id": "S15",
+      "name": "File upload → KYB submission chain",
+      "description": "Admin uploads file via presigned URL, then submits KYB using the file ID and country ID from previous responses",
+      "requiresAuth": true,
+      "steps": [
+        { "action": "GET", "endpoint": "/api/countries", "expect": 200, "auth": "admin", "saveAs": "countriesList", "description": "Step 1: Get countries list for countryId" },
+        { "action": "POST", "endpoint": "/api/users/files/private-storage/presigned-post", "body": { "type": "kyb", "fileName": "business_license.pdf" }, "expect": [200, 201], "auth": "admin", "saveAs": "uploadedFile", "description": "Step 2: Get presigned URL and fileId" },
+        { "action": "POST", "endpoint": "/api/users/organization-kyb", "body": { "legalBusinessName": "Test Corp ${timestamp}", "countryId": "${countriesList.data[0].id}", "contactEmail": "test@corp.com", "businessAddress": "123 Test St", "businessDescription": "Test corporation", "registrationNumber": "REG-${randomId}", "dateOfIncorporation": "2020-01-01", "businessType": "company", "ownerships": [{ "fullName": "John Doe", "dateOfBirth": "1990-01-01", "countryId": "${countriesList.data[0].id}", "email": "john@corp.com", "ownerRole": "primary_owner", "organizationRole": "CEO" }], "fileIds": ["${uploadedFile.data.id}"] }, "expect": [200, 201, 400, 409], "auth": "admin", "saveAs": "kybResult", "description": "Step 3: Submit KYB using countryId (step 1) and fileId (step 2)" },
+        { "action": "GET", "endpoint": "/api/users/organization-kyb/kyb-status", "expect": 200, "auth": "admin", "description": "Step 4: Verify KYB status after submission" }
+      ]
+    },
+    {
+      "id": "S16",
+      "name": "Vault create → add assets → verify assets",
+      "description": "Admin creates vault, adds assets, verifies assets were added",
+      "requiresAuth": true,
+      "requires2FA": true,
+      "steps": [
+        { "action": "POST", "endpoint": "/api/users/vault-accounts", "body": { "name": "Asset Test Vault ${timestamp}", "otp": "${totp}" }, "expect": [200, 201], "auth": "admin", "saveAs": "emptyVault", "description": "Step 1: Create vault" },
+        { "action": "POST", "endpoint": "/api/users/vault-accounts/${emptyVault.data.id}/add-assets", "body": { "otp": "${totp}", "assetIds": ["asset-id-placeholder"] }, "expect": [200, 400], "auth": "admin", "description": "Step 2: Add assets to vault" },
+        { "action": "GET", "endpoint": "/api/users/vault-accounts/${emptyVault.data.id}", "expect": 200, "auth": "admin", "description": "Step 3: Verify vault details" }
+      ]
+    },
+    {
+      "id": "S17",
+      "name": "Withdrawal flow with approval",
+      "description": "Admin initiates withdrawal, then approves it",
+      "requiresAuth": true,
+      "requires2FA": true,
+      "steps": [
+        { "action": "POST", "endpoint": "/api/users/withdraw", "body": { "otp": "${totp}", "vaultAccountId": "vault-id-placeholder", "assetId": "asset-id-placeholder", "amount": "0.001", "toAddress": "test-address" }, "expect": [200, 201, 400], "auth": "admin", "saveAs": "withdrawal", "description": "Step 1: Initiate withdrawal" },
+        { "action": "GET", "endpoint": "/api/users/transactions", "expect": 200, "auth": "admin", "saveAs": "txList", "description": "Step 2: List transactions to find withdrawal" },
+        { "action": "POST", "endpoint": "/api/users/withdraw/${withdrawal.data.transactionId}/approve", "body": { "otp": "${totp}" }, "expect": [200, 400], "auth": "admin", "description": "Step 3: Approve withdrawal", "condition": "withdrawal.data && withdrawal.data.transactionId" }
+      ]
+    },
+    {
+      "id": "S18",
+      "name": "Organization member invite flow",
+      "description": "Admin invites a new member to organization",
+      "requiresAuth": true,
+      "steps": [
+        { "action": "GET", "endpoint": "/api/users/rbac/roles", "expect": 200, "auth": "admin", "saveAs": "roles", "description": "Step 1: Get available roles" },
+        { "action": "POST", "endpoint": "/api/users/organization-members/invite", "body": { "email": "newmember-${timestamp}@test.com", "role": "user" }, "expect": [200, 201, 400, 409], "auth": "admin", "saveAs": "invite", "description": "Step 2: Invite new member" },
+        { "action": "GET", "endpoint": "/api/users/organization-members/members", "expect": 200, "auth": "admin", "description": "Step 3: Verify member list" }
       ]
     }
   ],

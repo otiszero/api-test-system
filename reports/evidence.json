@@ -1,74 +1,1552 @@
 [
   {
     "method": "GET",
-    "url": "https://api.foreon.network/auth/me",
-    "requestHeaders": {
-      "Accept": "application/json, text/plain, */*",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo"
-    },
-    "responseStatus": 401,
-    "responseBody": {
-      "data": {},
-      "message": "Expired token"
-    },
-    "duration": 600,
-    "curl": "curl -X GET \"https://api.foreon.network/auth/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo\"",
-    "timestamp": "2026-03-02T08:01:42.233Z",
-    "testName": "should match API user data with DB",
-    "testSuite": "Users Table Verification"
-  },
-  {
-    "method": "GET",
-    "url": "https://api.foreon.network/markets?limit=1",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
     "requestHeaders": {
       "Accept": "application/json, text/plain, */*"
     },
-    "responseStatus": 200,
+    "responseStatus": 401,
     "responseBody": {
-      "_truncated": true,
-      "_originalLength": 2587,
-      "_preview": "{\"code\":200,\"data\":[{\"id\":529,\"userId\":null,\"imageUrl\":\"https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\",\"title\":\"Will Anyone Be Jailed In February Over Epstein Disclosures?\",\"marketRule\":\"This market will resolve to “Yes” if, by February 28th, 2026, 11:59 PM, any individual serves any time in a federal, state, or local U.S. jail or prison, and the cause of that incarceration is attributed to information contained in files related to Jeffrey Epstein released by the federal government on or after December 19, 2025. Otherwise, this market will resolve to “No.”\\n\\nA qualifying incarceration must be caused by information included in Epstein-related files released on or after December 19, 2025. The cause of incarceration may be established through official charging documents, court rulings, sentencing statements, or through a clear consensus of credible reporting attributing the incarceration to information contained in those released files. Incarceration driven by information that was publicly known before December 19, 2025, or by reasons unrelated to the content of the released Epstein-related files, will not qualify.\\n\\nThe resolution source for this market will be official court records or government statements, however a consensus of credible reporting may also be used.\",\"totalVolume\":100,\"status\":5,\"type\":0,\"resolveMethod\":1,\"resolveStatus\":0,\"isCanceled\":0,\"category\":\"Politics\",\"endedAt\":\"2026-02-28T20:59:00.000Z\",\"startVoteAt\":null,\"endVoteAt\":null,\"totalVoted\":0,\"totalRejectVote\":0,\"totalApproveVote\":0,\"hash\":null,\"publishedAt\":\"2026-02-02T04:49:00.000Z\",\"isSuggestion\":0,\"email\":null,\"createdAt\":\"2026-02-02T04:48:41.000Z\",\"updatedAt\":\"2026-02-02T04:48:41.000Z\",\"cancelledAt\":null,\"outcomes\":[{\"id\":809,\"marketId\":529,\"imageUrl\":\"https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\",\"title\":\"Will Anyone Be Jailed In February Over Epstein Disclosures?\",\"resul..."
+      "success": false,
+      "statusCode": 401,
+      "requestId": "a3f6a198-b4b7-439a-a48b-e661dcf94f5e",
+      "timestamp": "2026-03-05T09:13:05.256Z",
+      "error": {
+        "code": "000001",
+        "message": "Unauthorized"
+      }
     },
-    "duration": 212,
-    "curl": "curl -X GET \"https://api.foreon.network/markets?limit=1\" \\\n  -H \"Accept: application/json, text/plain, */*\"",
-    "timestamp": "2026-03-02T08:01:42.817Z",
-    "testName": "should match API markets count with DB count",
-    "testSuite": "Markets Table Verification"
+    "duration": 946,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\"",
+    "timestamp": "2026-03-05T09:13:05.265Z",
+    "testName": "No token → protected endpoint returns 401",
+    "testSuite": "Security: Auth Bypass"
   },
   {
     "method": "GET",
-    "url": "https://api.foreon.network/markets?limit=1",
-    "requestHeaders": {
-      "Accept": "application/json, text/plain, */*"
-    },
-    "responseStatus": 200,
-    "responseBody": {
-      "_truncated": true,
-      "_originalLength": 2587,
-      "_preview": "{\"code\":200,\"data\":[{\"id\":529,\"userId\":null,\"imageUrl\":\"https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\",\"title\":\"Will Anyone Be Jailed In February Over Epstein Disclosures?\",\"marketRule\":\"This market will resolve to “Yes” if, by February 28th, 2026, 11:59 PM, any individual serves any time in a federal, state, or local U.S. jail or prison, and the cause of that incarceration is attributed to information contained in files related to Jeffrey Epstein released by the federal government on or after December 19, 2025. Otherwise, this market will resolve to “No.”\\n\\nA qualifying incarceration must be caused by information included in Epstein-related files released on or after December 19, 2025. The cause of incarceration may be established through official charging documents, court rulings, sentencing statements, or through a clear consensus of credible reporting attributing the incarceration to information contained in those released files. Incarceration driven by information that was publicly known before December 19, 2025, or by reasons unrelated to the content of the released Epstein-related files, will not qualify.\\n\\nThe resolution source for this market will be official court records or government statements, however a consensus of credible reporting may also be used.\",\"totalVolume\":100,\"status\":5,\"type\":0,\"resolveMethod\":1,\"resolveStatus\":0,\"isCanceled\":0,\"category\":\"Politics\",\"endedAt\":\"2026-02-28T20:59:00.000Z\",\"startVoteAt\":null,\"endVoteAt\":null,\"totalVoted\":0,\"totalRejectVote\":0,\"totalApproveVote\":0,\"hash\":null,\"publishedAt\":\"2026-02-02T04:49:00.000Z\",\"isSuggestion\":0,\"email\":null,\"createdAt\":\"2026-02-02T04:48:41.000Z\",\"updatedAt\":\"2026-02-02T04:48:41.000Z\",\"cancelledAt\":null,\"outcomes\":[{\"id\":809,\"marketId\":529,\"imageUrl\":\"https://dev.api.foreon-network.sotatek.works/markets/ipfs/QmXpWXTT8SUaaji2uLy2HQprShbjoKiJ3gz9A3239n6wdv\",\"title\":\"Will Anyone Be Jailed In February Over Epstein Disclosures?\",\"resul..."
-    },
-    "duration": 206,
-    "curl": "curl -X GET \"https://api.foreon.network/markets?limit=1\" \\\n  -H \"Accept: application/json, text/plain, */*\"",
-    "timestamp": "2026-03-02T08:01:43.223Z",
-    "testName": "should verify market detail matches DB",
-    "testSuite": "Markets Table Verification"
-  },
-  {
-    "method": "GET",
-    "url": "https://api.foreon.network/auth/me",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
     "requestHeaders": {
       "Accept": "application/json, text/plain, */*",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo"
+      "Authorization": "Bearer "
     },
     "responseStatus": 401,
     "responseBody": {
-      "data": {},
-      "message": "Expired token"
+      "success": false,
+      "statusCode": 401,
+      "requestId": "ebae1f3d-4095-4c52-9df2-3b40a54a348b",
+      "timestamp": "2026-03-05T09:13:05.746Z",
+      "error": {
+        "code": "000001",
+        "message": "Unauthorized"
+      }
     },
-    "duration": 188,
-    "curl": "curl -X GET \"https://api.foreon.network/auth/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo\"",
-    "timestamp": "2026-03-02T08:01:44.166Z",
-    "testName": "should verify user orders match DB",
-    "testSuite": "Orders Table Verification"
+    "duration": 477,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer \"",
+    "timestamp": "2026-03-05T09:13:05.744Z",
+    "testName": "Empty Bearer token → 401",
+    "testSuite": "Security: Auth Bypass"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer not.a.valid.jwt.token"
+    },
+    "responseStatus": 401,
+    "responseBody": {
+      "success": false,
+      "statusCode": 401,
+      "requestId": "f46e7290-6a39-4bdf-b526-f77cb536f8af",
+      "timestamp": "2026-03-05T09:13:05.847Z",
+      "error": {
+        "code": "000001",
+        "message": "Unauthorized"
+      }
+    },
+    "duration": 112,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer not.a.valid.jwt.token\"",
+    "timestamp": "2026-03-05T09:13:05.856Z",
+    "testName": "Malformed JWT → 401",
+    "testSuite": "Security: Auth Bypass"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYWtlIiwiZXhwIjowfQ==.invalidsignature"
+    },
+    "responseStatus": 401,
+    "responseBody": {
+      "success": false,
+      "statusCode": 401,
+      "requestId": "1e763eb0-2007-4d6d-b948-f74cc03cb86f",
+      "timestamp": "2026-03-05T09:13:05.951Z",
+      "error": {
+        "code": "000001",
+        "message": "Unauthorized"
+      }
+    },
+    "duration": 105,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYWtlIiwiZXhwIjowfQ==.invalidsignature\"",
+    "timestamp": "2026-03-05T09:13:05.962Z",
+    "testName": "Expired-like JWT (random base64) → 401",
+    "testSuite": "Security: Auth Bypass"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImV4cCI6OTk5OTk5OTk5OX0."
+    },
+    "responseStatus": 401,
+    "responseBody": {
+      "success": false,
+      "statusCode": 401,
+      "requestId": "4ba9c89c-ab49-4e46-a949-f29480dad193",
+      "timestamp": "2026-03-05T09:13:06.048Z",
+      "error": {
+        "code": "000001",
+        "message": "Unauthorized"
+      }
+    },
+    "duration": 89,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImV4cCI6OTk5OTk5OTk5OX0.\"",
+    "timestamp": "2026-03-05T09:13:06.052Z",
+    "testName": "JWT with \"none\" algorithm → 401",
+    "testSuite": "Security: Auth Bypass"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer ' OR '1'='1"
+    },
+    "responseStatus": 401,
+    "responseBody": {
+      "success": false,
+      "statusCode": 401,
+      "requestId": "4b4f9c1e-fb65-4b3b-b498-36b52275cdd8",
+      "timestamp": "2026-03-05T09:13:06.248Z",
+      "error": {
+        "code": "000001",
+        "message": "Unauthorized"
+      }
+    },
+    "duration": 207,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer ' OR '1'='1\"",
+    "timestamp": "2026-03-05T09:13:06.260Z",
+    "testName": "SQL in Authorization header → 401 (no 5xx)",
+    "testSuite": "Security: Auth Bypass"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer <script>alert(1)</script>"
+    },
+    "responseStatus": 401,
+    "responseBody": {
+      "success": false,
+      "statusCode": 401,
+      "requestId": "cf6ee13c-522a-4f8e-ab0c-22edfef7ade5",
+      "timestamp": "2026-03-05T09:13:06.354Z",
+      "error": {
+        "code": "000001",
+        "message": "Unauthorized"
+      }
+    },
+    "duration": 110,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer <script>alert(1)</script>\"",
+    "timestamp": "2026-03-05T09:13:06.371Z",
+    "testName": "XSS in Authorization header → 401 (no 5xx)",
+    "testSuite": "Security: Auth Bypass"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "email": "' OR '1'='1",
+      "password": "' OR '1'='1"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "bf81a0e4-aac5-49fd-9c18-44c9cde6610a",
+      "timestamp": "2026-03-05T09:13:06.460Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "email must be an email"
+        ]
+      }
+    },
+    "duration": 83,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"email\":\"' OR '1'='1\",\"password\":\"' OR '1'='1\"}'",
+    "timestamp": "2026-03-05T09:13:06.455Z",
+    "testName": "Login with SQL payload: ' OR '1'='1... → no 5xx",
+    "testSuite": "Security: SQL Injection - Login"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "email": "' OR '1'='1' --",
+      "password": "' OR '1'='1' --"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "d0d93875-85c8-465b-b124-fc509c20e9a2",
+      "timestamp": "2026-03-05T09:13:06.965Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "email must be an email"
+        ]
+      }
+    },
+    "duration": 508,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"email\":\"' OR '1'='1' --\",\"password\":\"' OR '1'='1' --\"}'",
+    "timestamp": "2026-03-05T09:13:06.964Z",
+    "testName": "Login with SQL payload: ' OR '1'='1' --... → no 5xx",
+    "testSuite": "Security: SQL Injection - Login"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "email": "'; DROP TABLE users; --",
+      "password": "'; DROP TABLE users; --"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "60f92bd5-707d-4754-9669-d3951d0c2619",
+      "timestamp": "2026-03-05T09:13:07.560Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "email must be an email"
+        ]
+      }
+    },
+    "duration": 601,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"email\":\"'; DROP TABLE users; --\",\"password\":\"'; DROP TABLE users; --\"}'",
+    "timestamp": "2026-03-05T09:13:07.565Z",
+    "testName": "Login with SQL payload: '; DROP TABLE users; --... → no 5xx",
+    "testSuite": "Security: SQL Injection - Login"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "email": "' UNION SELECT * FROM users --",
+      "password": "' UNION SELECT * FROM users --"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "db1745e6-4289-49ba-a9d0-78d3fd5c884e",
+      "timestamp": "2026-03-05T09:13:08.051Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "email must be an email"
+        ]
+      }
+    },
+    "duration": 490,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"email\":\"' UNION SELECT * FROM users --\",\"password\":\"' UNION SELECT * FROM users --\"}'",
+    "timestamp": "2026-03-05T09:13:08.055Z",
+    "testName": "Login with SQL payload: ' UNION SELECT * FROM users --... → no 5xx",
+    "testSuite": "Security: SQL Injection - Login"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "email": "admin'--",
+      "password": "admin'--"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "8f576e61-0487-42e9-a1de-83de86f2b069",
+      "timestamp": "2026-03-05T09:13:08.156Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "email must be an email"
+        ]
+      }
+    },
+    "duration": 99,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"email\":\"admin'--\",\"password\":\"admin'--\"}'",
+    "timestamp": "2026-03-05T09:13:08.154Z",
+    "testName": "Login with SQL payload: admin'--... → no 5xx",
+    "testSuite": "Security: SQL Injection - Login"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "email": "1; SELECT * FROM pg_tables",
+      "password": "1; SELECT * FROM pg_tables"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "1fb1affe-b4b2-4a31-994d-620b0d65bf41",
+      "timestamp": "2026-03-05T09:13:08.349Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "email must be an email"
+        ]
+      }
+    },
+    "duration": 187,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"email\":\"1; SELECT * FROM pg_tables\",\"password\":\"1; SELECT * FROM pg_tables\"}'",
+    "timestamp": "2026-03-05T09:13:08.341Z",
+    "testName": "Login with SQL payload: 1; SELECT * FROM pg_tables... → no 5xx",
+    "testSuite": "Security: SQL Injection - Login"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "email": "' OR 1=1 LIMIT 1 --",
+      "password": "' OR 1=1 LIMIT 1 --"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "5e127ca2-9fdc-4498-8793-fa9a1be64dfe",
+      "timestamp": "2026-03-05T09:13:08.452Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "email must be an email"
+        ]
+      }
+    },
+    "duration": 133,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"email\":\"' OR 1=1 LIMIT 1 --\",\"password\":\"' OR 1=1 LIMIT 1 --\"}'",
+    "timestamp": "2026-03-05T09:13:08.474Z",
+    "testName": "Login with SQL payload: ' OR 1=1 LIMIT 1 --... → no 5xx",
+    "testSuite": "Security: SQL Injection - Login"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/vault-accounts/1'%20OR%20'1'%3D'1",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "responseStatus": 404,
+    "responseBody": {
+      "success": false,
+      "statusCode": 404,
+      "requestId": "035f3f87-5ada-40a8-8ef6-afaf94c9afab",
+      "timestamp": "2026-03-05T09:13:08.554Z",
+      "error": {
+        "code": "000001",
+        "message": "Cannot GET /api/users/vault-accounts/1'%20OR%20'1'%3D'1"
+      }
+    },
+    "duration": 99,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/vault-accounts/1'%20OR%20'1'%3D'1\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:08.573Z",
+    "testName": "GET /vault-accounts/1' OR '1'='1... → no 5xx",
+    "testSuite": "Security: SQL Injection - Path Params"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/vault-accounts/1%3B%20DROP%20TABLE%20vault_accounts%3B--",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "responseStatus": 404,
+    "responseBody": {
+      "success": false,
+      "statusCode": 404,
+      "requestId": "a100016b-6efa-4ada-af19-ddbce2c5c1e4",
+      "timestamp": "2026-03-05T09:13:08.649Z",
+      "error": {
+        "code": "000001",
+        "message": "Cannot GET /api/users/vault-accounts/1%3B%20DROP%20TABLE%20vault_accounts%3B--"
+      }
+    },
+    "duration": 67,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/vault-accounts/1%3B%20DROP%20TABLE%20vault_accounts%3B--\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:08.641Z",
+    "testName": "GET /vault-accounts/1; DROP TABLE vault_... → no 5xx",
+    "testSuite": "Security: SQL Injection - Path Params"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/vault-accounts/1%20UNION%20SELECT%20*%20FROM%20users--",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "responseStatus": 404,
+    "responseBody": {
+      "success": false,
+      "statusCode": 404,
+      "requestId": "6d7f3607-2cfb-446c-91c8-c1c655cf6c01",
+      "timestamp": "2026-03-05T09:13:08.754Z",
+      "error": {
+        "code": "000001",
+        "message": "Cannot GET /api/users/vault-accounts/1%20UNION%20SELECT%20*%20FROM%20users--"
+      }
+    },
+    "duration": 104,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/vault-accounts/1%20UNION%20SELECT%20*%20FROM%20users--\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:08.746Z",
+    "testName": "GET /vault-accounts/1 UNION SELECT * FRO... → no 5xx",
+    "testSuite": "Security: SQL Injection - Path Params"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/vault-accounts/..%2F..%2F..%2Fetc%2Fpasswd",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "responseStatus": 404,
+    "responseBody": {
+      "success": false,
+      "statusCode": 404,
+      "requestId": "29159f9b-fe94-4664-b2fd-75de2bb0af6f",
+      "timestamp": "2026-03-05T09:13:08.948Z",
+      "error": {
+        "code": "000001",
+        "message": "Cannot GET /api/users/vault-accounts/..%2F..%2F..%2Fetc%2Fpasswd"
+      }
+    },
+    "duration": 195,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/vault-accounts/..%2F..%2F..%2Fetc%2Fpasswd\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:08.941Z",
+    "testName": "GET /vault-accounts/../../../etc/passwd... → no 5xx",
+    "testSuite": "Security: SQL Injection - Path Params"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/vault-accounts/1%2500",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "responseStatus": 404,
+    "responseBody": {
+      "success": false,
+      "statusCode": 404,
+      "requestId": "20223386-db1f-42dc-a6a2-df6bb9021518",
+      "timestamp": "2026-03-05T09:13:09.052Z",
+      "error": {
+        "code": "000001",
+        "message": "Cannot GET /api/users/vault-accounts/1%2500"
+      }
+    },
+    "duration": 108,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/vault-accounts/1%2500\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:09.049Z",
+    "testName": "GET /vault-accounts/1%00... → no 5xx",
+    "testSuite": "Security: SQL Injection - Path Params"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "name": "<script>alert(\"XSS\")</script>",
+      "bio": "<script>alert(\"XSS\")</script>"
+    },
+    "responseStatus": 201,
+    "responseBody": {
+      "errorCode": "0",
+      "message": "success",
+      "requestId": "9ed1949f-f848-42e6-82f6-cefff5226c42",
+      "timestamp": "2026-03-05T09:13:09.259Z",
+      "data": {}
+    },
+    "duration": 203,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"name\":\"<script>alert(\\\"XSS\\\")</script>\",\"bio\":\"<script>alert(\\\"XSS\\\")</script>\"}'",
+    "timestamp": "2026-03-05T09:13:09.252Z",
+    "testName": "XSS in profile update → should not reflect in response",
+    "testSuite": "Security: XSS Injection"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "name": "<img src=x onerror=alert(1)>",
+      "bio": "<img src=x onerror=alert(1)>"
+    },
+    "responseStatus": 201,
+    "responseBody": {
+      "errorCode": "0",
+      "message": "success",
+      "requestId": "91fe4d53-5253-44a7-974e-98608fc155f6",
+      "timestamp": "2026-03-05T09:13:09.846Z",
+      "data": {}
+    },
+    "duration": 592,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"name\":\"<img src=x onerror=alert(1)>\",\"bio\":\"<img src=x onerror=alert(1)>\"}'",
+    "timestamp": "2026-03-05T09:13:09.844Z",
+    "testName": "XSS in profile update → should not reflect in response",
+    "testSuite": "Security: XSS Injection"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "name": "\"><script>alert(document.cookie)</script>",
+      "bio": "\"><script>alert(document.cookie)</script>"
+    },
+    "responseStatus": 201,
+    "responseBody": {
+      "errorCode": "0",
+      "message": "success",
+      "requestId": "f18de7e8-4290-4b4e-a461-ecbf2b686ab6",
+      "timestamp": "2026-03-05T09:13:10.248Z",
+      "data": {}
+    },
+    "duration": 398,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"name\":\"\\\"><script>alert(document.cookie)</script>\",\"bio\":\"\\\"><script>alert(document.cookie)</script>\"}'",
+    "timestamp": "2026-03-05T09:13:10.242Z",
+    "testName": "XSS in profile update → should not reflect in response",
+    "testSuite": "Security: XSS Injection"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "name": "javascript:alert('XSS')",
+      "bio": "javascript:alert('XSS')"
+    },
+    "responseStatus": 201,
+    "responseBody": {
+      "errorCode": "0",
+      "message": "success",
+      "requestId": "41853d55-930c-4b74-8339-5dec679c096a",
+      "timestamp": "2026-03-05T09:13:10.546Z",
+      "data": {}
+    },
+    "duration": 296,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"name\":\"javascript:alert('XSS')\",\"bio\":\"javascript:alert('XSS')\"}'",
+    "timestamp": "2026-03-05T09:13:10.538Z",
+    "testName": "XSS in profile update → should not reflect in response",
+    "testSuite": "Security: XSS Injection"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "name": "<svg onload=alert(1)>",
+      "bio": "<svg onload=alert(1)>"
+    },
+    "responseStatus": 201,
+    "responseBody": {
+      "errorCode": "0",
+      "message": "success",
+      "requestId": "76945c86-2fa8-4f62-b2b6-7755a6efab72",
+      "timestamp": "2026-03-05T09:13:10.762Z",
+      "data": {}
+    },
+    "duration": 221,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"name\":\"<svg onload=alert(1)>\",\"bio\":\"<svg onload=alert(1)>\"}'",
+    "timestamp": "2026-03-05T09:13:10.760Z",
+    "testName": "XSS in profile update → should not reflect in response",
+    "testSuite": "Security: XSS Injection"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "name": "{{constructor.constructor(\"return this\")()}}",
+      "bio": "{{constructor.constructor(\"return this\")()}}"
+    },
+    "responseStatus": 201,
+    "responseBody": {
+      "errorCode": "0",
+      "message": "success",
+      "requestId": "89e7afbd-68f4-4417-9991-a19706419450",
+      "timestamp": "2026-03-05T09:13:10.948Z",
+      "data": {}
+    },
+    "duration": 180,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"name\":\"{{constructor.constructor(\\\"return this\\\")()}}\",\"bio\":\"{{constructor.constructor(\\\"return this\\\")()}}\"}'",
+    "timestamp": "2026-03-05T09:13:10.940Z",
+    "testName": "XSS in profile update → should not reflect in response",
+    "testSuite": "Security: XSS Injection"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/register",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "email": "<script>alert(1)</script>@test.com",
+      "password": "Test123!"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "5166a0d1-fee4-43c5-a95f-7df7edbf47fd",
+      "timestamp": "2026-03-05T09:13:10.961Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "email must be an email"
+        ]
+      }
+    },
+    "duration": 12,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/register\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"email\":\"<script>alert(1)</script>@test.com\",\"password\":\"Test123!\"}'",
+    "timestamp": "2026-03-05T09:13:10.952Z",
+    "testName": "XSS in register email → should be rejected",
+    "testSuite": "Security: XSS Injection"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/organization-members/invite",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "email": "\"><script>alert(1)</script>@test.com"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "6d8a544d-d871-4a42-b0a9-28dd18c77786",
+      "timestamp": "2026-03-05T09:13:11.057Z",
+      "error": {
+        "code": "000001",
+        "message": "OTP is required"
+      }
+    },
+    "duration": 96,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/organization-members/invite\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"email\":\"\\\"><script>alert(1)</script>@test.com\"}'",
+    "timestamp": "2026-03-05T09:13:11.049Z",
+    "testName": "XSS in organization invite email → should be rejected",
+    "testSuite": "Security: XSS Injection"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/health",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE",
+      "X-Forwarded-For": "127.0.0.1"
+    },
+    "responseStatus": 200,
+    "responseBody": {
+      "errorCode": "0",
+      "message": "success",
+      "requestId": "605ff7f1-4935-42e3-9676-9c88418cc262",
+      "timestamp": "2026-03-05T09:13:11.159Z",
+      "data": {
+        "status": "ok",
+        "uptime": 6268.712618631,
+        "timestamp": "2026-03-05T09:13:11.159Z"
+      }
+    },
+    "duration": 65,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/health\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -H \"X-Forwarded-For: 127.0.0.1\"",
+    "timestamp": "2026-03-05T09:13:11.162Z",
+    "testName": "X-Forwarded-For spoofing → no 5xx",
+    "testSuite": "Security: Header Injection"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": "email=test@test.com&password=test",
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "85865ae8-b147-4c9e-9955-43b3adfd5e52",
+      "timestamp": "2026-03-05T09:13:11.249Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "password should not be empty",
+          "password must be a string",
+          "email should not be empty",
+          "email must be an email",
+          "Email must not exceed 255 characters"
+        ]
+      }
+    },
+    "duration": 96,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Content-Type: application/x-www-form-urlencoded\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '\"email=test@test.com&password=test\"'",
+    "timestamp": "2026-03-05T09:13:11.259Z",
+    "testName": "Content-Type manipulation → no 5xx",
+    "testSuite": "Security: Header Injection"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "email": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@test.com",
+      "password": "test"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "7a44e91c-42b0-4edc-988e-40a5ca40c81f",
+      "timestamp": "2026-03-05T09:13:21.328Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "email must be an email"
+        ]
+      }
+    },
+    "duration": 60,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"email\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@test.com\",\"password\":\"test\"}'",
+    "timestamp": "2026-03-05T09:13:21.322Z",
+    "testName": "Extremely long email (10000 chars) → no 5xx",
+    "testSuite": "Security: Input Validation"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "email": "test@test.com",
+      "password": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "88a144ce-709c-4674-b46c-dc7ce75a8579",
+      "timestamp": "2026-03-05T09:13:21.347Z",
+      "error": {
+        "code": "AUTH_001",
+        "message": "Invalid credentials"
+      }
+    },
+    "duration": 17,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"email\":\"test@test.com\",\"password\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}'",
+    "timestamp": "2026-03-05T09:13:21.340Z",
+    "testName": "Extremely long password (10000 chars) → no 5xx",
+    "testSuite": "Security: Input Validation"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "email": "test\u0000@test.com",
+      "password": "test"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "ce4e3035-0afe-4485-9fc6-644ea66d5138",
+      "timestamp": "2026-03-05T09:13:21.359Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "email must be an email"
+        ]
+      }
+    },
+    "duration": 24,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"email\":\"test\\u0000@test.com\",\"password\":\"test\"}'",
+    "timestamp": "2026-03-05T09:13:21.364Z",
+    "testName": "Null bytes in email → no 5xx",
+    "testSuite": "Security: Input Validation"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "email": "👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦@test.com",
+      "password": "🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "b131e487-b00f-4cc9-8f48-e3895803c1f3",
+      "timestamp": "2026-03-05T09:13:21.392Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "email must be an email"
+        ]
+      }
+    },
+    "duration": 22,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"email\":\"👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦@test.com\",\"password\":\"🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐🔐\"}'",
+    "timestamp": "2026-03-05T09:13:21.387Z",
+    "testName": "Unicode overflow in body → no 5xx",
+    "testSuite": "Security: Input Validation"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {},
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "fb444cd8-4c66-41f7-a0f2-1d89b897d874",
+      "timestamp": "2026-03-05T09:13:21.409Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "password should not be empty",
+          "password must be a string",
+          "email should not be empty",
+          "email must be an email",
+          "Email must not exceed 255 characters"
+        ]
+      }
+    },
+    "duration": 15,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:21.403Z",
+    "testName": "Empty body on POST endpoint → no 5xx",
+    "testSuite": "Security: Input Validation"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": [],
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "3adf41df-5e1c-4f22-9ce0-62e5cca453fe",
+      "timestamp": "2026-03-05T09:13:21.422Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "password should not be empty",
+          "password must be a string",
+          "email should not be empty",
+          "email must be an email",
+          "Email must not exceed 255 characters"
+        ]
+      }
+    },
+    "duration": 14,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:21.417Z",
+    "testName": "Array instead of object body → no 5xx",
+    "testSuite": "Security: Input Validation"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "nested": {
+        "nested": {
+          "nested": {
+            "nested": {
+              "nested": {
+                "nested": {
+                  "nested": {
+                    "nested": {
+                      "nested": {
+                        "nested": {
+                          "nested": {
+                            "nested": {
+                              "nested": {
+                                "nested": {
+                                  "nested": {
+                                    "nested": {
+                                      "nested": {
+                                        "nested": {
+                                          "nested": {
+                                            "nested": {
+                                              "nested": {
+                                                "nested": {
+                                                  "nested": {
+                                                    "nested": {
+                                                      "nested": {
+                                                        "nested": {
+                                                          "nested": {
+                                                            "nested": {
+                                                              "nested": {
+                                                                "nested": {
+                                                                  "nested": {
+                                                                    "nested": {
+                                                                      "nested": {
+                                                                        "nested": {
+                                                                          "nested": {
+                                                                            "nested": {
+                                                                              "nested": {
+                                                                                "nested": {
+                                                                                  "nested": {
+                                                                                    "nested": {
+                                                                                      "nested": {
+                                                                                        "nested": {
+                                                                                          "nested": {
+                                                                                            "nested": {
+                                                                                              "nested": {
+                                                                                                "nested": {
+                                                                                                  "nested": {
+                                                                                                    "nested": {
+                                                                                                      "nested": {
+                                                                                                        "nested": {
+                                                                                                          "value": "deep"
+                                                                                                        }
+                                                                                                      }
+                                                                                                    }
+                                                                                                  }
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "7b10804e-83c0-4c26-95ff-3630abb3aedd",
+      "timestamp": "2026-03-05T09:13:21.438Z",
+      "error": {
+        "code": "000001",
+        "message": [
+          "password should not be empty",
+          "password must be a string",
+          "email should not be empty",
+          "email must be an email",
+          "Email must not exceed 255 characters"
+        ]
+      }
+    },
+    "duration": 14,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"nested\":{\"value\":\"deep\"}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}'",
+    "timestamp": "2026-03-05T09:13:21.432Z",
+    "testName": "Nested object depth attack → no 5xx",
+    "testSuite": "Security: Input Validation"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/files/private-storage/presigned-get/..%2F..%2F..%2Fetc%2Fpasswd",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "8732c516-0f92-45c1-b40c-d972926a14fe",
+      "timestamp": "2026-03-05T09:13:21.452Z",
+      "error": {
+        "code": "000001",
+        "message": "Validation failed (numeric string is expected)"
+      }
+    },
+    "duration": 13,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/files/private-storage/presigned-get/..%2F..%2F..%2Fetc%2Fpasswd\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:21.446Z",
+    "testName": "Path traversal: ../../../etc/passwd... → no 5xx",
+    "testSuite": "Security: Path Traversal"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/files/private-storage/presigned-get/..%252F..%252F..%252Fetc%252Fpasswd",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "dbc19c9c-b0f3-42d4-a55a-5a5985fbb1e3",
+      "timestamp": "2026-03-05T09:13:21.469Z",
+      "error": {
+        "code": "000001",
+        "message": "Validation failed (numeric string is expected)"
+      }
+    },
+    "duration": 19,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/files/private-storage/presigned-get/..%252F..%252F..%252Fetc%252Fpasswd\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:21.465Z",
+    "testName": "Path traversal: ..%2F..%2F..%2Fetc%2Fpass... → no 5xx",
+    "testSuite": "Security: Path Traversal"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/files/private-storage/presigned-get/....%2F%2F....%2F%2F....%2F%2Fetc%2Fpasswd",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "0a06ad5c-bb4e-4d6d-a00f-9576f150b910",
+      "timestamp": "2026-03-05T09:13:21.485Z",
+      "error": {
+        "code": "000001",
+        "message": "Validation failed (numeric string is expected)"
+      }
+    },
+    "duration": 14,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/files/private-storage/presigned-get/....%2F%2F....%2F%2F....%2F%2Fetc%2Fpasswd\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:21.479Z",
+    "testName": "Path traversal: ....//....//....//etc/pas... → no 5xx",
+    "testSuite": "Security: Path Traversal"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/files/private-storage/presigned-get/%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "83776494-6b06-4ce2-8510-4f0c0627cb15",
+      "timestamp": "2026-03-05T09:13:21.501Z",
+      "error": {
+        "code": "000001",
+        "message": "Validation failed (numeric string is expected)"
+      }
+    },
+    "duration": 14,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/files/private-storage/presigned-get/%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:21.494Z",
+    "testName": "Path traversal: %2e%2e%2f%2e%2e%2f%2e%2e%... → no 5xx",
+    "testSuite": "Security: Path Traversal"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/health",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "responseStatus": 200,
+    "responseBody": {
+      "errorCode": "0",
+      "message": "success",
+      "requestId": "bdc6f7a2-2b4d-4ced-9b50-3391fc293253",
+      "timestamp": "2026-03-05T09:13:21.546Z",
+      "data": {
+        "status": "ok",
+        "uptime": 6279.099343834,
+        "timestamp": "2026-03-05T09:13:21.546Z"
+      }
+    },
+    "duration": 46,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/health\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:21.541Z",
+    "testName": "Health endpoint should not expose server version",
+    "testSuite": "Security: Response Headers"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/health",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "responseStatus": 200,
+    "responseBody": {
+      "errorCode": "0",
+      "message": "success",
+      "requestId": "1cde6833-2ee6-4be6-b55e-662ca1a696f3",
+      "timestamp": "2026-03-05T09:13:21.559Z",
+      "data": {
+        "status": "ok",
+        "uptime": 6279.112748629,
+        "timestamp": "2026-03-05T09:13:21.559Z"
+      }
+    },
+    "duration": 23,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/health\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:21.564Z",
+    "testName": "Response should not contain X-Powered-By",
+    "testSuite": "Security: Response Headers"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/profile/me",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "responseStatus": 200,
+    "responseBody": {
+      "errorCode": "0",
+      "message": "success",
+      "requestId": "01eecddf-a3e9-4e4a-86c0-1380505b2022",
+      "timestamp": "2026-03-05T09:13:21.588Z",
+      "data": {
+        "id": "1118",
+        "email": "tien.nguyen2@sotatek.com",
+        "displayName": "Tienkim",
+        "roleInfo": {
+          "role": "user",
+          "organizationRole": "organization_owner",
+          "organizationId": 111
+        },
+        "permissionsInfo": {
+          "organizationPermissions": [
+            "custody_wallet_view_transaction_history",
+            "custody_wallet_deposit",
+            "custody_wallet_withdraw",
+            "custody_wallet_approve_reject_withdrawal",
+            "org_profile_view",
+            "org_profile_edit",
+            "org_kyb_view",
+            "org_kyb_perform",
+            "org_member_invite",
+            "org_member_remove",
+            "org_member_view_search_export",
+            "org_member_edit_access",
+            "org_vault_account_management_create_vault_account",
+            "org_vault_account_management_view_list_detail",
+            "org_vault_account_management_rename_vault",
+            "org_vault_account_management_add_asset_to_vault",
+            "org_vault_account_management_add_member_to_vault",
+            "org_vault_account_management_remove_member_from_vault",
+            "org_ledger_view_organization_ledger",
+            "org_action_log_view_organization_action_log",
+            "org_ledger_view",
+            "whitelist_create_wallet",
+            "whitelist_add_address_to_wallet",
+            "whitelist_edit_wallet_name",
+            "whitelist_delete_wallet",
+            "whitelist_remove_address_from_wallet",
+            "whitelist_view_wallet",
+            "whitelist_view_address"
+          ]
+        },
+        "imageUrl": null,
+        "hasPassword": true,
+        "organizationName": null
+      }
+    },
+    "duration": 17,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/profile/me\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:21.582Z",
+    "testName": "User A cannot access User B profile data via ID manipulation",
+    "testSuite": "Security: IDOR"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/organization/999999",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "15eccd20-3ede-4b30-8739-c72e6f7d44b0",
+      "timestamp": "2026-03-05T09:13:21.605Z",
+      "error": {
+        "code": "ORG_001",
+        "message": "Organization not found"
+      }
+    },
+    "duration": 16,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/organization/999999\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\"",
+    "timestamp": "2026-03-05T09:13:21.598Z",
+    "testName": "User A cannot access User B profile data via ID manipulation",
+    "testSuite": "Security: IDOR"
+  },
+  {
+    "method": "GET",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/vault-accounts/999999",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE5IiwiZW1haWwiOiJ0aWVuLm5ndXllbjIrZGV2MUBzb3RhdGVrLmNvbSIsInJvbGUiOiJ1c2VyIiwib3JnYW5pemF0aW9uSWQiOm51bGwsIm9yZ2FuaXphdGlvbk93bmVyIjpmYWxzZSwia2V5VG9rZW4iOiJjMWIzZmE0OC02YWYyLTRhNTAtYWNmZi02ZTIxMWM3MGFlNmEiLCJ0eXAiOiJBQ0NFU1MiLCJpYXQiOjE3NzI2OTQ1ODUsImV4cCI6MTc3Mjc4MDk4NX0.nWh9XLbm428SNJ5-ZNC3su-BpFma0hRopH5LkMKbdz4"
+    },
+    "responseStatus": 404,
+    "responseBody": {
+      "success": false,
+      "statusCode": 404,
+      "requestId": "6258be3c-16f0-4167-8a57-a1d4b57607bb",
+      "timestamp": "2026-03-05T09:13:21.647Z",
+      "error": {
+        "code": "000001",
+        "message": "Cannot GET /api/users/vault-accounts/999999"
+      }
+    },
+    "duration": 39,
+    "curl": "curl -X GET \"https://dev.api.upmount.sotatek.works/api/users/vault-accounts/999999\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE5IiwiZW1haWwiOiJ0aWVuLm5ndXllbjIrZGV2MUBzb3RhdGVrLmNvbSIsInJvbGUiOiJ1c2VyIiwib3JnYW5pemF0aW9uSWQiOm51bGwsIm9yZ2FuaXphdGlvbk93bmVyIjpmYWxzZSwia2V5VG9rZW4iOiJjMWIzZmE0OC02YWYyLTRhNTAtYWNmZi02ZTIxMWM3MGFlNmEiLCJ0eXAiOiJBQ0NFU1MiLCJpYXQiOjE3NzI2OTQ1ODUsImV4cCI6MTc3Mjc4MDk4NX0.nWh9XLbm428SNJ5-ZNC3su-BpFma0hRopH5LkMKbdz4\"",
+    "timestamp": "2026-03-05T09:13:21.640Z",
+    "testName": "Normal user cannot access other user vault accounts",
+    "testSuite": "Security: IDOR"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/two-factor/verify-login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "otp": "00000"
+    },
+    "responseStatus": 403,
+    "responseBody": {
+      "success": false,
+      "statusCode": 403,
+      "requestId": "c86508dd-1e75-4c51-80b4-c911e9414b04",
+      "timestamp": "2026-03-05T09:13:21.660Z",
+      "error": {
+        "code": "000001",
+        "message": "Forbidden resource"
+      }
+    },
+    "duration": 30,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/two-factor/verify-login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"otp\":\"00000\"}'",
+    "timestamp": "2026-03-05T09:13:21.671Z",
+    "testName": "Invalid OTP format → should reject",
+    "testSuite": "Security: 2FA Bypass"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/two-factor/verify-login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "otp": "1234567"
+    },
+    "responseStatus": 403,
+    "responseBody": {
+      "success": false,
+      "statusCode": 403,
+      "requestId": "eb8553eb-6578-4a99-91e8-f2a6ed661c23",
+      "timestamp": "2026-03-05T09:13:21.691Z",
+      "error": {
+        "code": "000001",
+        "message": "Forbidden resource"
+      }
+    },
+    "duration": 13,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/two-factor/verify-login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"otp\":\"1234567\"}'",
+    "timestamp": "2026-03-05T09:13:21.684Z",
+    "testName": "Invalid OTP format → should reject",
+    "testSuite": "Security: 2FA Bypass"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/two-factor/verify-login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "otp": "abcdef"
+    },
+    "responseStatus": 403,
+    "responseBody": {
+      "success": false,
+      "statusCode": 403,
+      "requestId": "17b8701d-5b4e-4b55-bf44-380465023a70",
+      "timestamp": "2026-03-05T09:13:21.704Z",
+      "error": {
+        "code": "000001",
+        "message": "Forbidden resource"
+      }
+    },
+    "duration": 14,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/two-factor/verify-login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"otp\":\"abcdef\"}'",
+    "timestamp": "2026-03-05T09:13:21.698Z",
+    "testName": "Invalid OTP format → should reject",
+    "testSuite": "Security: 2FA Bypass"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/two-factor/verify-login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "otp": ""
+    },
+    "responseStatus": 403,
+    "responseBody": {
+      "success": false,
+      "statusCode": 403,
+      "requestId": "2d72d836-c62a-4028-8130-a60adfe27b83",
+      "timestamp": "2026-03-05T09:13:21.717Z",
+      "error": {
+        "code": "000001",
+        "message": "Forbidden resource"
+      }
+    },
+    "duration": 12,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/two-factor/verify-login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"otp\":\"\"}'",
+    "timestamp": "2026-03-05T09:13:21.710Z",
+    "testName": "Invalid OTP format → should reject",
+    "testSuite": "Security: 2FA Bypass"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/two-factor/verify-login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "otp": "      "
+    },
+    "responseStatus": 403,
+    "responseBody": {
+      "success": false,
+      "statusCode": 403,
+      "requestId": "818a075e-ff6e-4cf6-a754-a224dc0c3ba4",
+      "timestamp": "2026-03-05T09:13:21.734Z",
+      "error": {
+        "code": "000001",
+        "message": "Forbidden resource"
+      }
+    },
+    "duration": 17,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/two-factor/verify-login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"otp\":\"      \"}'",
+    "timestamp": "2026-03-05T09:13:21.727Z",
+    "testName": "Invalid OTP format → should reject",
+    "testSuite": "Security: 2FA Bypass"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/auth/two-factor/verify-login",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "otp": "-12345"
+    },
+    "responseStatus": 403,
+    "responseBody": {
+      "success": false,
+      "statusCode": 403,
+      "requestId": "f38c03fb-d396-4d68-95d8-3be46830ecde",
+      "timestamp": "2026-03-05T09:13:21.751Z",
+      "error": {
+        "code": "000001",
+        "message": "Forbidden resource"
+      }
+    },
+    "duration": 18,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/auth/two-factor/verify-login\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"otp\":\"-12345\"}'",
+    "timestamp": "2026-03-05T09:13:21.745Z",
+    "testName": "Invalid OTP format → should reject",
+    "testSuite": "Security: 2FA Bypass"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/vault-accounts",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "name": "NoOTPVault"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "58f417a8-7b2a-43ce-81ae-1432fb99e6c0",
+      "timestamp": "2026-03-05T09:13:21.766Z",
+      "error": {
+        "code": "000001",
+        "message": "OTP is required"
+      }
+    },
+    "duration": 21,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/vault-accounts\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"name\":\"NoOTPVault\"}'",
+    "timestamp": "2026-03-05T09:13:21.768Z",
+    "testName": "Vault create without OTP → should be rejected",
+    "testSuite": "Security: 2FA Bypass"
+  },
+  {
+    "method": "POST",
+    "url": "https://dev.api.upmount.sotatek.works/api/users/withdraw",
+    "requestHeaders": {
+      "Accept": "application/json, text/plain, */*",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE"
+    },
+    "requestBody": {
+      "amount": "0.001"
+    },
+    "responseStatus": 400,
+    "responseBody": {
+      "success": false,
+      "statusCode": 400,
+      "requestId": "540d52e3-a62d-4011-8e8f-eb2a08a7b290",
+      "timestamp": "2026-03-05T09:13:21.788Z",
+      "error": {
+        "code": "000001",
+        "message": "OTP is required"
+      }
+    },
+    "duration": 13,
+    "curl": "curl -X POST \"https://dev.api.upmount.sotatek.works/api/users/withdraw\" \\\n  -H \"Accept: application/json, text/plain, */*\" \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE\" \\\n  -d '{\"amount\":\"0.001\"}'",
+    "timestamp": "2026-03-05T09:13:21.781Z",
+    "testName": "Withdraw without OTP → should be rejected",
+    "testSuite": "Security: 2FA Bypass"
   }
 ]

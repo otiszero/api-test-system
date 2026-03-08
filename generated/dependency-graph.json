@@ -1,130 +1,283 @@
 {
+  "_comment": "Resource dependencies for test execution order - Upmount Custody API",
+  "_generatedAt": "2026-03-05T07:44:43.226Z",
+
   "metadata": {
-    "generatedAt": "2026-03-02T03:17:31.355Z",
-    "totalResources": 9,
-    "totalTestableEndpoints": 46,
-    "blacklistedEndpoints": 22
+    "totalResources": 17,
+    "totalTestableEndpoints": 76,
+    "blacklistedEndpoints": 0
   },
+
   "resources": {
-    "Authentication": {
-      "endpoints": 6,
+    "Health": {
+      "endpoints": 2,
       "testable": [
-        "POST /auth/login",
-        "POST /auth/logout",
-        "POST /auth/refresh-token",
-        "POST /auth/admin-refresh-token",
-        "GET /auth/me",
-        "GET /auth/asset"
+        "GET /api/health",
+        "GET /api/health/ready"
       ],
-      "dependencies": []
+      "dependencies": [],
+      "auth": "none",
+      "priority": 1
     },
-    "Markets": {
-      "endpoints": 13,
-      "testable": [
-        "GET /markets",
-        "GET /markets/proposed",
-        "GET /markets/proposed-detail/{id}",
-        "GET /markets/top-holders/{id}",
-        "GET /markets/category",
-        "GET /markets/favorites",
-        "POST /markets/{marketId}/favorite",
-        "GET /markets/{id}",
-        "GET /markets/ipfs/{id}",
-        "POST /markets/market",
-        "PUT /markets/vote/{id}",
-        "PUT /markets/add-liquidity/{id}",
-        "POST /markets/upload"
-      ],
-      "dependencies": ["Authentication"]
-    },
-    "Orders": {
-      "endpoints": 9,
-      "testable": [
-        "GET /orders",
-        "POST /orders",
-        "PUT /orders/{id}/cancelled",
-        "PUT /orders/{id}/claimed",
-        "GET /orders/position",
-        "GET /orders/position-claims",
-        "POST /orders/position-claims",
-        "POST /orders/add-liquidity",
-        "GET /orders/activity"
-      ],
-      "dependencies": ["Authentication", "Markets"]
-    },
-    "Trades": {
-      "endpoints": 5,
-      "testable": [
-        "GET /trades",
-        "GET /trades/market-trade",
-        "GET /trades/graph",
-        "GET /trades/graph-overrall",
-        "GET /trades/history"
-      ],
-      "dependencies": ["Orders"]
-    },
-    "Comments": {
-      "endpoints": 6,
-      "testable": [
-        "POST /comments",
-        "POST /comments/reply",
-        "GET /comments/market/{marketId}",
-        "GET /comments/reply/{parentId}",
-        "POST /comments/{commentId}/like",
-        "DELETE /comments/{commentId}"
-      ],
-      "dependencies": ["Authentication", "Markets"]
-    },
-    "Orderbook": {
+    "Country": {
       "endpoints": 1,
       "testable": [
-        "GET /orderbook"
+        "GET /api/countries"
       ],
-      "dependencies": ["Markets"]
+      "dependencies": [],
+      "auth": "none",
+      "priority": 1
     },
-    "Statistic": {
-      "endpoints": 1,
+    "Users auth": {
+      "endpoints": 20,
       "testable": [
-        "GET /statistic/rank"
+        "POST /api/users/auth/register",
+        "POST /api/users/auth/login",
+        "POST /api/users/auth/refresh-token",
+        "POST /api/users/auth/verify-email",
+        "POST /api/users/auth/verify-email/resend",
+        "POST /api/users/auth/forgot-password",
+        "POST /api/users/auth/forgot-password/verify-token",
+        "POST /api/users/auth/forgot-password/update-new-password",
+        "POST /api/users/auth/change-password",
+        "GET /api/users/auth/google",
+        "GET /api/users/auth/google/callback",
+        "POST /api/users/auth/google/token",
+        "POST /api/users/auth/logout",
+        "POST /api/users/auth/two-factor/setup",
+        "POST /api/users/auth/two-factor/verify-setup",
+        "POST /api/users/auth/two-factor/verify-login",
+        "POST /api/users/auth/two-factor/disable",
+        "POST /api/users/auth/2fa/change/send-email",
+        "POST /api/users/auth/2fa/change/verify-email",
+        "POST /api/users/auth/2fa/change/verify-ga"
       ],
-      "dependencies": []
+      "dependencies": [],
+      "auth": "mixed",
+      "priority": 2
     },
-    "Slack": {
-      "endpoints": 1,
+    "User Profile": {
+      "endpoints": 2,
       "testable": [
-        "GET /slack/{id}"
+        "GET /api/users/profile/me",
+        "POST /api/users/profile/me"
       ],
-      "dependencies": []
+      "dependencies": ["Users auth"],
+      "auth": "bearer",
+      "priority": 3
     },
-    "Admin": {
+    "Identity Verification": {
+      "endpoints": 2,
+      "testable": [
+        "POST /api/users/identity-verification/kyc/init-kyc",
+        "GET /api/users/identity-verification/kyc/status"
+      ],
+      "dependencies": ["Users auth"],
+      "auth": "bearer",
+      "priority": 3
+    },
+    "Files": {
       "endpoints": 3,
       "testable": [
-        "GET /admin",
-        "POST /admin",
-        "PUT /admin"
+        "POST /api/users/files/upload-image",
+        "POST /api/users/files/private-storage/presigned-post",
+        "GET /api/users/files/private-storage/presigned-get/{id}"
       ],
-      "dependencies": ["Authentication"]
+      "dependencies": ["Users auth"],
+      "auth": "bearer",
+      "priority": 3
+    },
+    "Organization RBAC Management": {
+      "endpoints": 1,
+      "testable": [
+        "GET /api/users/rbac/roles"
+      ],
+      "dependencies": ["Users auth"],
+      "auth": "bearer",
+      "priority": 3
+    },
+    "User Organization": {
+      "endpoints": 2,
+      "testable": [
+        "GET /api/users/organization/{id}",
+        "PUT /api/users/organization/{id}"
+      ],
+      "dependencies": ["Users auth"],
+      "auth": "bearer",
+      "priority": 4
+    },
+    "Organization Kyb": {
+      "endpoints": 4,
+      "testable": [
+        "POST /api/users/organization-kyb",
+        "GET /api/users/organization-kyb/kyb-status",
+        "GET /api/users/organization-kyb/primary-owner-data",
+        "GET /api/users/organization-kyb/{id}/detail"
+      ],
+      "dependencies": ["Files", "Country", "User Organization"],
+      "auth": "bearer",
+      "priority": 4
+    },
+    "Organization Member": {
+      "endpoints": 8,
+      "testable": [
+        "POST /api/users/organization-members/invite",
+        "POST /api/users/organization-members/resend-invite",
+        "POST /api/users/organization-members/verify-invite",
+        "PUT /api/users/organization-members/accept-invite",
+        "GET /api/users/organization-members/members",
+        "PUT /api/users/organization-members/remove-member",
+        "PUT /api/users/organization-members/change-member-role",
+        "GET /api/users/organization-members/export-members"
+      ],
+      "dependencies": ["User Organization", "Organization RBAC Management"],
+      "auth": "bearer",
+      "priority": 4
+    },
+    "Vault Accounts": {
+      "endpoints": 7,
+      "testable": [
+        "GET /api/users/vault-accounts",
+        "POST /api/users/vault-accounts",
+        "POST /api/users/vault-accounts/{id}",
+        "POST /api/users/vault-accounts/{id}/add-assets",
+        "POST /api/users/vault-accounts/{id}/assign-users",
+        "POST /api/users/vault-accounts/{id}/remove-users",
+        "GET /api/users/vault-accounts/{id}/users"
+      ],
+      "dependencies": ["User Profile", "Organization Kyb"],
+      "auth": "bearer",
+      "priority": 5,
+      "requires2FA": true
+    },
+    "User Transactions": {
+      "endpoints": 3,
+      "testable": [
+        "GET /api/users/transactions",
+        "GET /api/users/transactions/export",
+        "GET /api/users/transactions/{transactionId}"
+      ],
+      "dependencies": ["Vault Accounts"],
+      "auth": "bearer",
+      "priority": 6
+    },
+    "Withdraw": {
+      "endpoints": 3,
+      "testable": [
+        "POST /api/users/withdraw",
+        "POST /api/users/withdraw/{transactionId}/approve",
+        "POST /api/users/withdraw/{transactionId}/reject"
+      ],
+      "dependencies": ["Vault Accounts", "User Transactions"],
+      "auth": "bearer",
+      "priority": 6,
+      "requires2FA": true
+    },
+    "User Action Log": {
+      "endpoints": 2,
+      "testable": [
+        "GET /api/users/action-logs",
+        "GET /api/users/action-logs/export"
+      ],
+      "dependencies": ["Users auth"],
+      "auth": "bearer",
+      "priority": 7
+    },
+    "Ledger": {
+      "endpoints": 1,
+      "testable": [
+        "GET /api/users/ledgers/export"
+      ],
+      "dependencies": ["Vault Accounts", "User Transactions"],
+      "auth": "bearer",
+      "priority": 7
+    },
+    "Monitoring proxy": {
+      "endpoints": 5,
+      "testable": [
+        "GET /api/monitoring/users/{path}",
+        "POST /api/monitoring/users/{path}",
+        "PUT /api/monitoring/users/{path}",
+        "DELETE /api/monitoring/users/{path}",
+        "PATCH /api/monitoring/users/{path}"
+      ],
+      "dependencies": ["Users auth"],
+      "auth": "bearer",
+      "priority": 8,
+      "note": "Generic proxy endpoints - limited testing"
+    },
+    "Processing proxy": {
+      "endpoints": 10,
+      "testable": [
+        "GET /api/processing/users/{path}",
+        "POST /api/processing/users/{path}",
+        "PUT /api/processing/users/{path}",
+        "DELETE /api/processing/users/{path}",
+        "PATCH /api/processing/users/{path}",
+        "GET /api/processing/{path}",
+        "POST /api/processing/{path}",
+        "PUT /api/processing/{path}",
+        "DELETE /api/processing/{path}",
+        "PATCH /api/processing/{path}"
+      ],
+      "dependencies": [],
+      "auth": "mixed",
+      "priority": 8,
+      "note": "Generic proxy endpoints - limited testing"
     }
   },
+
   "executionOrder": [
-    "Authentication",
-    "Statistic",
-    "Slack",
-    "Markets",
-    "Admin",
-    "Orderbook",
-    "Comments",
-    "Orders",
-    "Trades"
+    "Health",
+    "Country",
+    "Users auth",
+    "User Profile",
+    "Identity Verification",
+    "Files",
+    "Organization RBAC Management",
+    "User Organization",
+    "Organization Kyb",
+    "Organization Member",
+    "Vault Accounts",
+    "User Transactions",
+    "Withdraw",
+    "User Action Log",
+    "Ledger",
+    "Monitoring proxy",
+    "Processing proxy"
   ],
+
   "dependencies": [
-    { "from": "Markets", "to": "Authentication", "reason": "Requires auth token" },
-    { "from": "Orders", "to": "Authentication", "reason": "Requires auth token" },
-    { "from": "Orders", "to": "Markets", "reason": "Orders belong to markets" },
-    { "from": "Trades", "to": "Orders", "reason": "Trades created from orders" },
-    { "from": "Comments", "to": "Authentication", "reason": "Requires auth token" },
-    { "from": "Comments", "to": "Markets", "reason": "Comments belong to markets" },
-    { "from": "Orderbook", "to": "Markets", "reason": "Orderbook per market" },
-    { "from": "Admin", "to": "Authentication", "reason": "Requires admin token" }
-  ]
+    { "from": "User Profile", "to": "Users auth", "reason": "Requires auth token" },
+    { "from": "Identity Verification", "to": "Users auth", "reason": "Requires auth token" },
+    { "from": "Files", "to": "Users auth", "reason": "Requires auth token" },
+    { "from": "Organization Kyb", "to": "Files", "reason": "KYB requires file uploads" },
+    { "from": "Organization Kyb", "to": "Country", "reason": "KYB requires countryId" },
+    { "from": "Organization Member", "to": "User Organization", "reason": "Members belong to organization" },
+    { "from": "Vault Accounts", "to": "User Profile", "reason": "Vault requires user context" },
+    { "from": "Vault Accounts", "to": "Organization Kyb", "reason": "Vault requires KYB approved" },
+    { "from": "User Transactions", "to": "Vault Accounts", "reason": "Transactions from vault operations" },
+    { "from": "Withdraw", "to": "Vault Accounts", "reason": "Withdraw from vault" },
+    { "from": "Withdraw", "to": "User Transactions", "reason": "Withdraw creates transaction" },
+    { "from": "Ledger", "to": "User Transactions", "reason": "Ledger aggregates transactions" }
+  ],
+
+  "testEstimates": {
+    "smoke": { "tests": 76, "avgTimeMs": 200, "totalTimeMin": 0.25 },
+    "contract": { "tests": 76, "avgTimeMs": 300, "totalTimeMin": 0.4 },
+    "single": { "tests": 228, "avgTimeMs": 500, "totalTimeMin": 1.9 },
+    "integration": { "tests": 18, "avgTimeMs": 2000, "totalTimeMin": 0.6 },
+    "rbac": { "tests": 152, "avgTimeMs": 400, "totalTimeMin": 1.0 },
+    "security": { "tests": 228, "avgTimeMs": 600, "totalTimeMin": 2.3 },
+    "db": { "tests": 0, "note": "No db-schema.sql configured" }
+  },
+
+  "summary": {
+    "publicEndpoints": 5,
+    "protectedEndpoints": 71,
+    "endpointsRequiring2FA": 10,
+    "endpointsWithPathParams": 22,
+    "endpointsWithQueryParams": 8,
+    "endpointsWithRequestBody": 32
+  }
 }

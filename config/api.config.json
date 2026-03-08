@@ -1,6 +1,6 @@
 {
   "_comment": "Cấu hình base URL và headers mặc định cho API. Điền baseUrl trước khi chạy bất kỳ test nào.",
-  "baseUrl": "https://api.foreon.network",
+  "baseUrl": "https://dev.api.upmount.sotatek.works",
   "_baseUrl_example": "https://api.example.com/v1",
   "timeout": 10000,
   "_timeout_comment": "Milliseconds. Tăng lên nếu API chậm (vd: 30000 cho môi trường staging).",

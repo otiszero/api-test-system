@@ -1,233 +1,184 @@
-# AI Analysis Summary - Foreon Prediction Market API
+# AI Analysis Summary — Upmount Custody Platform
 
-**Ngày phân tích:** 2026-03-02
-**Tổng tests:** 233 | **Pass:** 221 (94.8%) | **Fail:** 12 (5.2%)
+**Ngày:** 2026-03-05
+**Analyst:** AI QA Engine
+**Test run:** 432 tests, 307 pass, 125 fail (71.1% pass rate)
 
 ---
 
-## 1. Phân Tích Patterns Trong Failures
+## 1. Pattern Analysis
 
-### Pattern 1: JWT Token Validation Thiếu Hoàn Toàn
-**Frequency:** 2/12 failures (16.7%)
-**Endpoints affected:** Tất cả protected endpoints
+### Pattern 1: JWT Token Expiry (ảnh hưởng ~80 tests)
 
-**Phát hiện:**
-- Expired tokens được chấp nhận như valid tokens
-- Malformed tokens gây server crash (500) thay vì graceful rejection
+**Phát hiện:** Cả hai JWT tokens trong `auth.config.json` đều hết hạn.
+- **user[0]** (owner, sub:1118): Token issued 2025-12-03, expiry ~24h → đã hết hạn ~3 tháng
+- **user[1]** (normal, sub:1119): Tương tự
 
-**Root Cause Analysis:**
-Có vẻ JWT middleware không implement đầy đủ validation:
+**Tác động:**
+- 05-RBAC: 26/26 failures (100%)
+- 03-Single: ~33/43 failures (~77%)
+- 02-Contract: ~2/46 failures
+
+**Giải pháp:** Login lại cả 2 accounts → update tokens trong `config/auth.config.json` → chạy lại test. Dự kiến pass rate tăng từ 71% lên ~90%.
+
+---
+
+### Pattern 2: Error Envelope Mismatch (ảnh hưởng 44 tests)
+
+**Phát hiện:** OpenAPI spec define ResponseDto là `{ statusCode, message, data }`. Nhưng API thực tế trả error dưới dạng:
+```json
+{ "success": false, "errorCode": "xxx", "statusCode": 400, "data": null }
 ```
-❌ exp (expiration) - KHÔNG được verify
-❌ Token format - KHÔNG có try-catch
-✅ Signature - Có vẻ OK (invalid signature bị reject)
-```
+Thiếu field `message`, thêm fields `success` + `errorCode`.
 
-**Risk Assessment:** 🔴 **CRITICAL**
-- Attacker có thể sử dụng leaked tokens vô thời hạn
-- Không có cách revoke access
-- Session hijacking risk cao
+**Tác động:** 44/46 contract test failures
 
----
+**Phân tích:**
+- Có thể API đã upgrade error format (thêm errorCode cho i18n) nhưng OpenAPI spec chưa update
+- Hoặc ngược lại: spec đúng nhưng implementation sai
 
-### Pattern 2: Input Validation Thiếu Ở Controller Level
-**Frequency:** 1/12 failures (8.3%)
-**Endpoints affected:** Endpoints với path params
-
-**Phát hiện:**
-- Path params không được validate trước khi sử dụng
-- Invalid input được pass thẳng xuống database layer
-- Gây 500 errors thay vì 400
-
-**Root Cause Analysis:**
-```
-Request: GET /markets/not-a-number
-Expected flow: Validate → Reject (400)
-Actual flow: No validation → DB query fails → 500
-```
-
-**Risk Assessment:** 🔴 **HIGH**
-- Potential SQL injection vector
-- DoS qua malformed inputs
-- Information disclosure qua error messages
+**Giải pháp:** Confirm với dev team → nếu API format đúng thì update OpenAPI spec + contract tests.
 
 ---
 
-### Pattern 3: OpenAPI Spec Không Đồng Bộ Với Implementation
-**Frequency:** 4/12 failures (33.3%)
-**Endpoints affected:** `/trades/graph`, `/trades/graph-overrall`
+### Pattern 3: Server 500 trên 3 endpoints
 
-**Phát hiện:**
-- OpenAPI spec document endpoints là optional params
-- Implementation thực tế yêu cầu required params
-- Gây 400 errors khi test theo spec
+**Phát hiện:** 3 endpoint trả HTTP 500 thay vì 4xx:
+1. `POST /api/users/files/upload-image` — thiếu file trong request
+2. `GET /api/users/vault-accounts/{id}/users` — vault ID hợp lệ
+3. `GET /api/users/transactions/{transactionId}` — transaction ID
 
-**Root Cause Analysis:**
-```
-OpenAPI says: GET /trades/graph (no required params)
-Reality: Requires outcomeId, interval, etc.
-```
-
-**Risk Assessment:** 🟡 **MEDIUM**
-- API consumers sẽ gặp khó khăn
-- Integration failures
-- Trust issues với documentation
+**Phân tích:** Đây là bugs thực sự. Server thiếu null check hoặc error handling khi:
+- Upload endpoint nhận empty body (không có multipart)
+- Vault users query khi vault tồn tại nhưng relations thiếu
+- Transaction detail query khi ID format valid nhưng record không tồn tại
 
 ---
 
-### Pattern 4: Non-Standard HTTP Status Codes
-**Frequency:** 1/12 failures (8.3%)
-**Endpoints affected:** `POST /auth/logout`
+### Pattern 4: DB Schema Mismatch
 
-**Phát hiện:**
-- Logout trả về 201 (Created) thay vì 200/204
-- Không đúng REST conventions
+**Phát hiện:** DB tests assume table names:
+- `vault_accounts` → thực tế không tồn tại
+- `organization_members` → thực tế không tồn tại
+- `transactions` → thực tế không tồn tại
+- Column `firstName` → thực tế không tồn tại trong `users`
 
-**Risk Assessment:** 🟢 **LOW**
-- Không ảnh hưởng functionality
-- Minor inconvenience cho consumers
-
----
-
-## 2. Risk Areas
-
-### 🔴 Critical Risk: Authentication Layer
-**Severity:** CRITICAL
-**Immediate Action Required:** YES
-
-| Issue | Impact | Exploitability |
-|-------|--------|----------------|
-| Expired tokens accepted | Session không expire | Easy |
-| Token validation crash | DoS, Info disclosure | Easy |
-
-**Recommendation:**
-- Deploy hotfix cho JWT middleware ngay lập tức
-- Implement proper exp claim validation
-- Add try-catch cho token parsing
+**Phân tích:** NestJS thường dùng TypeORM/Prisma. Tên bảng có thể:
+- Singular: `vault_account`, `organization_member`, `transaction`
+- Hoặc camelCase: `vaultAccount`
+- Column có thể: `first_name` (snake_case) thay vì `firstName` (camelCase)
 
 ---
 
-### 🔴 High Risk: Input Validation
-**Severity:** HIGH
-**Immediate Action Required:** YES
+## 2. Risk Assessment
 
-| Issue | Impact | Exploitability |
-|-------|--------|----------------|
-| No path param validation | 500 errors, potential injection | Easy |
-| Error messages leak info | Information disclosure | Easy |
+### 🔴 High Risk Areas
 
-**Recommendation:**
-- Add NestJS validation pipes
-- Implement input sanitization
-- Use custom error handlers
+| Area | Risk | Reason |
+|------|------|--------|
+| **File Upload** | Data loss | Server crash (500) khi upload → user mất file, session hỏng |
+| **Transaction Detail** | Data integrity | 500 trên view transaction → user không thể verify transactions |
+| **Vault Users** | Access control | 500 trên vault users → không verify ai có access vault |
+| **Error format** | Client-side bugs | Frontend parse `message` → undefined → crash hoặc blank error |
 
----
+### 🟡 Medium Risk Areas
 
-### 🟡 Medium Risk: API Documentation
-**Severity:** MEDIUM
-**Action Timeline:** This sprint
+| Area | Risk | Reason |
+|------|------|--------|
+| **IDOR protection** | Security | Org endpoint trả 400 thay 403/404 → information leakage |
+| **Content-Length DoS** | Availability | Server chờ 99MB body → resource exhaustion potential |
+| **2FA status codes** | UX confusion | 403 vs 400 → user nghĩ "không có quyền" thay vì "OTP sai" |
 
-| Issue | Impact | Exploitability |
-|-------|--------|----------------|
-| Spec không match implementation | Integration failures | N/A |
-| Required params không document | Developer confusion | N/A |
-
-**Recommendation:**
-- Audit OpenAPI spec vs implementation
-- Add required flags cho graph endpoints
-- Setup automated spec validation
+### 🟢 Low Risk Areas
+- Profile update 201 vs 200 — cosmetic
+- Host header SSL error — infrastructure level
+- DB table name mismatch — test config issue, not API bug
 
 ---
 
 ## 3. Coverage Gaps
 
-### Thiếu Coverage Đáng Kể
+### Chưa test đủ sâu
 
-| Area | Current | Ideal | Gap |
-|------|---------|-------|-----|
-| Security tests | 33% endpoints | 100% | -67% |
-| Contract tests | 52% endpoints | 80% | -28% |
-| Integration scenarios | 8 scenarios | 15+ | -7 |
+| Area | Gap | Recommendation |
+|------|-----|----------------|
+| **Concurrent access** | Không test race conditions | Thêm concurrent vault create, concurrent withdraw approve |
+| **Pagination** | Chỉ test page 1 | Test boundary: page 0, negative page, page > total |
+| **Rate limiting** | Không test | Thêm brute-force login (>10 attempts) |
+| **File types** | Chỉ test empty upload | Test malicious file extensions, oversized files |
+| **WebSocket/SSE** | Không test | Nếu có real-time features |
+| **Admin endpoints** | Không có admin token | Cần admin credentials để test admin flows |
 
-### Specific Gaps Identified
+### Endpoints chưa test ngoài Smoke
 
-1. **IDOR Testing** - Chỉ có basic tests, cần thêm:
-   - Cross-user order access
-   - Cross-user comment modification
-   - Admin impersonation attempts
-
-2. **State Machine Testing** - Thiếu:
-   - Order state transitions (OPEN → FILLED → CLAIMED)
-   - Market state transitions (PENDING → ACTIVE → RESOLVED)
-   - Invalid transition rejection
-
-3. **Rate Limiting** - Không test được vì không biết limits
-
-4. **Concurrent Access** - Chưa test:
-   - Race conditions khi place orders
-   - Double claiming prevention
+| Resource | Endpoints chỉ có Smoke | Reason |
+|----------|------------------------|--------|
+| Monitoring proxy | 5 endpoints | Proxy — khó test chi tiết |
+| Processing proxy | 10 endpoints | Proxy — khó test chi tiết |
+| Google OAuth | 3 endpoints | Cần Google OAuth flow |
 
 ---
 
 ## 4. Prioritized Recommendations
 
-### Immediate (Hotfix - Today)
+### Ngay lập tức (blocking)
 
-| # | Action | Effort | Impact |
-|---|--------|--------|--------|
-| 1 | Fix JWT exp validation | 2h | 🔴 Critical |
-| 2 | Add token parsing error handling | 1h | 🔴 High |
-| 3 | Add path param validation | 2h | 🔴 High |
+1. **🔴 Refresh JWT tokens** → chạy lại toàn bộ test suite
+   - Login user[0] (owner) + user[1] (normal) → copy new tokens
+   - Expected: ~80 tests chuyển từ fail → pass
+   - Pass rate dự kiến: 71% → ~90%
 
-### Short Term (This Sprint)
+2. **🔴 Fix 3 server 500 bugs** (BUG-001, 002, 003)
+   - Thêm null checks cho upload-image, vault-users, transaction-detail
+   - Expected: 3 smoke tests pass, potential single/contract fixes
 
-| # | Action | Effort | Impact |
-|---|--------|--------|--------|
-| 4 | Update OpenAPI spec cho graph endpoints | 1h | 🟡 Medium |
-| 5 | Standardize HTTP status codes | 2h | 🟢 Low |
-| 6 | Add more IDOR test cases | 4h | 🔴 High |
+### Ngắn hạn (1-2 ngày)
 
-### Medium Term (Next Sprint)
+3. **🟡 Clarify error envelope format** với dev team
+   - Nếu `{success, errorCode}` là format mới → update OpenAPI spec + contract tests
+   - Expected: 44 contract tests pass sau update
 
-| # | Action | Effort | Impact |
-|---|--------|--------|--------|
-| 7 | Implement rate limiting | 8h | 🟡 Medium |
-| 8 | Add state machine tests | 8h | 🟡 Medium |
-| 9 | Setup automated spec validation | 4h | 🟡 Medium |
-| 10 | Add concurrent access tests | 8h | 🟡 Medium |
+4. **🟡 Fix DB test table names**
+   - Query `SELECT table_name FROM information_schema.tables WHERE table_schema='public'`
+   - Update DB tests với tên bảng đúng
+   - Expected: 4 DB tests pass
+
+5. **🟡 Add Content-Length limit** ở reverse proxy
+   - Nginx: `client_max_body_size 10M;`
+   - Expected: fix DoS vector + 1 security test pass
+
+### Trung hạn (1 tuần)
+
+6. **Thêm admin token** vào auth.config.json → unlock admin-only test scenarios
+7. **Thêm rate limiting tests** — verify brute-force protection
+8. **Thêm pagination boundary tests** — page 0, negative, overflow
+9. **Review IDOR protection** — org endpoint nên trả 404 thay 400
 
 ---
 
-## 5. Tổng Kết
+## 5. Dự kiến sau fix
 
-### Điểm Mạnh
-- ✅ RBAC enforcement hoạt động tốt (100% pass)
-- ✅ Contract tests cho core endpoints pass
-- ✅ Basic auth flow (no token) được enforce đúng
-- ✅ DB integrity maintained
-- ✅ Endpoint coverage đạt 100%
+| Scenario | Current | After Token Refresh | After All Fixes |
+|----------|---------|--------------------|-----------------|
+| Pass rate | 71.1% | ~90% | ~96% |
+| Failed tests | 125 | ~45 | ~15 |
+| Critical bugs | 3 | 3 | 0 |
+| Blocking issues | Token expired | Error envelope | None |
 
-### Điểm Yếu
-- ❌ JWT validation có lỗ hổng nghiêm trọng
-- ❌ Input validation thiếu ở nhiều nơi
-- ❌ OpenAPI spec không đồng bộ
-- ❌ Security test coverage còn thấp (33%)
+---
 
-### Risk Score
-```
-Overall API Risk: 🟠 MEDIUM-HIGH (65/100)
+## 6. Kết luận
 
-Breakdown:
-- Authentication: 🔴 CRITICAL (20/100)
-- Authorization: 🟢 LOW (85/100)
-- Input Validation: 🔴 HIGH (45/100)
-- Documentation: 🟡 MEDIUM (70/100)
-- Business Logic: 🟢 LOW (90/100)
-```
+**Tình trạng hiện tại:** API hoạt động tốt ở mức cơ bản (smoke 96%, integration 100%), nhưng có 3 critical server 500 bugs cần fix ngay. Phần lớn test failures (80+) do JWT token hết hạn — đây là vấn đề test config, không phải API bug.
 
-### Next Steps
-1. **Deploy hotfix** cho JWT validation issues
-2. **Run regression tests** sau khi fix
-3. **Expand security test suite** với IDOR và injection tests
-4. **Update OpenAPI spec** để match implementation
-5. **Schedule security audit** với penetration testing
+**Ưu tiên số 1:** Refresh tokens → chạy lại test → đánh giá lại tình trạng thực tế.
+
+**Positive signals:**
+- Integration layer 100% pass → core business flows hoạt động đúng
+- Security layer 93% pass → API resilient với các attack vectors phổ biến
+- Smoke 96% pass → chỉ 3/76 endpoints lỗi
+
+**Red flags:**
+- 3 endpoints trả 500 (unhandled errors) → cần fix ASAP
+- Error envelope format không match spec → cần sync dev + QA
+- Không có admin token → coverage gap lớn cho admin flows

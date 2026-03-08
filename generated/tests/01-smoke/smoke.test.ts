@@ -1,319 +1,713 @@
-import { describe, it, expect } from 'vitest';
-import { apiClient } from '../../helpers/api-client';
-import { authHelper } from '../../helpers/auth-helper';
-
 /**
- * 01 - Smoke Tests
- * Verifies all testable endpoints are reachable
- * Source: generated/canonical-endpoints.json (46 testable endpoints)
+ * Smoke Tests - Upmount Custody Platform API
+ * Generated: 2026-03-05
+ *
+ * Purpose: Verify all endpoints are reachable and not returning 5xx errors
+ * - Health endpoints → expect 200
+ * - Auth endpoints → expect valid response
+ * - Protected endpoints → expect 401 without auth, 2xx/4xx with auth
+ * - Proxy endpoints → expect any non-5xx response
+ *
+ * Source: generated/canonical-endpoints.json (76 testable endpoints)
  */
 
-describe('01 - Smoke Tests', () => {
-  describe('Health Check', () => {
-    it('GET / → server is reachable', async () => {
-      const response = await apiClient.get('/');
-      expect(response.status).toBeLessThan(500);
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { apiClient } from '../../helpers/api-client';
+import authConfig from '../../../config/auth.config.json';
+import dbConfig from '../../../config/db.config.json';
+import { Pool } from 'pg';
+
+// Timeout for smoke tests (generous to account for cold starts)
+const SMOKE_TIMEOUT = 15000;
+
+// API timeout from config
+const API_TIMEOUT = 10000;
+
+// Get user token for authenticated requests
+const userToken = authConfig.accounts.user?.[0]?.token;
+
+// DB connection (if enabled)
+let dbPool: Pool | null = null;
+
+describe('Smoke Tests - API Reachability', () => {
+  beforeAll(async () => {
+    // Setup DB connection if enabled
+    if (dbConfig.enabled && dbConfig.type === 'pg') {
+      try {
+        dbPool = new Pool({
+          host: dbConfig.host,
+          port: dbConfig.port,
+          database: dbConfig.database,
+          user: dbConfig.username,
+          password: dbConfig.password,
+          ssl: dbConfig.ssl,
+          max: dbConfig.pool?.max || 5,
+          min: dbConfig.pool?.min || 1,
+        });
+      } catch (error) {
+        console.warn('DB connection setup failed:', error);
+      }
+    }
+  });
+
+  afterAll(async () => {
+    if (dbPool) {
+      await dbPool.end();
+    }
+    apiClient.clearToken();
+  });
+
+  // ============================================================================
+  // DB CONNECTION SMOKE TEST
+  // ============================================================================
+  describe('Database Connection', () => {
+    it('should connect to PostgreSQL database', async () => {
+      if (!dbConfig.enabled) {
+        console.log('⏭️ DB disabled, skipping');
+        return;
+      }
+
+      expect(dbPool).toBeTruthy();
+      const result = await dbPool!.query('SELECT 1 as connected');
+      expect(result.rows[0].connected).toBe(1);
+    }, SMOKE_TIMEOUT);
+  });
+
+  // ============================================================================
+  // PHASE 1: PUBLIC ENDPOINTS (No Auth Required)
+  // ============================================================================
+  describe('Phase 1: Public Endpoints', () => {
+    describe('Health', () => {
+      it('GET /api/health → should return 200', async () => {
+        const response = await apiClient.get('/api/health');
+        expect(response.status).toBe(200);
+        expect(apiClient.getLastEvidence()?.duration).toBeLessThan(API_TIMEOUT);
+      }, SMOKE_TIMEOUT);
+
+      it('GET /api/health/ready → should return 200', async () => {
+        const response = await apiClient.get('/api/health/ready');
+        expect(response.status).toBe(200);
+      }, SMOKE_TIMEOUT);
+    });
+
+    describe('Country', () => {
+      it('GET /api/countries → should return 200 with countries array', async () => {
+        const response = await apiClient.get('/api/countries');
+        expect(response.status).toBe(200);
+        expect(Array.isArray(response.data?.data) || Array.isArray(response.data)).toBe(true);
+      }, SMOKE_TIMEOUT);
     });
   });
 
-  describe('Markets - Public', () => {
-    it('GET /markets → list all markets', async () => {
-      const response = await apiClient.get('/markets');
-      expect(response.status).toBe(200);
+  // ============================================================================
+  // PHASE 2: AUTH ENDPOINTS (Mixed Auth)
+  // ============================================================================
+  describe('Phase 2: Auth Endpoints', () => {
+    describe('Users auth - Public', () => {
+      it('POST /api/users/auth/login → should accept request (not 5xx)', async () => {
+        // Send invalid creds to test endpoint reachability
+        const response = await apiClient.post('/api/users/auth/login', {
+          email: 'smoke-test@example.com',
+          password: 'smoke-test-password',
+        });
+        // Expect 400/401 (bad creds) but NOT 5xx
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/register → should accept request (not 5xx)', async () => {
+        const response = await apiClient.post('/api/users/auth/register', {
+          email: 'smoke-test-register@example.com',
+          password: 'SmokeTest123!',
+        });
+        // Expect 400/409 (validation/duplicate) but NOT 5xx
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/refresh-token → should accept request (not 5xx)', async () => {
+        const response = await apiClient.post('/api/users/auth/refresh-token', {
+          refreshToken: 'invalid-token-for-smoke-test',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/verify-email → should accept request (not 5xx)', async () => {
+        const response = await apiClient.post('/api/users/auth/verify-email', {
+          otp: '000000',
+          email: 'smoke@test.com',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/verify-email/resend → should accept request (not 5xx)', async () => {
+        const response = await apiClient.post('/api/users/auth/verify-email/resend', {
+          email: 'smoke@test.com',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/forgot-password → should accept request (not 5xx)', async () => {
+        const response = await apiClient.post('/api/users/auth/forgot-password', {
+          email: 'smoke@test.com',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/forgot-password/verify-token → should accept request (not 5xx)', async () => {
+        const response = await apiClient.post('/api/users/auth/forgot-password/verify-token', {
+          token: 'invalid-token',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/forgot-password/update-new-password → should accept request (not 5xx)', async () => {
+        const response = await apiClient.post('/api/users/auth/forgot-password/update-new-password', {
+          token: 'invalid-token',
+          newPassword: 'NewPass123!',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('GET /api/users/auth/google → should redirect or respond (not 5xx)', async () => {
+        const response = await apiClient.get('/api/users/auth/google');
+        // OAuth redirect might return 302 or error
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('GET /api/users/auth/google/callback → should accept request (not 5xx)', async () => {
+        const response = await apiClient.get('/api/users/auth/google/callback');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/google/token → should accept request (not 5xx)', async () => {
+        const response = await apiClient.post('/api/users/auth/google/token', {
+          token: 'invalid-google-token',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/organization-members/verify-invite → should accept request (not 5xx)', async () => {
+        const response = await apiClient.post('/api/users/organization-members/verify-invite', {
+          token: 'invalid-invite-token',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
 
-    it('GET /markets/{id} → get market detail', async () => {
-      const response = await apiClient.get('/markets/1');
-      expect([200, 404]).toContain(response.status);
-    });
+    describe('Users auth - Protected (requires auth)', () => {
+      beforeAll(() => {
+        if (userToken) {
+          apiClient.setToken(userToken);
+        }
+      });
 
-    it('GET /markets/category → get categories', async () => {
-      const response = await apiClient.get('/markets/category');
-      expect(response.status).toBe(200);
-    });
+      it('POST /api/users/auth/change-password → should require auth', async () => {
+        apiClient.clearToken();
+        const response = await apiClient.post('/api/users/auth/change-password', {
+          currentPassword: 'old',
+          newPassword: 'new',
+        });
+        expect(response.status).toBe(401);
 
-    it('GET /markets/top-holders/{id} → top holders', async () => {
-      const response = await apiClient.get('/markets/top-holders/1');
-      expect([200, 404]).toContain(response.status);
-    });
+        // Restore token
+        if (userToken) apiClient.setToken(userToken);
+      }, SMOKE_TIMEOUT);
 
-    it('GET /markets/ipfs/{id} → IPFS data', async () => {
-      const response = await apiClient.get('/markets/ipfs/1');
-      expect([200, 404]).toContain(response.status);
+      it('POST /api/users/auth/logout → should accept with auth (not 5xx)', async () => {
+        if (!userToken) {
+          console.log('⏭️ No user token, skipping');
+          return;
+        }
+        const response = await apiClient.post('/api/users/auth/logout', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/two-factor/setup → should accept with auth (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/auth/two-factor/setup', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/two-factor/verify-setup → should accept with auth (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/auth/two-factor/verify-setup', {
+          otp: '000000',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/two-factor/verify-login → should accept with auth (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/auth/two-factor/verify-login', {
+          otp: '000000',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/two-factor/disable → should accept with auth (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/auth/two-factor/disable', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/2fa/change/send-email → should accept with auth (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/auth/2fa/change/send-email', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/2fa/change/verify-email → should accept with auth (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/auth/2fa/change/verify-email', {
+          otp: '000000',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/auth/2fa/change/verify-ga → should accept with auth (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/auth/2fa/change/verify-ga', {
+          otp: '000000',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
   });
 
-  describe('Markets - Auth Required', () => {
-    it('GET /markets/proposed → proposed markets', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.get('/markets/proposed');
-      authHelper.clearAuthToken();
-      expect([200, 401]).toContain(response.status);
+  // ============================================================================
+  // PHASE 3: USER-LEVEL ENDPOINTS (Bearer Auth)
+  // ============================================================================
+  describe('Phase 3: User-level Endpoints', () => {
+    beforeAll(() => {
+      if (userToken) apiClient.setToken(userToken);
     });
 
-    it('GET /markets/proposed-detail/{id} → proposed detail', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.get('/markets/proposed-detail/1');
-      authHelper.clearAuthToken();
-      expect([200, 401, 404, 500]).toContain(response.status);
+    describe('User Profile', () => {
+      it('GET /api/users/profile/me → should return 200 with profile', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/profile/me');
+        expect(response.status).toBe(200);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/profile/me → should accept request (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/profile/me', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
 
-    it('GET /markets/favorites → user favorites', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.get('/markets/favorites');
-      authHelper.clearAuthToken();
-      expect([200, 401]).toContain(response.status);
+    describe('Identity Verification', () => {
+      it('POST /api/users/identity-verification/kyc/init-kyc → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/identity-verification/kyc/init-kyc', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('GET /api/users/identity-verification/kyc/status → should return status', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/identity-verification/kyc/status');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
 
-    it('POST /markets/{marketId}/favorite → toggle favorite', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/markets/1/favorite');
-      authHelper.clearAuthToken();
-      expect([200, 201, 401, 404]).toContain(response.status);
+    describe('Files', () => {
+      it('POST /api/users/files/upload-image → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        // Test with minimal data, expect 400 (bad request) but not 5xx
+        const response = await apiClient.post('/api/users/files/upload-image', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/files/private-storage/presigned-post → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/files/private-storage/presigned-post', {
+          filename: 'test.txt',
+          contentType: 'text/plain',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('GET /api/users/files/private-storage/presigned-get/{id} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/files/private-storage/presigned-get/test-id');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
 
-    it('POST /markets/market → create market', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/markets/market', {});
-      authHelper.clearAuthToken();
-      expect([200, 201, 400, 401, 422]).toContain(response.status);
-    });
-
-    it('PUT /markets/vote/{id} → vote on market', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.put('/markets/vote/1', {});
-      authHelper.clearAuthToken();
-      expect([200, 400, 401, 404]).toContain(response.status);
-    });
-
-    it('PUT /markets/add-liquidity/{id} → add liquidity', async () => {
-      const response = await apiClient.put('/markets/add-liquidity/1', {});
-      expect([200, 400, 404]).toContain(response.status);
-    });
-
-    it('POST /markets/upload → upload file', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/markets/upload', {});
-      authHelper.clearAuthToken();
-      expect([200, 201, 400, 401, 500]).toContain(response.status);
+    describe('Organization RBAC', () => {
+      it('GET /api/users/rbac/roles → should return roles', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/rbac/roles');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
   });
 
-  describe('Orders - Auth Required', () => {
-    it('GET /orders → list orders', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.get('/orders');
-      authHelper.clearAuthToken();
-      expect([200, 401]).toContain(response.status);
+  // ============================================================================
+  // PHASE 4: ORGANIZATION ENDPOINTS (Bearer Auth)
+  // ============================================================================
+  describe('Phase 4: Organization Endpoints', () => {
+    beforeAll(() => {
+      if (userToken) apiClient.setToken(userToken);
     });
 
-    it('POST /orders → create order', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/orders', {});
-      authHelper.clearAuthToken();
-      expect([200, 201, 400, 401, 422]).toContain(response.status);
+    describe('User Organization', () => {
+      it('GET /api/users/organization/{id} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/organization/1');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('PUT /api/users/organization/{id} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.put('/api/users/organization/1', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
 
-    it('PUT /orders/{id}/cancelled → cancel order', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.put('/orders/1/cancelled');
-      authHelper.clearAuthToken();
-      expect([200, 400, 401, 403, 404]).toContain(response.status);
+    describe('Organization KYB', () => {
+      it('POST /api/users/organization-kyb → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/organization-kyb', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('GET /api/users/organization-kyb/kyb-status → should return status', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/organization-kyb/kyb-status');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('GET /api/users/organization-kyb/primary-owner-data → should return data', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/organization-kyb/primary-owner-data');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('GET /api/users/organization-kyb/{id}/detail → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/organization-kyb/1/detail');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
 
-    it('PUT /orders/{id}/claimed → claim order', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.put('/orders/1/claimed');
-      authHelper.clearAuthToken();
-      expect([200, 400, 401, 403, 404]).toContain(response.status);
-    });
+    describe('Organization Member', () => {
+      it('POST /api/users/organization-members/invite → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/organization-members/invite', {
+          email: 'smoke-test-invite@example.com',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
 
-    it('GET /orders/position → user positions', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.get('/orders/position');
-      authHelper.clearAuthToken();
-      expect([200, 401]).toContain(response.status);
-    });
+      it('POST /api/users/organization-members/resend-invite → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/organization-members/resend-invite', {
+          email: 'smoke-test-invite@example.com',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
 
-    it('GET /orders/position-claims → position claims', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.get('/orders/position-claims');
-      authHelper.clearAuthToken();
-      expect([200, 401]).toContain(response.status);
-    });
+      it('PUT /api/users/organization-members/accept-invite → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.put('/api/users/organization-members/accept-invite', {
+          token: 'invalid-token',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
 
-    it('POST /orders/position-claims → save position claim', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/orders/position-claims', {});
-      authHelper.clearAuthToken();
-      expect([200, 201, 400, 401, 422]).toContain(response.status);
-    });
+      it('GET /api/users/organization-members/members → should return members', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/organization-members/members');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
 
-    it('POST /orders/add-liquidity → add liquidity', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/orders/add-liquidity', {});
-      authHelper.clearAuthToken();
-      expect([200, 201, 400, 401, 422]).toContain(response.status);
-    });
+      it('PUT /api/users/organization-members/remove-member → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.put('/api/users/organization-members/remove-member', {
+          userId: 'test-user-id',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
 
-    it('GET /orders/activity → order activity', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.get('/orders/activity');
-      authHelper.clearAuthToken();
-      expect([200, 401]).toContain(response.status);
+      it('PUT /api/users/organization-members/change-member-role → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.put('/api/users/organization-members/change-member-role', {
+          userId: 'test-user-id',
+          role: 'member',
+        });
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('GET /api/users/organization-members/export-members → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/organization-members/export-members');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
   });
 
-  describe('Trades', () => {
-    it('GET /trades → user trades', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.get('/trades');
-      authHelper.clearAuthToken();
-      expect([200, 401]).toContain(response.status);
+  // ============================================================================
+  // PHASE 5: VAULT ENDPOINTS (Bearer + 2FA)
+  // ============================================================================
+  describe('Phase 5: Vault Endpoints', () => {
+    beforeAll(() => {
+      if (userToken) apiClient.setToken(userToken);
     });
 
-    it('GET /trades/market-trade → market trades', async () => {
-      const response = await apiClient.get('/trades/market-trade');
-      expect(response.status).toBe(200);
-    });
+    describe('Vault Accounts', () => {
+      it('GET /api/users/vault-accounts → should return vaults', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/vault-accounts');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
 
-    it('GET /trades/graph → trade graph', async () => {
-      const response = await apiClient.get('/trades/graph');
-      expect(response.status).toBe(200);
-    });
+      it('POST /api/users/vault-accounts → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        // This requires 2FA, so expect 400/403 but not 5xx
+        const response = await apiClient.post('/api/users/vault-accounts', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
 
-    it('GET /trades/graph-overrall → overall trade graph', async () => {
-      const response = await apiClient.get('/trades/graph-overrall');
-      expect(response.status).toBe(200);
-    });
+      it('POST /api/users/vault-accounts/{id} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/vault-accounts/1', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
 
-    it('GET /trades/history → trade history', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.get('/trades/history');
-      authHelper.clearAuthToken();
-      expect([200, 401]).toContain(response.status);
+      it('POST /api/users/vault-accounts/{id}/add-assets → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/vault-accounts/1/add-assets', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/vault-accounts/{id}/assign-users → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/vault-accounts/1/assign-users', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/users/vault-accounts/{id}/remove-users → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/vault-accounts/1/remove-users', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('GET /api/users/vault-accounts/{id}/users → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/vault-accounts/1/users');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
   });
 
-  describe('Comments', () => {
-    it('GET /comments/market/{marketId} → market comments', async () => {
-      const response = await apiClient.get('/comments/market/1');
-      expect([200, 404]).toContain(response.status);
+  // ============================================================================
+  // PHASE 6: TRANSACTION ENDPOINTS (Bearer Auth)
+  // ============================================================================
+  describe('Phase 6: Transaction Endpoints', () => {
+    beforeAll(() => {
+      if (userToken) apiClient.setToken(userToken);
     });
 
-    it('GET /comments/reply/{parentId} → comment replies', async () => {
-      const response = await apiClient.get('/comments/reply/1');
-      expect([200, 404]).toContain(response.status);
+    describe('User Transactions', () => {
+      it('GET /api/users/transactions → should return transactions', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/transactions');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('GET /api/users/transactions/export → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/transactions/export');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('GET /api/users/transactions/{transactionId} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/transactions/test-tx-id');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
 
-    it('POST /comments → create comment', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/comments', {});
-      authHelper.clearAuthToken();
-      expect([200, 201, 400, 401, 422]).toContain(response.status);
-    });
+    describe('Withdraw', () => {
+      it('POST /api/users/withdraw → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/withdraw', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
 
-    it('POST /comments/reply → reply to comment', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/comments/reply', {});
-      authHelper.clearAuthToken();
-      expect([200, 201, 400, 401, 422]).toContain(response.status);
-    });
+      it('POST /api/users/withdraw/{transactionId}/approve → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/withdraw/test-tx-id/approve', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
 
-    it('POST /comments/{commentId}/like → like comment', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/comments/1/like');
-      authHelper.clearAuthToken();
-      expect([200, 201, 401, 404]).toContain(response.status);
-    });
-
-    it('DELETE /comments/{commentId} → delete comment', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.delete('/comments/999999');
-      authHelper.clearAuthToken();
-      expect([200, 204, 401, 403, 404]).toContain(response.status);
+      it('POST /api/users/withdraw/{transactionId}/reject → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/users/withdraw/test-tx-id/reject', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
   });
 
-  describe('Authentication', () => {
-    it('POST /auth/login → login endpoint exists', async () => {
-      const response = await apiClient.post('/auth/login', {});
-      expect([200, 400, 401, 422]).toContain(response.status);
+  // ============================================================================
+  // PHASE 7: AUDIT ENDPOINTS (Bearer Auth)
+  // ============================================================================
+  describe('Phase 7: Audit Endpoints', () => {
+    beforeAll(() => {
+      if (userToken) apiClient.setToken(userToken);
     });
 
-    it('POST /auth/logout → logout endpoint', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/auth/logout');
-      authHelper.clearAuthToken();
-      expect([200, 204, 401]).toContain(response.status);
+    describe('User Action Log', () => {
+      it('GET /api/users/action-logs → should return logs', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/action-logs');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('GET /api/users/action-logs/export → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/action-logs/export');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
 
-    it('POST /auth/refresh-token → refresh token', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/auth/refresh-token', {});
-      authHelper.clearAuthToken();
-      expect([200, 400, 401]).toContain(response.status);
-    });
-
-    it('POST /auth/admin-refresh-token → admin refresh', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/auth/admin-refresh-token', {});
-      authHelper.clearAuthToken();
-      expect([200, 400, 401]).toContain(response.status);
-    });
-
-    it('GET /auth/me → current user profile', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.get('/auth/me');
-      authHelper.clearAuthToken();
-      expect([200, 401]).toContain(response.status);
-    });
-
-    it('GET /auth/asset → user assets', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.get('/auth/asset');
-      authHelper.clearAuthToken();
-      expect([200, 401]).toContain(response.status);
+    describe('Ledger', () => {
+      it('GET /api/users/ledgers/export → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/users/ledgers/export');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
   });
 
-  describe('Admin', () => {
-    it('GET /admin → list admins', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.get('/admin');
-      authHelper.clearAuthToken();
-      expect([200, 401, 403]).toContain(response.status);
+  // ============================================================================
+  // PHASE 8: PROXY ENDPOINTS
+  // ============================================================================
+  describe('Phase 8: Proxy Endpoints', () => {
+    beforeAll(() => {
+      if (userToken) apiClient.setToken(userToken);
     });
 
-    it('POST /admin → create admin', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.post('/admin', {});
-      authHelper.clearAuthToken();
-      expect([200, 201, 400, 401, 403, 422]).toContain(response.status);
+    describe('Monitoring Proxy (requires auth)', () => {
+      it('GET /api/monitoring/users/{path} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/monitoring/users/test-path');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/monitoring/users/{path} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/monitoring/users/test-path', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('PUT /api/monitoring/users/{path} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.put('/api/monitoring/users/test-path', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('DELETE /api/monitoring/users/{path} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.delete('/api/monitoring/users/test-path');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('PATCH /api/monitoring/users/{path} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.patch('/api/monitoring/users/test-path', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
 
-    it('PUT /admin → update admin', async () => {
-      authHelper.setAuthToken('user');
-      const response = await apiClient.put('/admin', {});
-      authHelper.clearAuthToken();
-      expect([200, 400, 401, 403, 422]).toContain(response.status);
+    describe('Processing Proxy - Auth Required', () => {
+      it('GET /api/processing/users/{path} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.get('/api/processing/users/test-path');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/processing/users/{path} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.post('/api/processing/users/test-path', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('PUT /api/processing/users/{path} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.put('/api/processing/users/test-path', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('DELETE /api/processing/users/{path} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.delete('/api/processing/users/test-path');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('PATCH /api/processing/users/{path} → should accept (not 5xx)', async () => {
+        if (!userToken) return;
+        const response = await apiClient.patch('/api/processing/users/test-path', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+    });
+
+    describe('Processing Proxy - Public', () => {
+      beforeAll(() => {
+        apiClient.clearToken();
+      });
+
+      it('GET /api/processing/{path} → should accept (not 5xx)', async () => {
+        const response = await apiClient.get('/api/processing/test-path');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('POST /api/processing/{path} → should accept (not 5xx)', async () => {
+        const response = await apiClient.post('/api/processing/test-path', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('PUT /api/processing/{path} → should accept (not 5xx)', async () => {
+        const response = await apiClient.put('/api/processing/test-path', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('DELETE /api/processing/{path} → should accept (not 5xx)', async () => {
+        const response = await apiClient.delete('/api/processing/test-path');
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
+
+      it('PATCH /api/processing/{path} → should accept (not 5xx)', async () => {
+        const response = await apiClient.patch('/api/processing/test-path', {});
+        expect(response.status).toBeLessThan(500);
+      }, SMOKE_TIMEOUT);
     });
   });
 
-  describe('Other', () => {
-    it('GET /orderbook → orderbook data', async () => {
-      const response = await apiClient.get('/orderbook');
-      expect(response.status).toBe(200);
+  // ============================================================================
+  // RESPONSE TIME CHECKS
+  // ============================================================================
+  describe('Response Time', () => {
+    beforeAll(() => {
+      if (userToken) apiClient.setToken(userToken);
     });
 
-    it('GET /statistic/rank → ranking data', async () => {
-      const response = await apiClient.get('/statistic/rank');
-      expect(response.status).toBe(200);
-    });
+    it('All health endpoints should respond within timeout', async () => {
+      const response1 = await apiClient.get('/api/health');
+      const response2 = await apiClient.get('/api/health/ready');
 
-    it('GET /slack/{id} → slack test', async () => {
-      const response = await apiClient.get('/slack/test');
-      expect([200, 404]).toContain(response.status);
-    });
+      expect(apiClient.getAllEvidence().filter(e => e.url.includes('/health'))
+        .every(e => e.duration < API_TIMEOUT)).toBe(true);
+    }, SMOKE_TIMEOUT);
+
+    it('Critical endpoints should respond within 5s', async () => {
+      if (!userToken) return;
+
+      const startTime = Date.now();
+      await apiClient.get('/api/users/profile/me');
+      const duration = Date.now() - startTime;
+
+      expect(duration).toBeLessThan(5000);
+    }, SMOKE_TIMEOUT);
   });
 });

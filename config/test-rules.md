@@ -142,7 +142,7 @@ Tài liệu mô tả business rules, permissions, và scenarios cho **Upmount Cu
 
 ## 4. Permission Matrix
 
-> Roles: admin (organization admin), user (regular member), guest (no token)
+> Roles: admin (organization_owner), user (regular member), guest (no token)
 > Security: Bearer token (JWT) via Authorization header
 
 | Endpoint | Method | admin | user | guest |
@@ -154,52 +154,78 @@ Tài liệu mô tả business rules, permissions, và scenarios cho **Upmount Cu
 | /api/users/auth/register | POST | — | — | ✅ |
 | /api/users/auth/login | POST | — | — | ✅ |
 | /api/users/auth/verify-email | POST | — | — | ✅ |
+| /api/users/auth/verify-email/resend | POST | — | — | ✅ |
 | /api/users/auth/refresh-token | POST | ✅ | ✅ | ❌ |
 | /api/users/auth/forgot-password | POST | — | — | ✅ |
-| /api/users/auth/reset-password | POST | — | — | ✅ |
-| /api/users/auth/resend-otp | POST | — | — | ✅ |
-| **2FA** |
-| /api/users/2fa/generate | POST | ✅ | ✅ | ❌ |
-| /api/users/2fa/verify | POST | ✅ | ✅ | ❌ |
-| /api/users/2fa/disable | POST | ✅ | ✅ | ❌ |
+| /api/users/auth/forgot-password/verify-token | POST | — | — | ✅ |
+| /api/users/auth/forgot-password/update-new-password | POST | — | — | ✅ |
+| /api/users/auth/change-password | POST | ✅ | ✅ | ❌ |
+| /api/users/auth/logout | POST | ✅ | ✅ | ❌ |
+| /api/users/auth/google | GET | — | — | ✅ |
+| /api/users/auth/google/callback | GET | — | — | ✅ |
+| /api/users/auth/google/token | POST | — | — | ✅ |
+| **2FA (Two-Factor)** |
+| /api/users/auth/two-factor/setup | POST | ✅ | ✅ | ❌ |
+| /api/users/auth/two-factor/verify-setup | POST | ✅ | ✅ | ❌ |
+| /api/users/auth/two-factor/verify-login | POST | ✅ | ✅ | ❌ |
+| /api/users/auth/two-factor/disable | POST | ✅ | ✅ | ❌ |
+| /api/users/auth/2fa/change/send-email | POST | ✅ | ✅ | ❌ |
+| /api/users/auth/2fa/change/verify-email | POST | ✅ | ✅ | ❌ |
+| /api/users/auth/2fa/change/verify-ga | POST | ✅ | ✅ | ❌ |
 | **User Profile** |
-| /api/users/profile | GET | ✅ | ✅ | ❌ |
-| /api/users/profile | PUT | ✅ | ✅ | ❌ |
-| /api/users/profile/upload-avatar | POST | ✅ | ✅ | ❌ |
-| /api/users/primary-owner | GET | ✅ | ✅ | ❌ |
-| **KYC** |
-| /api/users/kyc | POST | ✅ | ✅ | ❌ |
-| /api/users/kyc/status | GET | ✅ | ✅ | ❌ |
-| **KYB** |
-| /api/users/organization/kyb | POST | ✅ | ❌ | ❌ |
-| /api/users/organization/kyb/status | GET | ✅ | ✅ | ❌ |
-| /api/users/organization/kyb/detail | GET | ✅ | ✅ | ❌ |
+| /api/users/profile/me | GET | ✅ | ✅ | ❌ |
+| /api/users/files/upload-image | POST | ✅ | ✅ | ❌ |
+| **KYC (Identity Verification)** |
+| /api/users/identity-verification/kyc/init-kyc | POST | ✅ | ✅ | ❌ |
+| /api/users/identity-verification/kyc/status | GET | ✅ | ✅ | ❌ |
+| **KYB (Organization)** |
+| /api/users/organization-kyb | POST | ✅ | ❌ | ❌ |
+| /api/users/organization-kyb/kyb-status | GET | ✅ | ✅ | ❌ |
+| /api/users/organization-kyb/primary-owner-data | GET | ✅ | ✅ | ❌ |
+| /api/users/organization-kyb/{id}/detail | GET | ✅ | ✅ | ❌ |
+| **Organization Members** |
+| /api/users/organization-members/invite | POST | ✅ | ❌ | ❌ |
+| /api/users/organization-members/resend-invite | POST | ✅ | ❌ | ❌ |
+| /api/users/organization-members/verify-invite | GET | — | — | ✅ |
+| /api/users/organization-members/accept-invite | POST | — | — | ✅ |
+| /api/users/organization-members/members | GET | ✅ | ✅ | ❌ |
+| /api/users/organization-members/remove-member | POST | ✅ | ❌ | ❌ |
+| /api/users/organization-members/change-member-role | POST | ✅ | ❌ | ❌ |
+| /api/users/organization-members/export-members | GET | ✅ | ❌ | ❌ |
+| **Organization Profile** |
+| /api/users/organization/{id} | GET | ✅ | ✅ | ❌ |
+| /api/users/organization/{id} | PUT | ✅ | ❌ | ❌ |
 | **Vault Accounts** |
-| /api/vault | POST | ✅ | ❌ | ❌ |
-| /api/vault | GET | ✅ | ✅ | ❌ |
-| /api/vault/{id} | GET | ✅ | ✅ | ❌ |
-| /api/vault/{id} | PUT | ✅ | ❌ | ❌ |
-| /api/vault/{id}/add-assets | POST | ✅ | ❌ | ❌ |
-| /api/vault/{id}/assign-users | POST | ✅ | ❌ | ❌ |
-| /api/vault/{id}/remove-users | POST | ✅ | ❌ | ❌ |
-| /api/vault/{id}/assets | GET | ✅ | ✅ | ❌ |
-| /api/vault/deposit-address/{id} | GET | ✅ | ✅ | ❌ |
-| /api/vault/withdrawal | POST | ✅ | ❌ | ❌ |
+| /api/users/vault-accounts | POST | ✅ | ❌ | ❌ |
+| /api/users/vault-accounts | GET | ✅ | ✅ | ❌ |
+| /api/users/vault-accounts/{id} | GET | ✅ | ✅ | ❌ |
+| /api/users/vault-accounts/{id} | PUT | ✅ | ❌ | ❌ |
+| /api/users/vault-accounts/{id}/add-assets | POST | ✅ | ❌ | ❌ |
+| /api/users/vault-accounts/{id}/assign-users | POST | ✅ | ❌ | ❌ |
+| /api/users/vault-accounts/{id}/remove-users | POST | ✅ | ❌ | ❌ |
+| /api/users/vault-accounts/{id}/users | GET | ✅ | ✅ | ❌ |
+| **Withdraw** |
+| /api/users/withdraw | POST | ✅ | ❌ | ❌ |
+| /api/users/withdraw/{transactionId}/approve | POST | ✅ | ❌ | ❌ |
+| /api/users/withdraw/{transactionId}/reject | POST | ✅ | ❌ | ❌ |
 | **Transactions** |
-| /api/transactions | GET | ✅ | ✅ | ❌ |
-| /api/transactions/{id} | GET | ✅ | ✅ | ❌ |
-| **Organization** |
-| /api/organization/profile | GET | ✅ | ✅ | ❌ |
-| /api/organization/profile | PUT | ✅ | ❌ | ❌ |
-| **Assets** |
-| /api/assets | GET | ✅ | ✅ | ❌ |
+| /api/users/transactions | GET | ✅ | ✅ | ❌ |
+| /api/users/transactions/{transactionId} | GET | ✅ | ✅ | ❌ |
+| /api/users/transactions/export | GET | ✅ | ✅ | ❌ |
+| **Action Logs** |
+| /api/users/action-logs | GET | ✅ | ✅ | ❌ |
+| /api/users/action-logs/export | GET | ✅ | ❌ | ❌ |
+| **RBAC** |
+| /api/users/rbac/roles | GET | ✅ | ✅ | ❌ |
+| **Ledger** |
+| /api/users/ledgers/export | GET | ✅ | ✅ | ❌ |
 | **Countries** |
 | /api/countries | GET | ✅ | ✅ | ✅ |
 | **Files** |
-| /api/files/presigned-post | POST | ✅ | ✅ | ❌ |
-| /api/files/presigned-get/{id} | GET | ✅ | ✅ | ❌ |
+| /api/users/files/private-storage/presigned-post | POST | ✅ | ✅ | ❌ |
+| /api/users/files/private-storage/presigned-get/{id} | GET | ✅ | ✅ | ❌ |
 
-> **Ghi chú**: admin = organization admin (có quyền quản lý vault, KYB, org profile). user = member thường (chỉ xem, không tạo/sửa vault hay submit KYB).
+> **Ghi chú**: admin = organization_owner (có quyền quản lý vault, KYB, org members, withdraw approval). user = member thường (chỉ xem, không tạo/sửa vault hay submit KYB).
 
 ---
 
@@ -287,9 +313,10 @@ KYC lifecycle:
 
 ## 7. Integration Scenarios
 
-### Scenario 1: User registration và email verification
+### Scenario 1: User registration và email verification — ⛔ SKIP
 **Actor**: guest
 **Mô tả**: Complete registration flow từ signup đến verified account
+**SKIP Reason**: Email OTP flow — không thể tự động hóa. Tests dùng pre-authenticated accounts từ `auth.config.json`.
 **Steps**:
 1. Guest POST /api/users/auth/register với email + password
 2. Verify response 200, nhận được OTP reference
@@ -297,7 +324,7 @@ KYC lifecycle:
 4. Verify response 200, email verified
 5. Guest POST /api/users/auth/login với email + password
 6. Verify response 200, nhận accessToken + refreshToken
-7. User GET /api/users/profile với Bearer token
+7. User GET /api/users/profile/me với Bearer token
 8. Verify response 200, profile data returned
 **Expected**: Tài khoản tạo thành công, login OK, profile accessible
 
@@ -309,22 +336,25 @@ KYC lifecycle:
 **Steps**:
 1. User POST /api/users/auth/refresh-token với refreshToken
 2. Verify response 200, nhận accessToken mới + refreshToken mới
-3. User GET /api/users/profile với accessToken mới
+3. User GET /api/users/profile/me với accessToken mới
 4. Verify response 200, profile accessible với token mới
 **Expected**: Token refresh thành công, new tokens valid
 
 ---
 
-### Scenario 3: Forgot password flow
+### Scenario 3: Forgot password flow — ⛔ SKIP
 **Actor**: guest
 **Mô tả**: Reset password khi quên
+**SKIP Reason**: Email OTP flow — không thể tự động hóa. Forgot password gửi OTP qua email, không có cách verify programmatically.
 **Steps**:
 1. Guest POST /api/users/auth/forgot-password với email
-2. Verify response 200, OTP sent
-3. Guest POST /api/users/auth/reset-password với email + OTP + newPassword
+2. Verify response 200, token sent to email
+3. Guest POST /api/users/auth/forgot-password/verify-token với token
 4. Verify response 200
-5. Guest POST /api/users/auth/login với email + newPassword
-6. Verify response 200, login thành công với password mới
+5. Guest POST /api/users/auth/forgot-password/update-new-password với newPassword
+6. Verify response 200
+7. Guest POST /api/users/auth/login với email + newPassword
+8. Verify response 200, login thành công với password mới
 **Expected**: Password reset flow hoàn chỉnh
 
 ---
@@ -333,75 +363,75 @@ KYC lifecycle:
 **Actor**: user (authenticated)
 **Mô tả**: Setup TOTP 2FA cho tài khoản
 **Steps**:
-1. User POST /api/users/2fa/generate
+1. User POST /api/users/auth/two-factor/setup
 2. Verify response 200, nhận secret + otpauthUrl
-3. User POST /api/users/2fa/verify với valid OTP từ authenticator app
+3. User POST /api/users/auth/two-factor/verify-setup với valid OTP từ authenticator app
 4. Verify response 200, 2FA enabled
 **Expected**: 2FA enabled thành công
-**Note**: Test environment có thể cần mock TOTP generation
+**Note**: Tests dùng `otpauth` library để generate TOTP codes từ pre-configured secrets trong `auth.config.json` → field `totpSecret` (BASE32)
 
 ---
 
 ### Scenario 5: KYB submission flow
-**Actor**: admin (organization admin)
+**Actor**: admin (organization_owner)
 **Mô tả**: Submit KYB cho organization
 **Steps**:
 1. Admin GET /api/countries → lấy countryId
-2. Admin POST /api/files/presigned-post với type="kyb", fileName="business_license.pdf"
+2. Admin POST /api/users/files/private-storage/presigned-post với type="kyb", fileName="business_license.pdf"
 3. Verify response 200, nhận presigned URL + fields
-4. Admin POST /api/users/organization/kyb với đầy đủ business info + ownerships + fileIds
+4. Admin POST /api/users/organization-kyb với đầy đủ business info + ownerships + fileIds
 5. Verify response 200/201, KYB submitted
-6. Admin GET /api/users/organization/kyb/status
-7. Verify response 200, status = "submitted"
-8. Admin GET /api/users/organization/kyb/detail
+6. Admin GET /api/users/organization-kyb/kyb-status
+7. Verify response 200, status returned
+8. Admin GET /api/users/organization-kyb/{id}/detail
 9. Verify response 200, business info matches submitted data
 **Expected**: KYB submitted thành công, status trackable
 
 ---
 
 ### Scenario 6: Vault account lifecycle
-**Actor**: admin (organization admin)
+**Actor**: admin (organization_owner)
 **Mô tả**: Tạo vault, add assets, assign users
 **Steps**:
-1. Admin GET /api/assets → lấy danh sách available assets
-2. Admin POST /api/vault với OTP + name + assetIds + userIds
+1. Admin GET /api/users/vault-accounts → lấy danh sách vaults
+2. Admin POST /api/users/vault-accounts với OTP + name
 3. Verify response 200/201, vault created với ID
-4. Admin GET /api/vault/{id} → verify vault details
-5. Admin POST /api/vault/{id}/add-assets với OTP + additional assetIds
+4. Admin GET /api/users/vault-accounts/{id} → verify vault details
+5. Admin POST /api/users/vault-accounts/{id}/add-assets với OTP + assetIds
 6. Verify response 200
-7. Admin GET /api/vault/{id}/assets → verify assets added
-8. Admin PUT /api/vault/{id} với OTP + new name
+7. Admin GET /api/users/vault-accounts/{id}/users → verify users
+8. Admin PUT /api/users/vault-accounts/{id} với OTP + new name
 9. Verify response 200, name updated
-10. Admin GET /api/vault → verify vault in list
+10. Admin GET /api/users/vault-accounts → verify vault in list
 **Expected**: Vault CRUD lifecycle hoàn chỉnh
 
 ---
 
-### Scenario 7: Deposit address và transaction flow
+### Scenario 7: Transaction view flow
 **Actor**: admin/user
-**Mô tả**: Lấy deposit address và view transactions
+**Mô tả**: View transactions
 **Steps**:
-1. Admin POST /api/vault với OTP + name → tạo vault
-2. Admin POST /api/vault/{vaultId}/add-assets với OTP + assetIds
-3. User GET /api/vault/deposit-address/{assetId-in-vault} → lấy deposit address
-4. Verify response 200, có address
-5. User GET /api/transactions → list transactions
-6. Verify response 200, paginated list
-7. (Nếu có transaction) User GET /api/transactions/{id} → transaction detail
-8. Verify response 200, đầy đủ fields: id, asset, type, status, amount, fee, createdAt
-**Expected**: Deposit address generated, transactions viewable
+1. User GET /api/users/transactions → list transactions
+2. Verify response 200, paginated list
+3. (Nếu có transaction) User GET /api/users/transactions/{transactionId} → transaction detail
+4. Verify response 200, đầy đủ fields: id, asset, type, status, amount, fee, createdAt
+5. User GET /api/users/transactions/export → export transactions
+6. Verify response 200
+**Expected**: Transactions viewable and exportable
 
 ---
 
 ### Scenario 8: Withdrawal flow
 **Actor**: admin
-**Mô tả**: Initiate withdrawal từ vault
+**Mô tả**: Initiate và approve/reject withdrawal từ vault
 **Steps**:
-1. Admin POST /api/vault/withdrawal với withdrawal details + OTP
+1. Admin POST /api/users/withdraw với withdrawal details + OTP
 2. Verify response 200/201, transaction created
-3. Admin GET /api/transactions → verify withdrawal in list
-4. Admin GET /api/transactions/{id} → verify status = pending hoặc organization_review
-**Expected**: Withdrawal initiated, pending approval
+3. Admin GET /api/users/transactions → verify withdrawal in list
+4. Admin GET /api/users/transactions/{transactionId} → verify status = pending
+5. Admin POST /api/users/withdraw/{transactionId}/approve với OTP → approve withdrawal
+6. OR Admin POST /api/users/withdraw/{transactionId}/reject → reject withdrawal
+**Expected**: Withdrawal initiated, approval/rejection flow works
 
 ---
 
@@ -409,11 +439,12 @@ KYC lifecycle:
 **Actor**: admin
 **Mô tả**: Manage vault access cho team members
 **Steps**:
-1. Admin POST /api/vault với OTP + name → tạo vault
-2. Admin POST /api/vault/{id}/assign-users với OTP + userIds
+1. Admin POST /api/users/vault-accounts với OTP + name → tạo vault
+2. Admin POST /api/users/vault-accounts/{id}/assign-users với OTP + userIds
 3. Verify response 200, users assigned
-4. Admin POST /api/vault/{id}/remove-users với OTP + userIds
-5. Verify response 200, users removed
+4. Admin GET /api/users/vault-accounts/{id}/users → verify users in list
+5. Admin POST /api/users/vault-accounts/{id}/remove-users với OTP + userIds
+6. Verify response 200, users removed
 **Expected**: User access management hoạt động đúng
 
 ---
@@ -425,11 +456,10 @@ KYC lifecycle:
 1. Guest GET /api/health → expect 200 (public)
 2. Guest GET /api/health/ready → expect 200 (public)
 3. Guest GET /api/countries → expect 200 (public)
-4. Guest GET /api/users/profile → expect 401 (protected)
-5. Guest GET /api/vault → expect 401 (protected)
-6. Guest GET /api/transactions → expect 401 (protected)
-7. Guest GET /api/assets → expect 401 (protected)
-8. Guest POST /api/vault → expect 401 (protected)
+4. Guest GET /api/users/profile/me → expect 401 (protected)
+5. Guest GET /api/users/vault-accounts → expect 401 (protected)
+6. Guest GET /api/users/transactions → expect 401 (protected)
+7. Guest POST /api/users/vault-accounts → expect 401 (protected)
 **Expected**: Public endpoints accessible, protected return 401
 
 ---
@@ -438,31 +468,70 @@ KYC lifecycle:
 **Actor**: user (regular member)
 **Mô tả**: Verify user không thể thực hiện admin-only actions
 **Steps**:
-1. User POST /api/vault → expect 403 (admin only)
-2. User PUT /api/vault/{id} → expect 403 (admin only)
-3. User POST /api/vault/{id}/add-assets → expect 403 (admin only)
-4. User POST /api/vault/{id}/assign-users → expect 403 (admin only)
-5. User POST /api/vault/{id}/remove-users → expect 403 (admin only)
-6. User POST /api/users/organization/kyb → expect 403 (admin only)
-7. User PUT /api/organization/profile → expect 403 (admin only)
+1. User POST /api/users/vault-accounts → expect 403 (admin only)
+2. User PUT /api/users/vault-accounts/{id} → expect 403 (admin only)
+3. User POST /api/users/vault-accounts/{id}/add-assets → expect 403 (admin only)
+4. User POST /api/users/vault-accounts/{id}/assign-users → expect 403 (admin only)
+5. User POST /api/users/vault-accounts/{id}/remove-users → expect 403 (admin only)
+6. User POST /api/users/organization-kyb → expect 403 (admin only)
+7. User POST /api/users/withdraw → expect 403 (admin only)
+8. User POST /api/users/organization-members/invite → expect 403 (admin only)
 **Expected**: All admin actions return 403 for regular users
 
 ---
 
-### Scenario 12: Organization profile management
+### Scenario 12: Organization members management
 **Actor**: admin
-**Mô tả**: View và update organization profile
+**Mô tả**: Invite, manage, remove organization members
 **Steps**:
-1. Admin GET /api/organization/profile
-2. Verify response 200, có id, name, email, avatar, kyb, status, createdAt
-3. Admin PUT /api/organization/profile với name="Updated Org Name"
-4. Verify response 200, name updated
-5. Admin GET /api/organization/profile → verify name persisted
-**Expected**: Org profile CRUD hoạt động đúng
+1. Admin GET /api/users/organization-members/members → list members
+2. Verify response 200, members list returned
+3. Admin POST /api/users/organization-members/invite với email + role
+4. Verify response 200, invitation sent
+5. Admin POST /api/users/organization-members/change-member-role với userId + newRole
+6. Verify response 200, role changed
+7. Admin POST /api/users/organization-members/remove-member với userId
+8. Verify response 200, member removed
+**Expected**: Org member management hoạt động đúng
+
+---
+
+### Scenario 13: Organization profile view
+**Actor**: admin/user
+**Mô tả**: View organization profile
+**Steps**:
+1. Admin GET /api/users/organization/{id}
+2. Verify response 200, có id, name, email, avatar, kyb status
+3. Admin PUT /api/users/organization/{id} với updates
+4. Verify response 200, updated
+**Expected**: Org profile viewable and updatable by admin
+
+---
+
+### Scenario 14: Action logs view
+**Actor**: admin/user
+**Mô tả**: View user action logs
+**Steps**:
+1. User GET /api/users/action-logs
+2. Verify response 200, logs list returned
+3. Admin GET /api/users/action-logs/export
+4. Verify response 200, export file returned
+**Expected**: Action logs viewable, export works for admin
 
 ---
 
 ## 8. Special Notes
+
+### Email OTP Flows — SKIPPED
+- Scenario 1 (registration + email verify) và Scenario 3 (forgot password) **bị bỏ qua** vì phụ thuộc email OTP
+- Tests dùng **pre-authenticated accounts** với tokens có sẵn trong `auth.config.json`
+- Các endpoint liên quan: `/auth/register`, `/auth/verify-email`, `/auth/forgot-password`, `/auth/reset-password`, `/auth/resend-otp` — không test integration flow
+
+### 2FA TOTP Automation
+- Tests sinh TOTP codes tự động bằng `otpauth` npm library
+- Mỗi account trong `auth.config.json` có field `totpSecret` (BASE32 encoded)
+- Helper code: `import { TOTP } from 'otpauth'; const totp = new TOTP({ secret: totpSecret }); const otp = totp.generate();`
+- Dùng cho: vault creation, vault update, add assets, assign/remove users, withdrawal
 
 ### Email + Password Authentication
 - Hệ thống dùng email/password authentication (không phải wallet-based)

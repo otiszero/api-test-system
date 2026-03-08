@@ -1,16 +1,16 @@
 {
-  "_comment": "Cấu hình kết nối Database. Nếu không cần test DB trực tiếp, đặt enabled = false.",
+  "_comment": "PostgreSQL database config for Upmount Custody Platform",
   "enabled": true,
 
-  "type": "mysql2",
+  "type": "pg",
 
-  "host": "64.23.225.69",
-  "port": 32775,
+  "host": "10.4.11.165",
+  "port": 5433,
 
-  "database": "foreon",
+  "database": "upmount_user",
 
-  "username": "foreon",
-  "password": "foreon",
+  "username": "upmount",
+  "password": "upmount",
 
   "ssl": false,
 

@@ -1,124 +1,123 @@
-# Test Report - Foreon Prediction Market API
+# Test Report — Upmount Custody Platform
 
-**Ngày chạy:** 2026-03-02 10:39:14
-**API:** https://api.foreon.network
-**Duration:** 11.31s
+**Ngày chạy:** 2026-03-05
+**Môi trường:** DEV (`https://dev.api.upmount.sotatek.works`)
+**Tổng endpoints:** 76 | **Test runner:** Vitest 3.0.7
 
 ---
 
-## Tổng Quan
+## Tổng kết
 
 | Metric | Giá trị |
 |--------|---------|
-| **Total Tests** | 233 |
-| **Passed** | 221 (94.8%) |
-| **Failed** | 12 (5.2%) |
-| **Skipped** | 0 |
-
-```
-████████████████████████████████████████████░░  94.8%
-```
+| **Tổng tests** | 432 |
+| **Passed** | 307 (71.1%) |
+| **Failed** | 125 (28.9%) |
+| **Thời gian** | ~4 phút |
 
 ---
 
-## Kết Quả Theo Layer
+## Kết quả theo Layer
 
-| Layer | Pass | Fail | Skip | Rate | Status |
-|-------|------|------|------|------|--------|
-| 🟢 01-Smoke | 44 | 2 | 0 | 95.7% | ⚠️ |
-| 🔵 02-Contract | 24 | 0 | 0 | 100% | ✅ |
-| 🟡 03-Single | 63 | 5 | 0 | 92.6% | ⚠️ |
-| 🟠 04-Integration | 28 | 2 | 0 | 93.3% | ⚠️ |
-| 🔐 05-RBAC | 25 | 0 | 0 | 100% | ✅ |
-| ⚫ 06-Security | 19 | 5 | 0 | 79.2% | ⚠️ |
-| 🟣 07-DB Integrity | 10 | 0 | 0 | 100% | ✅ |
-
----
-
-## Chi Tiết Failures
-
-### 1. POST /auth/logout - Wrong Status Code
-- **File:** `03-single/auth.test.ts:34`
-- **Expected:** 200, 204, hoặc 401
-- **Actual:** 201
-- **Severity:** Low
-- **Analysis:** API trả về 201 (Created) thay vì 200/204 cho logout action. Không ảnh hưởng chức năng nhưng không đúng REST convention.
-
-### 2. GET /trades/graph - Missing Required Params
-- **File:** `03-single/trades.test.ts:23`
-- **Expected:** 200
-- **Actual:** 400
-- **Severity:** Low
-- **Analysis:** Endpoint yêu cầu query params (outcomeId, interval) nhưng OpenAPI spec không document rõ required params.
-
-### 3. GET /trades/graph-overrall - Missing Required Params
-- **File:** `03-single/trades.test.ts:29`
-- **Expected:** 200
-- **Actual:** 400
-- **Severity:** Low
-- **Analysis:** Tương tự endpoint graph, cần document required params.
-
-### 4. 🔴 Expired Token Accepted (SECURITY)
-- **File:** `06-security/security.test.ts:18`
-- **Expected:** 401 Unauthorized
-- **Actual:** 200 OK
-- **Severity:** **CRITICAL**
-- **Analysis:** API chấp nhận JWT token đã expired. Đây là lỗ hổng bảo mật nghiêm trọng cho phép attacker sử dụng token cũ vô thời hạn.
-
-### 5. 🔴 Malformed Token Causes 500 (SECURITY)
-- **File:** `06-security/security.test.ts:26`
-- **Expected:** 401 Unauthorized
-- **Actual:** 500 Internal Server Error
-- **Severity:** **HIGH**
-- **Analysis:** Token không hợp lệ gây crash server thay vì trả về 401. Có thể bị khai thác để DoS.
-
-### 6. 🔴 Non-numeric ID Causes 500 (SECURITY)
-- **File:** `06-security/security.test.ts:143`
-- **Expected:** 400 hoặc 404
-- **Actual:** 500 Internal Server Error
-- **Severity:** **HIGH**
-- **Analysis:** Input validation thiếu cho path params. Server crash khi nhận ID không phải số.
-
-### 7-12. Trade Graph Endpoints (Contract Issues)
-- **Endpoints:** `/trades/graph`, `/trades/graph-overrall`
-- **Severity:** Low
-- **Analysis:** Các endpoint này cần query params nhưng test gọi không có params. Cần update OpenAPI spec để document required params.
+| Layer | Pass | Fail | Total | Rate | Ghi chú |
+|-------|------|------|-------|------|---------|
+| 🟢 01-Smoke | 76 | 3 | 79 | 96.2% | 3 server 500 errors |
+| 🔵 02-Contract | 5 | 46 | 51 | 9.8% | Error envelope mismatch |
+| 🟡 03-Single API | 119 | 43 | 162 | 73.5% | Token hết hạn + RBAC sai |
+| 🟠 04-Integration | 32 | 0 | 32 | 100% | ✅ All passed |
+| 🔐 05-RBAC | 25 | 26 | 51 | 49.0% | Token user[1] hết hạn |
+| ⚫ 06-Security | 41 | 3 | 44 | 93.2% | SSL error, timeout, IDOR |
+| 🟣 07-DB Integrity | 9 | 4 | 13 | 69.2% | Sai tên table/column |
 
 ---
 
-## Endpoints Coverage
+## Chi tiết Failures theo Layer
 
-| Resource | Total Endpoints | Tested | Coverage |
-|----------|----------------|--------|----------|
-| Markets | 13 | 13 | 100% |
-| Orders | 9 | 9 | 100% |
-| Trades | 5 | 5 | 100% |
-| Comments | 6 | 6 | 100% |
-| Auth | 6 | 6 | 100% |
-| Admin | 3 | 3 | 100% |
-| Other | 4 | 4 | 100% |
+### 🟢 01-Smoke (3 failures)
 
----
+| # | Test | Endpoint | Lỗi |
+|---|------|----------|------|
+| 1 | Files > upload-image → not 5xx | `POST /api/users/files/upload-image` | Server trả 500 |
+| 2 | Vault > vault-accounts/{id}/users → not 5xx | `GET /api/users/vault-accounts/{id}/users` | Server trả 500 |
+| 3 | Transactions > transactions/{id} → not 5xx | `GET /api/users/transactions/{transactionId}` | Server trả 500 |
 
-## Thống Kê Security
-
-| Check | Result |
-|-------|--------|
-| Auth bypass (no token) | ✅ Passed |
-| Auth bypass (expired token) | ❌ **FAILED** |
-| Auth bypass (malformed token) | ❌ **FAILED** |
-| SQL injection | ⚠️ Partial (some 500s) |
-| XSS prevention | ✅ Passed |
-| Input validation | ❌ **FAILED** |
-| RBAC enforcement | ✅ Passed |
-| IDOR protection | ✅ Passed |
+**Evidence:** Cả 3 endpoint đều trả HTTP 500, cho thấy lỗi server-side chưa handle.
 
 ---
 
-## Recommendations
+### 🔵 02-Contract (46 failures)
 
-1. **[CRITICAL]** Fix JWT token validation - expired tokens phải bị reject
-2. **[HIGH]** Add error handling cho malformed tokens - return 401 không phải 500
-3. **[HIGH]** Add input validation cho path params - validate trước khi query DB
-4. **[LOW]** Update OpenAPI spec với required params cho graph endpoints
-5. **[LOW]** Chuẩn hóa status code cho logout (200/204 thay vì 201)
+**Root cause chính:** `assertErrorEnvelope` expect `body.message` nhưng API trả `{ success: false, errorCode, ... }` không có field `message`.
+
+| Nhóm | Số lỗi | Mô tả |
+|-------|--------|-------|
+| Error envelope thiếu `message` | 44 | API error response có `success`, `errorCode` nhưng không có `message` |
+| 2FA setup trả 401 thay vì 200/400 | 1 | Token owner hết hạn hoặc 2FA đã enabled |
+| Countries schema validation | 1 | CountryResponseDto validation fail |
+
+---
+
+### 🟡 03-Single API (43 failures)
+
+| Nhóm lỗi | Số lỗi | Root cause |
+|-----------|--------|------------|
+| Normal user token (user[1]) trả 401 thay vì 200 | 8 | **Token hết hạn** — user[1] JWT expired |
+| Normal user token trả 401 thay vì 403 | 19 | **Token hết hạn** — không thể phân biệt 401 vs 403 |
+| Owner token (user[0]) trả 401 trên một số endpoint | 6 | **Token user[0] hết hạn trên 2FA/file endpoints** |
+| 2FA endpoints trả 403 thay vì 400/422 | 7 | API trả 403 khi 2FA chưa setup đúng (không phải bug) |
+| Profile update trả 201 thay vì 200/400 | 1 | Test expect [200,400] nhưng API trả 201 |
+| Org GET trả 400 thay vì 200/404 | 1 | Có thể org ID format sai |
+| Accept-invite trả 401 | 1 | Token expired |
+
+**Phân tích:** ~80% failures do token hết hạn (user[1] chắc chắn expired, user[0] một phần expired).
+
+---
+
+### 🟠 04-Integration (0 failures) ✅
+
+Tất cả 32 tests passed. Scenarios: Token Refresh, 2FA, KYB, Vault Lifecycle, Transaction, Guest Access, Org Members, Action Logs.
+
+---
+
+### 🔐 05-RBAC (26 failures)
+
+| Nhóm | Số lỗi | Mô tả |
+|-------|--------|-------|
+| Group 3: Normal user read → 401 thay 2xx | 10 | Token user[1] expired → 401 cho tất cả |
+| Group 4: Normal user admin-only → 401 thay 403 | 16 | Token user[1] expired → server trả 401 trước khi check RBAC |
+
+**Root cause:** 100% failures do token `user[1]` (normal user) hết hạn. Server trả 401 (Unauthorized) thay vì 2xx hoặc 403 (Forbidden).
+
+---
+
+### ⚫ 06-Security (3 failures)
+
+| # | Test | Lỗi | Severity |
+|---|------|------|----------|
+| 1 | Host header injection → no 5xx | SSL EPROTO error — `evil.example.com` gây SSL mismatch | Low |
+| 2 | Oversized Content-Length → no 5xx | Timeout 10s — server không reject nhanh | Medium |
+| 3 | IDOR: User A access org 999999 | API trả 400 thay vì 403/404 | Medium |
+
+---
+
+### 🟣 07-DB Integrity (4 failures)
+
+| # | Test | Lỗi |
+|---|------|------|
+| 1 | User Profile matches DB | Column `"firstName"` does not exist trong bảng `users` |
+| 2 | No orphan vault_accounts | Relation `"vault_accounts"` does not exist |
+| 3 | No orphan organization_members | Relation `"organization_members"` does not exist |
+| 4 | No orphan transactions | Relation `"transactions"` does not exist |
+
+**Root cause:** Tên bảng trong DB không match với assumption. Cần query `\dt` để xem tên bảng thực tế (có thể là `vault_account`, `organization_member`, `transaction` — không có "s").
+
+---
+
+## Action Items (ưu tiên cao → thấp)
+
+1. 🔴 **CRITICAL**: Refresh JWT tokens cho cả user[0] và user[1] — ảnh hưởng ~80 tests
+2. 🔴 **HIGH**: Fix 3 server 500 endpoints (upload-image, vault/{id}/users, transactions/{id})
+3. 🟡 **MEDIUM**: Update contract test `assertErrorEnvelope` — API dùng `{success, errorCode}` không có `message`
+4. 🟡 **MEDIUM**: Kiểm tra DB table names thực tế (snake_case singular vs plural)
+5. 🟢 **LOW**: Tăng timeout cho oversized Content-Length test
+6. 🟢 **LOW**: Handle Host header SSL error trong security test

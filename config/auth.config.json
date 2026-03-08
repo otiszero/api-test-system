@@ -4,8 +4,8 @@
   "_type_options": ["bearer", "bearer_direct", "api_key", "basic", "oauth2", "none"],
 
   "_bearer_comment": "Nếu type = bearer: điền loginEndpoint + credentials cho mỗi account",
-  "loginEndpoint": "/auth/login",
-  "_loginEndpoint_example": "/api/v1/auth/login",
+  "loginEndpoint": "/api/users/auth/login",
+  "_loginEndpoint_example": "/api/users/auth/login",
   "loginBody": {
     "_comment": "Field names khớp với API của bạn",
     "usernameField": "email",
@@ -26,19 +26,28 @@
     "_comment": "Mỗi role cần ít nhất 1 account. IDOR tests cần 2 accounts cùng role (user_a, user_b).",
     "_bearer_direct_format": "Nếu type = bearer_direct: thêm field 'token' vào mỗi account, bỏ qua username/password",
     "admin": [
+      {
+        "token": "TODO_ADMIN_TOKEN",
+        "refreshToken": "TODO_ADMIN_REFRESH_TOKEN",
+        "totpSecret": "TODO_ADMIN_TOTP_SECRET",
+        "label": "admin1",
+        "_comment": "Admin account - fill token, refreshToken, totpSecret"
+      }
     ],
     "user": [
       {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MTc3MjQ1NjQwMn0.bcsZgxR_G1AqlNPCoKY1B02lQONEKEdboVc-w3nVEbo",
-        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI3bGN1djNydnRwZWtrMzRwZXQyNnBwcDVsYWZnbXJqYWVsajY2dXFwNm1wMmNuc2E3MDYwbXNhYXl3em15ZWZneGRja2hyY3Rycjl6cHRldWp5bDZta3k1cXM1eXowNHIiLCJyb2xlIjoidXNlciIsImp0aSI6IjE3Iiwic3ViIjoiMTciLCJpYXQiOjE3NzI0Mzg0MDIsImV4cCI6MzU0NTA1NjgwNH0.KFoaw96_8kjwj8XcuQMYTPVU8SDIixTNz3-W5gjnXU4",
-        "label": "tien",
-        "_comment": "User 2"
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiQUNDRVNTIiwiaWF0IjoxNzcyNjkzODkxLCJleHAiOjE3NzI3ODAyOTF9.h-6FEsDpxw5BNIErxUiS8jkDKfKAky2cxChfZognQnE",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE4IiwiZW1haWwiOiJ0aWVuLm5ndXllbjJAc290YXRlay5jb20iLCJyb2xlIjoidXNlciIsIm9yZ2FuaXphdGlvbklkIjpudWxsLCJvcmdhbml6YXRpb25Pd25lciI6ZmFsc2UsImtleVRva2VuIjoiODc0Mzg3NDYtMGVmMS00M2U2LWFiZmMtMGEzYTE3ZGFlMmQ4IiwidHlwIjoiUkVGUkVTSCIsImlhdCI6MTc3MjY5Mzg5MSwiZXhwIjoxNzczOTAzNDkxfQ.JHLa-5_z4QJDfHs5l5XmKuqhoygs1InAySs7ulj0GeY",
+        "totpSecret": "MMWHWUSIMJJGS5DDGRTDOSJYOR3DSMB2KF5UYQBZOM7HGP2OGZKA",
+        "label": "owner org",
+        "_comment": "Owner Org"
       },
        {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MzgzMjUsImV4cCI6MTc3MjQ1NjMyNX0.NldAcQjgE-C0K-LQTjeFdU9K373dbU1FaLOEebMmsaM",
-        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEsIndhbGxldEFkZHJlc3MiOiJhZGRyX3Rlc3QxcXI5Z2NuazI4bGVubXN0cHJ4Y2FuZm1sbTl3NXUzYTVyOWtscWs4bHRnNTI1cHNmOWxja250OWZ4ZHg3Z2U5YXFkdDZxNjV1N2Rrd2xhMmN2a21oajBlcjJyeXFsZWw4MzQiLCJyb2xlIjoidXNlciIsImp0aSI6IjkxIiwic3ViIjoiOTEiLCJpYXQiOjE3NzI0MzgzMjUsImV4cCI6MzU0NTA1NjY1MH0.C2gHzM7HKdTqLU0PuUwIs5JJN6PnBsJlsaNj9A4Vgxk",
-        "label": "otis",
-        "_comment": "User 1"
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE5IiwiZW1haWwiOiJ0aWVuLm5ndXllbjIrZGV2MUBzb3RhdGVrLmNvbSIsInJvbGUiOiJ1c2VyIiwib3JnYW5pemF0aW9uSWQiOm51bGwsIm9yZ2FuaXphdGlvbk93bmVyIjpmYWxzZSwia2V5VG9rZW4iOiJjMWIzZmE0OC02YWYyLTRhNTAtYWNmZi02ZTIxMWM3MGFlNmEiLCJ0eXAiOiJBQ0NFU1MiLCJpYXQiOjE3NzI2OTQ1ODUsImV4cCI6MTc3Mjc4MDk4NX0.nWh9XLbm428SNJ5-ZNC3su-BpFma0hRopH5LkMKbdz4",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTE5IiwiZW1haWwiOiJ0aWVuLm5ndXllbjIrZGV2MUBzb3RhdGVrLmNvbSIsInJvbGUiOiJ1c2VyIiwib3JnYW5pemF0aW9uSWQiOm51bGwsIm9yZ2FuaXphdGlvbk93bmVyIjpmYWxzZSwia2V5VG9rZW4iOiJjMWIzZmE0OC02YWYyLTRhNTAtYWNmZi02ZTIxMWM3MGFlNmEiLCJ0eXAiOiJSRUZSRVNIIiwiaWF0IjoxNzcyNjk0NTg1LCJleHAiOjE3NzM5MDQxODV9.5mEuzjmOPPkHIokyc4Rr_zLr1leeXvFpFfegOHrfytU",
+        "totpSecret": "G43GWWDHOFJVCMR6EUYCMSZKNF6VIWDLGFEHCUCJFZAGO4LZKVQQ",
+        "label": "user normal",
+        "_comment": "User normal"
       }
     ]
   },

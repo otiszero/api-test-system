@@ -1,18 +1,20 @@
 {
   "metadata": {
-    "generatedAt": "2026-03-02T03:17:31.355Z",
-    "totalEndpoints": 68,
-    "testableEndpoints": 46,
-    "blacklistedEndpoints": 22,
+    "generatedAt": "2026-03-05T07:44:43.226Z",
+    "totalEndpoints": 76,
+    "testableEndpoints": 76,
+    "blacklistedEndpoints": 0,
     "openapiVersion": "3.0.0",
     "sourceFile": "input/openapi.yaml"
   },
   "endpoints": [
     {
       "method": "GET",
-      "path": "/",
-      "operationId": "AppController_getHello",
-      "tags": [],
+      "path": "/api/health",
+      "operationId": "check",
+      "tags": [
+        "Health"
+      ],
       "hasRequestBody": false,
       "hasPathParams": false,
       "hasQueryParams": false,
@@ -22,10 +24,496 @@
     },
     {
       "method": "GET",
-      "path": "/admin",
-      "operationId": "AdminController_getAdmin",
+      "path": "/api/health/ready",
+      "operationId": "ready",
       "tags": [
-        "Admin - Manage Admin"
+        "Health"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/register",
+      "operationId": "register",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/login",
+      "operationId": "login",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/refresh-token",
+      "operationId": "refresh-token",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/verify-email",
+      "operationId": "verify-email",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/verify-email/resend",
+      "operationId": "resend-verify-email",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/forgot-password",
+      "operationId": "forgot-password",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/forgot-password/verify-token",
+      "operationId": "verify-forgot-password-token",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/forgot-password/update-new-password",
+      "operationId": "update-password-with-forgot-password",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/change-password",
+      "operationId": "change-password",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/auth/google",
+      "operationId": "login-with-google-redirect",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/auth/google/callback",
+      "operationId": "handle-login-with-google-callback",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/google/token",
+      "operationId": "login-with-google",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/logout",
+      "operationId": "logout",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/two-factor/setup",
+      "operationId": "setup-two-factor",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/two-factor/verify-setup",
+      "operationId": "verify-two-factor-setup",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/two-factor/verify-login",
+      "operationId": "verify-two-factor-login",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/two-factor/disable",
+      "operationId": "disable-two-factor",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/2fa/change/send-email",
+      "operationId": "change-2fa-send-email",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/2fa/change/verify-email",
+      "operationId": "change-2fa-verify-email",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/auth/2fa/change/verify-ga",
+      "operationId": "change-2fa-verify-ga",
+      "tags": [
+        "Users auth"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/profile/me",
+      "operationId": "get-user-profile",
+      "tags": [
+        "User Profile"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/profile/me",
+      "operationId": "update-user-profile",
+      "tags": [
+        "User Profile"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/withdraw",
+      "operationId": "withdraw",
+      "tags": [
+        "Withdraw"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/withdraw/{transactionId}/approve",
+      "operationId": "approveWithdraw",
+      "tags": [
+        "Withdraw"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/withdraw/{transactionId}/reject",
+      "operationId": "rejectWithdraw",
+      "tags": [
+        "Withdraw"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/action-logs",
+      "operationId": "getActionLogs",
+      "tags": [
+        "User Action Log"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/action-logs/export",
+      "operationId": "exportActionLogs",
+      "tags": [
+        "User Action Log"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/organization-members/invite",
+      "operationId": "inviteMember",
+      "tags": [
+        "Organization Member"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/organization-members/resend-invite",
+      "operationId": "resendInviteMemberEmail",
+      "tags": [
+        "Organization Member"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/organization-members/verify-invite",
+      "operationId": "verifyInvite",
+      "tags": [
+        "Organization Member"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "PUT",
+      "path": "/api/users/organization-members/accept-invite",
+      "operationId": "acceptInvite",
+      "tags": [
+        "Organization Member"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/organization-members/members",
+      "operationId": "getMembers",
+      "tags": [
+        "Organization Member"
       ],
       "hasRequestBody": false,
       "hasPathParams": false,
@@ -37,11 +525,11 @@
       "blacklistReason": null
     },
     {
-      "method": "POST",
-      "path": "/admin",
-      "operationId": "AdminController_createAdmin",
+      "method": "PUT",
+      "path": "/api/users/organization-members/remove-member",
+      "operationId": "removeMember",
       "tags": [
-        "Admin - Manage Admin"
+        "Organization Member"
       ],
       "hasRequestBody": true,
       "hasPathParams": false,
@@ -54,10 +542,10 @@
     },
     {
       "method": "PUT",
-      "path": "/admin",
-      "operationId": "AdminController_update",
+      "path": "/api/users/organization-members/change-member-role",
+      "operationId": "changeMemberRole",
       "tags": [
-        "Admin - Manage Admin"
+        "Organization Member"
       ],
       "hasRequestBody": true,
       "hasPathParams": false,
@@ -70,278 +558,10 @@
     },
     {
       "method": "GET",
-      "path": "/admin/users",
-      "operationId": "UserManagerController_getUsers",
+      "path": "/api/users/organization-members/export-members",
+      "operationId": "exportMembersToCsv",
       "tags": [
-        "Admin - Manage User "
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": true,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/markets",
-      "operationId": "MarketController_getMarkets",
-      "tags": [],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": true,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/pending-markets",
-      "operationId": "MarketController_getPendingMarkets",
-      "tags": [],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": true,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/market",
-      "operationId": "MarketController_create",
-      "tags": [],
-      "hasRequestBody": true,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/market/{id}/outcomes",
-      "operationId": "MarketController_getOutcomeByMarket",
-      "tags": [],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/market/{id}/orders",
-      "operationId": "MarketController_getOrderByMarket",
-      "tags": [],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": true,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/market/{id}/trades",
-      "operationId": "MarketController_getTradeByMarket",
-      "tags": [],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": true,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/market/{id}",
-      "operationId": "MarketController_getMarket",
-      "tags": [],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "PUT",
-      "path": "/admin/market/{id}",
-      "operationId": "MarketController_editMarket",
-      "tags": [],
-      "hasRequestBody": true,
-      "hasPathParams": true,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "DELETE",
-      "path": "/admin/market/{id}",
-      "operationId": "MarketController_deleteMarket",
-      "tags": [],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "PUT",
-      "path": "/admin/approve-market",
-      "operationId": "MarketController_approveMarket",
-      "tags": [],
-      "hasRequestBody": true,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "PUT",
-      "path": "/admin/reject-market/{id}",
-      "operationId": "MarketController_rejectMarket",
-      "tags": [],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "PUT",
-      "path": "/admin/approve-pending-market/{id}",
-      "operationId": "MarketController_approvePendingMarket",
-      "tags": [],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "PUT",
-      "path": "/admin/market-status/{id}",
-      "operationId": "MarketController_updateStatusMarket",
-      "tags": [],
-      "hasRequestBody": true,
-      "hasPathParams": true,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/upload",
-      "operationId": "MarketController_uploadFile",
-      "tags": [],
-      "hasRequestBody": true,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/outcome/{id}/outcome-statistic",
-      "operationId": "OutcomeController_getOutcomeByMarket",
-      "tags": [],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "PUT",
-      "path": "/admin/outcome/crawling",
-      "operationId": "OutcomeController_setOutcomeCrawling",
-      "tags": [],
-      "hasRequestBody": true,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "PUT",
-      "path": "/admin/outcome/reliableUrl",
-      "operationId": "OutcomeController_updateReliableUrl",
-      "tags": [],
-      "hasRequestBody": true,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/outcome/add-liquidity",
-      "operationId": "OutcomeController_createOrderAddLiquidity",
-      "tags": [],
-      "hasRequestBody": true,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: /admin/*"
-    },
-    {
-      "method": "GET",
-      "path": "/orders",
-      "operationId": "OrderController_getListOrders",
-      "tags": [
-        "Orders"
+        "Organization Member"
       ],
       "hasRequestBody": false,
       "hasPathParams": false,
@@ -354,10 +574,10 @@
     },
     {
       "method": "POST",
-      "path": "/orders",
-      "operationId": "OrderController_createOrder",
+      "path": "/api/users/organization-kyb",
+      "operationId": "createOrganizationKyb",
       "tags": [
-        "Orders"
+        "Organization Kyb"
       ],
       "hasRequestBody": true,
       "hasPathParams": false,
@@ -369,30 +589,14 @@
       "blacklistReason": null
     },
     {
-      "method": "PUT",
-      "path": "/orders/{id}/cancelled",
-      "operationId": "OrderController_cancelOrder",
+      "method": "GET",
+      "path": "/api/users/organization-kyb/kyb-status",
+      "operationId": "getKybStatus",
       "tags": [
-        "Orders"
+        "Organization Kyb"
       ],
       "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "PUT",
-      "path": "/orders/{id}/claimed",
-      "operationId": "OrderController_claimedOrder",
-      "tags": [
-        "Orders"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": true,
+      "hasPathParams": false,
       "hasQueryParams": false,
       "security": [
         "bearer"
@@ -402,14 +606,14 @@
     },
     {
       "method": "GET",
-      "path": "/orders/position",
-      "operationId": "OrderController_getPosition",
+      "path": "/api/users/organization-kyb/primary-owner-data",
+      "operationId": "getPrimaryOwnerData",
       "tags": [
-        "Orders"
+        "Organization Kyb"
       ],
       "hasRequestBody": false,
       "hasPathParams": false,
-      "hasQueryParams": true,
+      "hasQueryParams": false,
       "security": [
         "bearer"
       ],
@@ -418,13 +622,13 @@
     },
     {
       "method": "GET",
-      "path": "/orders/position-claims",
-      "operationId": "OrderController_getPositionClaim",
+      "path": "/api/users/organization-kyb/{id}/detail",
+      "operationId": "getOrganizationKybDetail",
       "tags": [
-        "Orders"
+        "Organization Kyb"
       ],
       "hasRequestBody": false,
-      "hasPathParams": false,
+      "hasPathParams": true,
       "hasQueryParams": true,
       "security": [
         "bearer"
@@ -434,10 +638,10 @@
     },
     {
       "method": "POST",
-      "path": "/orders/position-claims",
-      "operationId": "OrderController_SavePositionClaim",
+      "path": "/api/users/files/upload-image",
+      "operationId": "uploadImage",
       "tags": [
-        "Orders"
+        "Files"
       ],
       "hasRequestBody": true,
       "hasPathParams": false,
@@ -450,10 +654,10 @@
     },
     {
       "method": "POST",
-      "path": "/orders/add-liquidity",
-      "operationId": "OrderController_createOrderByAddLiquidity",
+      "path": "/api/users/files/private-storage/presigned-post",
+      "operationId": "getPreSignedUploadUrl",
       "tags": [
-        "Orders"
+        "Files"
       ],
       "hasRequestBody": true,
       "hasPathParams": false,
@@ -466,84 +670,10 @@
     },
     {
       "method": "GET",
-      "path": "/orders/activity",
-      "operationId": "OrderController_getActivity",
+      "path": "/api/users/files/private-storage/presigned-get/{id}",
+      "operationId": "getPreSignedGetUrl",
       "tags": [
-        "Orders"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": true,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/statistic/rank",
-      "operationId": "StatisticController_getRank",
-      "tags": [
-        "Statistic"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": true,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/orderbook",
-      "operationId": "OrderbookController_getOrderbook",
-      "tags": [
-        "Orderbook"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": true,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/markets",
-      "operationId": "MarketController_findAll",
-      "tags": [
-        "Markets"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": true,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/markets/proposed",
-      "operationId": "MarketController_findPropose",
-      "tags": [
-        "Markets"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": true,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/markets/proposed-detail/{id}",
-      "operationId": "MarketController_getProposedDetail",
-      "tags": [
-        "Markets"
+        "Files"
       ],
       "hasRequestBody": false,
       "hasPathParams": true,
@@ -556,38 +686,10 @@
     },
     {
       "method": "GET",
-      "path": "/markets/top-holders/{id}",
-      "operationId": "MarketController_getTopHolder",
+      "path": "/api/users/vault-accounts",
+      "operationId": "getVaultAccounts",
       "tags": [
-        "Markets"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": false,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/markets/category",
-      "operationId": "MarketController_getCategories",
-      "tags": [
-        "Markets"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/markets/favorites",
-      "operationId": "MarketController_getFavorites",
-      "tags": [
-        "Markets"
+        "Vault Accounts"
       ],
       "hasRequestBody": false,
       "hasPathParams": false,
@@ -600,54 +702,10 @@
     },
     {
       "method": "POST",
-      "path": "/markets/{marketId}/favorite",
-      "operationId": "MarketController_toggleFavorite",
+      "path": "/api/users/vault-accounts",
+      "operationId": "create",
       "tags": [
-        "Markets"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/markets/{id}",
-      "operationId": "MarketController_getDetail",
-      "tags": [
-        "Markets"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": false,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/markets/ipfs/{id}",
-      "operationId": "MarketController_getImage",
-      "tags": [
-        "Markets"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": false,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "POST",
-      "path": "/markets/market",
-      "operationId": "MarketController_create",
-      "tags": [
-        "Markets"
+        "Vault Accounts"
       ],
       "hasRequestBody": true,
       "hasPathParams": false,
@@ -659,13 +717,189 @@
       "blacklistReason": null
     },
     {
-      "method": "PUT",
-      "path": "/markets/vote/{id}",
-      "operationId": "MarketController_voteMarket",
+      "method": "POST",
+      "path": "/api/users/vault-accounts/{id}",
+      "operationId": "update",
       "tags": [
-        "Markets"
+        "Vault Accounts"
       ],
       "hasRequestBody": true,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/vault-accounts/{id}/add-assets",
+      "operationId": "addAssets",
+      "tags": [
+        "Vault Accounts"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/vault-accounts/{id}/assign-users",
+      "operationId": "assignUsers",
+      "tags": [
+        "Vault Accounts"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/vault-accounts/{id}/remove-users",
+      "operationId": "removeUsers",
+      "tags": [
+        "Vault Accounts"
+      ],
+      "hasRequestBody": true,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/vault-accounts/{id}/users",
+      "operationId": "getUsersEnriched",
+      "tags": [
+        "Vault Accounts"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/transactions",
+      "operationId": "getTransactionList",
+      "tags": [
+        "User Transactions"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/transactions/export",
+      "operationId": "exportTransactions",
+      "tags": [
+        "User Transactions"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": true,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/transactions/{transactionId}",
+      "operationId": "getTransactionDetail",
+      "tags": [
+        "User Transactions"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/rbac/roles",
+      "operationId": "getOrgRoles",
+      "tags": [
+        "Organization RBAC Management"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/identity-verification/kyc/init-kyc",
+      "operationId": "kyc-init",
+      "tags": [
+        "Identity Verification"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/identity-verification/kyc/status",
+      "operationId": "kyc-status",
+      "tags": [
+        "Identity Verification"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/organization/{id}",
+      "operationId": "getOrgProfile",
+      "tags": [
+        "User Organization"
+      ],
+      "hasRequestBody": false,
       "hasPathParams": true,
       "hasQueryParams": false,
       "security": [
@@ -676,28 +910,14 @@
     },
     {
       "method": "PUT",
-      "path": "/markets/add-liquidity/{id}",
-      "operationId": "MarketController_addLiquidity",
+      "path": "/api/users/organization/{id}",
+      "operationId": "updateOrg",
       "tags": [
-        "Markets"
+        "User Organization"
       ],
       "hasRequestBody": true,
       "hasPathParams": true,
       "hasQueryParams": false,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "POST",
-      "path": "/markets/upload",
-      "operationId": "MarketController_uploadFile",
-      "tags": [
-        "Markets"
-      ],
-      "hasRequestBody": true,
-      "hasPathParams": false,
-      "hasQueryParams": false,
       "security": [
         "bearer"
       ],
@@ -706,10 +926,24 @@
     },
     {
       "method": "GET",
-      "path": "/trades",
-      "operationId": "TradeController_getListTrades",
+      "path": "/api/countries",
+      "operationId": "get-all-countries",
       "tags": [
-        "Trades"
+        "Country"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": false,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/ledgers/export",
+      "operationId": "user-export-organization-ledger",
+      "tags": [
+        "Ledger"
       ],
       "hasRequestBody": false,
       "hasPathParams": false,
@@ -722,226 +956,14 @@
     },
     {
       "method": "GET",
-      "path": "/trades/market-trade",
-      "operationId": "TradeController_getMarketTrade",
+      "path": "/api/monitoring/users/{path}",
+      "operationId": "allOfUser_get",
       "tags": [
-        "Trades"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": true,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/trades/graph",
-      "operationId": "TradeController_getGraphOutcome",
-      "tags": [
-        "Trades"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": true,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/trades/graph-overrall",
-      "operationId": "TradeController_getGraphOutcomeOverall",
-      "tags": [
-        "Trades"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": true,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/trades/history",
-      "operationId": "TradeController_getUserTradeHistory",
-      "tags": [
-        "Trades"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": true,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "POST",
-      "path": "/auth/login",
-      "operationId": "AuthController_login",
-      "tags": [
-        "Authentication"
-      ],
-      "hasRequestBody": true,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "POST",
-      "path": "/auth/logout",
-      "operationId": "AuthController_logout",
-      "tags": [
-        "Authentication"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "POST",
-      "path": "/auth/refresh-token",
-      "operationId": "AuthController_refreshToken",
-      "tags": [
-        "Authentication"
-      ],
-      "hasRequestBody": true,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "POST",
-      "path": "/auth/admin/login",
-      "operationId": "AuthController_adminLogin",
-      "tags": [
-        "Authentication"
-      ],
-      "hasRequestBody": true,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: */admin/*"
-    },
-    {
-      "method": "POST",
-      "path": "/auth/admin/logout",
-      "operationId": "AuthController_adminLogout",
-      "tags": [
-        "Authentication"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: */admin/*"
-    },
-    {
-      "method": "POST",
-      "path": "/auth/admin-refresh-token",
-      "operationId": "AuthController_adminRefreshToken",
-      "tags": [
-        "Authentication"
-      ],
-      "hasRequestBody": true,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/auth/me",
-      "operationId": "AuthController_getProfile",
-      "tags": [
-        "Authentication"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/auth/admin/me",
-      "operationId": "AuthController_getAdminProfile",
-      "tags": [
-        "Authentication"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": false,
-      "blacklistReason": "Matched pattern: */admin/*"
-    },
-    {
-      "method": "GET",
-      "path": "/auth/asset",
-      "operationId": "AuthController_getUserAssets",
-      "tags": [
-        "Authentication"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": false,
-      "hasQueryParams": false,
-      "security": [
-        "bearer"
-      ],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/slack/{id}",
-      "operationId": "SlackController_testSendMessage",
-      "tags": [
-        "Slack"
+        "Monitoring proxy"
       ],
       "hasRequestBody": false,
       "hasPathParams": true,
       "hasQueryParams": false,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "POST",
-      "path": "/comments",
-      "operationId": "CommentController_createComment",
-      "tags": [
-        "Comments"
-      ],
-      "hasRequestBody": true,
-      "hasPathParams": false,
-      "hasQueryParams": false,
       "security": [
         "bearer"
       ],
@@ -950,13 +972,13 @@
     },
     {
       "method": "POST",
-      "path": "/comments/reply",
-      "operationId": "CommentController_replyComment",
+      "path": "/api/monitoring/users/{path}",
+      "operationId": "allOfUser_post",
       "tags": [
-        "Comments"
+        "Monitoring proxy"
       ],
-      "hasRequestBody": true,
-      "hasPathParams": false,
+      "hasRequestBody": false,
+      "hasPathParams": true,
       "hasQueryParams": false,
       "security": [
         "bearer"
@@ -965,39 +987,11 @@
       "blacklistReason": null
     },
     {
-      "method": "GET",
-      "path": "/comments/market/{marketId}",
-      "operationId": "CommentController_getComments",
+      "method": "PUT",
+      "path": "/api/monitoring/users/{path}",
+      "operationId": "allOfUser_put",
       "tags": [
-        "Comments"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": true,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "GET",
-      "path": "/comments/reply/{parentId}",
-      "operationId": "CommentController_getReplies",
-      "tags": [
-        "Comments"
-      ],
-      "hasRequestBody": false,
-      "hasPathParams": true,
-      "hasQueryParams": true,
-      "security": [],
-      "isTestable": true,
-      "blacklistReason": null
-    },
-    {
-      "method": "POST",
-      "path": "/comments/{commentId}/like",
-      "operationId": "CommentController_likeComment",
-      "tags": [
-        "Comments"
+        "Monitoring proxy"
       ],
       "hasRequestBody": false,
       "hasPathParams": true,
@@ -1010,10 +1004,10 @@
     },
     {
       "method": "DELETE",
-      "path": "/comments/{commentId}",
-      "operationId": "CommentController_deleteComment",
+      "path": "/api/monitoring/users/{path}",
+      "operationId": "allOfUser_delete",
       "tags": [
-        "Comments"
+        "Monitoring proxy"
       ],
       "hasRequestBody": false,
       "hasPathParams": true,
@@ -1021,100 +1015,286 @@
       "security": [
         "bearer"
       ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/monitoring/users/{path}",
+      "operationId": "allOfUser_patch",
+      "tags": [
+        "Monitoring proxy"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/processing/users/{path}",
+      "operationId": "allOfUser_get",
+      "tags": [
+        "Processing proxy"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/processing/users/{path}",
+      "operationId": "allOfUser_post",
+      "tags": [
+        "Processing proxy"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "PUT",
+      "path": "/api/processing/users/{path}",
+      "operationId": "allOfUser_put",
+      "tags": [
+        "Processing proxy"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/processing/users/{path}",
+      "operationId": "allOfUser_delete",
+      "tags": [
+        "Processing proxy"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/processing/users/{path}",
+      "operationId": "allOfUser_patch",
+      "tags": [
+        "Processing proxy"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [
+        "bearer"
+      ],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/processing/{path}",
+      "operationId": "others_get",
+      "tags": [
+        "Processing proxy"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/processing/{path}",
+      "operationId": "others_post",
+      "tags": [
+        "Processing proxy"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "PUT",
+      "path": "/api/processing/{path}",
+      "operationId": "others_put",
+      "tags": [
+        "Processing proxy"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/processing/{path}",
+      "operationId": "others_delete",
+      "tags": [
+        "Processing proxy"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [],
+      "isTestable": true,
+      "blacklistReason": null
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/processing/{path}",
+      "operationId": "others_patch",
+      "tags": [
+        "Processing proxy"
+      ],
+      "hasRequestBody": false,
+      "hasPathParams": true,
+      "hasQueryParams": false,
+      "security": [],
       "isTestable": true,
       "blacklistReason": null
     }
   ],
   "byResource": {
-    "Untagged": [
-      "GET /",
-      "GET /admin/markets",
-      "GET /admin/pending-markets",
-      "POST /admin/market",
-      "GET /admin/market/{id}/outcomes",
-      "GET /admin/market/{id}/orders",
-      "GET /admin/market/{id}/trades",
-      "GET /admin/market/{id}",
-      "PUT /admin/market/{id}",
-      "DELETE /admin/market/{id}",
-      "PUT /admin/approve-market",
-      "PUT /admin/reject-market/{id}",
-      "PUT /admin/approve-pending-market/{id}",
-      "PUT /admin/market-status/{id}",
-      "POST /admin/upload",
-      "GET /admin/outcome/{id}/outcome-statistic",
-      "PUT /admin/outcome/crawling",
-      "PUT /admin/outcome/reliableUrl",
-      "POST /admin/outcome/add-liquidity"
+    "Health": [
+      "GET /api/health",
+      "GET /api/health/ready"
     ],
-    "Admin - Manage Admin": [
-      "GET /admin",
-      "POST /admin",
-      "PUT /admin"
+    "Users auth": [
+      "POST /api/users/auth/register",
+      "POST /api/users/auth/login",
+      "POST /api/users/auth/refresh-token",
+      "POST /api/users/auth/verify-email",
+      "POST /api/users/auth/verify-email/resend",
+      "POST /api/users/auth/forgot-password",
+      "POST /api/users/auth/forgot-password/verify-token",
+      "POST /api/users/auth/forgot-password/update-new-password",
+      "POST /api/users/auth/change-password",
+      "GET /api/users/auth/google",
+      "GET /api/users/auth/google/callback",
+      "POST /api/users/auth/google/token",
+      "POST /api/users/auth/logout",
+      "POST /api/users/auth/two-factor/setup",
+      "POST /api/users/auth/two-factor/verify-setup",
+      "POST /api/users/auth/two-factor/verify-login",
+      "POST /api/users/auth/two-factor/disable",
+      "POST /api/users/auth/2fa/change/send-email",
+      "POST /api/users/auth/2fa/change/verify-email",
+      "POST /api/users/auth/2fa/change/verify-ga"
     ],
-    "Admin - Manage User ": [
-      "GET /admin/users"
+    "User Profile": [
+      "GET /api/users/profile/me",
+      "POST /api/users/profile/me"
     ],
-    "Orders": [
-      "GET /orders",
-      "POST /orders",
-      "PUT /orders/{id}/cancelled",
-      "PUT /orders/{id}/claimed",
-      "GET /orders/position",
-      "GET /orders/position-claims",
-      "POST /orders/position-claims",
-      "POST /orders/add-liquidity",
-      "GET /orders/activity"
+    "Withdraw": [
+      "POST /api/users/withdraw",
+      "POST /api/users/withdraw/{transactionId}/approve",
+      "POST /api/users/withdraw/{transactionId}/reject"
     ],
-    "Statistic": [
-      "GET /statistic/rank"
+    "User Action Log": [
+      "GET /api/users/action-logs",
+      "GET /api/users/action-logs/export"
     ],
-    "Orderbook": [
-      "GET /orderbook"
+    "Organization Member": [
+      "POST /api/users/organization-members/invite",
+      "POST /api/users/organization-members/resend-invite",
+      "POST /api/users/organization-members/verify-invite",
+      "PUT /api/users/organization-members/accept-invite",
+      "GET /api/users/organization-members/members",
+      "PUT /api/users/organization-members/remove-member",
+      "PUT /api/users/organization-members/change-member-role",
+      "GET /api/users/organization-members/export-members"
     ],
-    "Markets": [
-      "GET /markets",
-      "GET /markets/proposed",
-      "GET /markets/proposed-detail/{id}",
-      "GET /markets/top-holders/{id}",
-      "GET /markets/category",
-      "GET /markets/favorites",
-      "POST /markets/{marketId}/favorite",
-      "GET /markets/{id}",
-      "GET /markets/ipfs/{id}",
-      "POST /markets/market",
-      "PUT /markets/vote/{id}",
-      "PUT /markets/add-liquidity/{id}",
-      "POST /markets/upload"
+    "Organization Kyb": [
+      "POST /api/users/organization-kyb",
+      "GET /api/users/organization-kyb/kyb-status",
+      "GET /api/users/organization-kyb/primary-owner-data",
+      "GET /api/users/organization-kyb/{id}/detail"
     ],
-    "Trades": [
-      "GET /trades",
-      "GET /trades/market-trade",
-      "GET /trades/graph",
-      "GET /trades/graph-overrall",
-      "GET /trades/history"
+    "Files": [
+      "POST /api/users/files/upload-image",
+      "POST /api/users/files/private-storage/presigned-post",
+      "GET /api/users/files/private-storage/presigned-get/{id}"
     ],
-    "Authentication": [
-      "POST /auth/login",
-      "POST /auth/logout",
-      "POST /auth/refresh-token",
-      "POST /auth/admin/login",
-      "POST /auth/admin/logout",
-      "POST /auth/admin-refresh-token",
-      "GET /auth/me",
-      "GET /auth/admin/me",
-      "GET /auth/asset"
+    "Vault Accounts": [
+      "GET /api/users/vault-accounts",
+      "POST /api/users/vault-accounts",
+      "POST /api/users/vault-accounts/{id}",
+      "POST /api/users/vault-accounts/{id}/add-assets",
+      "POST /api/users/vault-accounts/{id}/assign-users",
+      "POST /api/users/vault-accounts/{id}/remove-users",
+      "GET /api/users/vault-accounts/{id}/users"
     ],
-    "Slack": [
-      "GET /slack/{id}"
+    "User Transactions": [
+      "GET /api/users/transactions",
+      "GET /api/users/transactions/export",
+      "GET /api/users/transactions/{transactionId}"
     ],
-    "Comments": [
-      "POST /comments",
-      "POST /comments/reply",
-      "GET /comments/market/{marketId}",
-      "GET /comments/reply/{parentId}",
-      "POST /comments/{commentId}/like",
-      "DELETE /comments/{commentId}"
+    "Organization RBAC Management": [
+      "GET /api/users/rbac/roles"
+    ],
+    "Identity Verification": [
+      "POST /api/users/identity-verification/kyc/init-kyc",
+      "GET /api/users/identity-verification/kyc/status"
+    ],
+    "User Organization": [
+      "GET /api/users/organization/{id}",
+      "PUT /api/users/organization/{id}"
+    ],
+    "Country": [
+      "GET /api/countries"
+    ],
+    "Ledger": [
+      "GET /api/users/ledgers/export"
+    ],
+    "Monitoring proxy": [
+      "GET /api/monitoring/users/{path}",
+      "POST /api/monitoring/users/{path}",
+      "PUT /api/monitoring/users/{path}",
+      "DELETE /api/monitoring/users/{path}",
+      "PATCH /api/monitoring/users/{path}"
+    ],
+    "Processing proxy": [
+      "GET /api/processing/users/{path}",
+      "POST /api/processing/users/{path}",
+      "PUT /api/processing/users/{path}",
+      "DELETE /api/processing/users/{path}",
+      "PATCH /api/processing/users/{path}",
+      "GET /api/processing/{path}",
+      "POST /api/processing/{path}",
+      "PUT /api/processing/{path}",
+      "DELETE /api/processing/{path}",
+      "PATCH /api/processing/{path}"
     ]
   }
 }
