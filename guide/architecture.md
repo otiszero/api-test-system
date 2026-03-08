@@ -4,9 +4,10 @@
 1. [High-Level Architecture](#1-high-level-architecture)
 2. [Slash Commands State Machine](#2-slash-commands-state-machine)
 3. [Test Layers & Dependencies](#3-test-layers--dependencies)
-4. [Evidence Collection Flow](#4-evidence-collection-flow)
-5. [Anti-Hallucination System](#5-anti-hallucination-system)
-6. [Command Quick Reference](#6-command-quick-reference)
+4. [E2E Testing Module](#4-e2e-testing-module)
+5. [Evidence Collection Flow](#5-evidence-collection-flow)
+6. [Anti-Hallucination System](#6-anti-hallucination-system)
+7. [Command Quick Reference](#7-command-quick-reference)
 
 ---
 
@@ -19,10 +20,11 @@
 
 ┌─────────────────────────────────────────────────────────────────────────────────────────┐
 │                                    USER LAYER                                            │
-│  ┌─────────────────────────────────────────────────────────────────────────────────┐    │
-│  │                           SLASH COMMANDS (Claude Code)                           │    │
-│  │  /init → /assess → /analyze → /generate-* → /run → /report → /view-report       │    │
-│  └─────────────────────────────────────────────────────────────────────────────────┘    │
+│  ┌──────────────────────────────────────────────────────────────────────────────────┐   │
+│  │                           SLASH COMMANDS (Claude Code)                            │   │
+│  │  /init → /assess → /analyze → /generate-* → /run → /report → /view-report        │   │
+│  │  /generate-e2e [feature] → /run-e2e [feature] (E2E Testing)                      │   │
+│  └──────────────────────────────────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────────────────────────────────┘
                                            │
                                            ▼
@@ -289,7 +291,209 @@
 
 ---
 
-## 4. Evidence Collection Flow
+## 4. E2E Testing Module
+
+E2E testing uses Playwright for browser automation + Gherkin for human-readable test scenarios.
+
+### Workflow Overview
+
+```
+   e2e/features/my-flow.feature       e2e/generated/my-flow.spec.ts
+   ┌────────────────────────┐         ┌────────────────────────┐
+   │ Feature: Login Flow    │  Step 1 │ Auto-generated from    │  Step 2
+   │   Background:          │────────▶ catalog + AI patterns  ├──────┐
+   │     Given I am on...   │         └────────────────────────┘      │
+   │   Scenario: Successful │                                         │
+   │     When I fill...     │         Playwright Engine               │
+   │     Then I should...   │         ┌────────────────────────┐      │
+   └────────────────────────┘         │ Page Object Models     │◀─────┘
+                                      │ Browser Automation     │
+                                      │ API Interceptors       │
+                                      │ Evidence Collection    │
+                                      └─────────┬──────────────┘
+                                                 │
+                                                 ▼
+                                      Test Results + Artifacts
+```
+
+### Architecture Components
+
+#### 1. Feature Files (`e2e/features/*.feature`)
+QC writes human-readable test scenarios in Gherkin format (Given/When/Then). Examples:
+- `login.feature` — Login workflows
+- `vault-management.feature` — Vault UI operations
+- `kyc-submission.feature` — KYC form submission
+- `health-check.feature` — Health + status checks
+
+#### 2. Step Catalog (`e2e/steps/catalog.ts`)
+Pre-built step definitions. Using them costs ZERO AI tokens during generation:
+
+```
+Navigation:    "I am on the {page} page", "the URL should contain {text}"
+Form:          "I fill {field} with {value}", "I select {option} from {field}"
+Actions:       "I click {element}", "I wait {N} seconds"
+Assertions:    "I should see {text}", "{element} should be visible"
+API:           "API: user {role} is authenticated", "API: GET {endpoint} returns {code}"
+Data:          "I save {value} as {variable}"
+```
+
+#### 3. Generator (`e2e/generator/`)
+- **feature-parser.ts** — Parses .feature files (Gherkin parser)
+- **code-emitter.ts** — Converts parsed steps → Playwright test code
+- **generator.ts** — Orchestrates parsing + emission + file writing
+
+Generation Flow:
+```
+1. /generate-e2e feature-name
+   ├─ Read e2e/features/feature-name.feature
+   ├─ Parse Gherkin syntax
+   ├─ Match steps to catalog
+   ├─ For unmatched steps → AI interprets + generates Playwright code
+   ├─ Emit e2e/generated/feature-name.spec.ts
+   └─ Output: ready-to-run Playwright test
+
+2. After generation, NO AI needed for test execution
+   └─ Run via /run-e2e or npm run e2e
+```
+
+#### 4. Generated Tests (`e2e/generated/*.spec.ts`)
+Pure Playwright code. Generated once, runs many times:
+
+```typescript
+test.describe('Login Flow', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('http://localhost:3000/auth/login');
+  });
+
+  test('should login successfully', async ({ page }) => {
+    await page.fill('[data-testid="email"]', 'owner@test.com');
+    await page.fill('[data-testid="password"]', 'TestPassword123!');
+    await page.click('button:has-text("Sign In")');
+    await expect(page).toHaveURL(/.*dashboard/);
+    await expect(page.locator('text=Dashboard')).toBeVisible();
+  });
+});
+```
+
+#### 5. Hybrid UI + API Testing
+E2E tests can mix browser steps and API steps:
+
+```gherkin
+Scenario: Submit order and verify via API
+  Given I am on the "dashboard" page
+  When I click "place-order-btn"
+  And I wait for "#order-modal" to be visible
+  Then I should see "Order Created"
+  And API: GET "/orders" returns 200
+  And API: response should contain "status"
+```
+
+This allows:
+- UI flow validation (user journey)
+- API verification (data correctness)
+- Combined regression testing in one scenario
+
+#### 6. Configuration (`config/e2e.config.json`)
+Maps page names to URLs:
+
+```json
+{
+  "baseUrl": "http://localhost:3000",
+  "pages": {
+    "login": "/auth/login",
+    "dashboard": "/dashboard",
+    "kyc": "/kyb",
+    "vault": "/vaults"
+  },
+  "selectors": {
+    "email": "[data-testid='email']",
+    "password": "[data-testid='password']"
+  }
+}
+```
+
+### Command Reference
+
+| Command | Purpose |
+|---------|---------|
+| `/generate-e2e` | Generate tests from all .feature files |
+| `/generate-e2e login` | Generate from specific feature (e2e/features/login.feature) |
+| `/run-e2e` | Run all E2E tests headless |
+| `/run-e2e login` | Run specific feature |
+| `/run-e2e login --headed` | Run with visible browser |
+| `/run-e2e login --debug` | Run with Playwright Inspector |
+| `/run-e2e login --trace` | Record trace for debugging failed tests |
+
+### Files & Structure
+
+```
+e2e/
+├── features/                # QC writes here (.feature files)
+│   ├── login.feature
+│   ├── kyc-submission.feature
+│   ├── vault-management.feature
+│   └── health-check.feature
+│
+├── steps/                   # Step definitions + catalog
+│   ├── catalog.ts           # Pre-built step patterns
+│   ├── assertion.steps.ts   # Assertion step implementations
+│   ├── form.steps.ts        # Form interaction steps
+│   ├── navigation.steps.ts  # Navigation steps
+│   ├── api.steps.ts         # API integration steps
+│   └── types.ts             # TypeScript types
+│
+├── generator/               # Code generation
+│   ├── feature-parser.ts    # Gherkin parser
+│   ├── code-emitter.ts      # Playwright code generation
+│   └── generator.ts         # Orchestrator
+│
+├── generated/               # AI-generated test files
+│   ├── login.spec.ts
+│   ├── kyc-submission.spec.ts
+│   ├── vault-management.spec.ts
+│   └── health-check.spec.ts
+│
+├── playwright.config.ts     # Playwright configuration
+├── QC-GUIDE.md              # Quick-start guide for QC
+└── test-results/            # Test execution artifacts
+    └── traces, videos, etc.
+```
+
+### Step Matching Logic
+
+Generation uses a smart matching algorithm:
+
+```
+1. Exact Match → Use catalog step directly (zero cost)
+2. Fuzzy Match → Find similar catalog step, adapt parameters
+3. No Match → AI interprets and generates Playwright code (token cost)
+```
+
+Example:
+- `I fill "email" with "test@test.com"` → Exact match (catalog) → Zero cost
+- `I click the login button` → Fuzzy match to `I click button "{text}"` → Zero cost
+- `I drag item-1 to trash-bin` → No match → AI generates drag logic → Token cost
+
+### Integration with API Tests
+
+E2E tests and API tests complement each other:
+
+```
+API Tests (Vitest)           E2E Tests (Playwright)
+├─ Fast                      ├─ Slow
+├─ No UI                     ├─ Full UI + browser
+├─ Endpoint coverage         ├─ User journey coverage
+├─ Schema validation         ├─ Visual regression
+└─ Works offline             └─ Real browser rendering
+```
+
+Use both:
+- API tests: Quick regression, CI/CD pipeline
+- E2E tests: Critical user flows, before major releases
+
+---
+
+## 5. Evidence Collection Flow
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────────┐
@@ -376,7 +580,7 @@
 
 ---
 
-## 5. Anti-Hallucination System
+## 6. Anti-Hallucination System
 
 ### Problem
 AI có thể "hallucinate" endpoints không tồn tại dựa trên patterns phổ biến:
@@ -426,7 +630,7 @@ AI có thể "hallucinate" endpoints không tồn tại dựa trên patterns ph�
 
 ---
 
-## 6. Command Quick Reference
+## 7. Command Quick Reference
 
 | Command | Purpose | Input | Output |
 |---------|---------|-------|--------|
@@ -441,7 +645,12 @@ AI có thể "hallucinate" endpoints không tồn tại dựa trên patterns ph�
 | `/generate-rbac` | Permission tests | canonical-endpoints + auth-config | 05-rbac/*.ts |
 | `/generate-security` | Security tests | canonical-endpoints | 06-security/*.ts |
 | `/generate-db` | DB integrity tests | db-config | 07-db/*.ts |
-| `/run [layer]` | Execute tests | generated/tests | vitest results + evidence |
+| `/generate-e2e` | Generate E2E tests | e2e/features/*.feature | e2e/generated/*.spec.ts |
+| `/generate-e2e [feature]` | Generate specific E2E | e2e/features/[feature].feature | e2e/generated/[feature].spec.ts |
+| `/run [layer]` | Execute API tests | generated/tests | vitest results + evidence |
+| `/run-e2e` | Execute all E2E tests | e2e/generated/ | Playwright results + traces |
+| `/run-e2e [feature]` | Execute specific E2E | e2e/generated/[feature].spec.ts | test results |
+| `/run-e2e [feature] --headed` | Run E2E with visible browser | e2e/generated/ | interactive test session |
 | `/report` | Generate reports | test results | reports/*.md |
 | `/view-report [type]` | Display report | reports/ | formatted output |
 | `/list-reports` | List all reports | reports/ | metadata table |
@@ -457,6 +666,7 @@ api-test-system/
 │   ├── api.config.json              # baseUrl, timeout, headers, filters
 │   ├── auth.config.json             # type, roles, accounts
 │   ├── db.config.json               # enabled, connection settings
+│   ├── e2e.config.json              # E2E page URLs and selectors
 │   └── test-rules.md                # business rules, permission matrix
 │
 ├── input/                           # Source of truth
@@ -483,6 +693,32 @@ api-test-system/
 │       ├── 06-security/
 │       └── 07-db/
 │
+├── e2e/                             # E2E Testing Module (Playwright + Gherkin)
+│   ├── features/                    # QC writes Gherkin feature files here
+│   │   ├── login.feature
+│   │   ├── kyc-submission.feature
+│   │   ├── vault-management.feature
+│   │   └── health-check.feature
+│   ├── steps/                       # Step definitions + catalog
+│   │   ├── catalog.ts               # Pre-built step patterns (zero-cost)
+│   │   ├── assertion.steps.ts       # Assertion steps
+│   │   ├── form.steps.ts            # Form interaction steps
+│   │   ├── navigation.steps.ts      # Navigation steps
+│   │   ├── api.steps.ts             # API integration steps
+│   │   └── types.ts                 # TypeScript types
+│   ├── generator/                   # Code generation
+│   │   ├── feature-parser.ts        # Gherkin parser
+│   │   ├── code-emitter.ts          # Playwright code generation
+│   │   └── generator.ts             # Orchestrator
+│   ├── generated/                   # AI-generated Playwright specs
+│   │   ├── login.spec.ts
+│   │   ├── kyc-submission.spec.ts
+│   │   ├── vault-management.spec.ts
+│   │   └── health-check.spec.ts
+│   ├── playwright.config.ts         # Playwright configuration
+│   ├── QC-GUIDE.md                  # E2E quick-start guide
+│   └── test-results/                # Test artifacts (traces, videos)
+│
 ├── reports/                         # Generated reports
 │   ├── latest-report.md             # Summary
 │   ├── bugs-found.md                # Bug reports
@@ -496,6 +732,7 @@ api-test-system/
 │
 ├── vitest.config.ts                 # Vitest configuration
 ├── vitest.setup.ts                  # Evidence collection hooks
+├── CLAUDE.md                        # Project instructions
 └── package.json                     # Dependencies
 ```
 
@@ -505,12 +742,14 @@ api-test-system/
 
 | Tool | Purpose |
 |------|---------|
-| **Vitest** | Test runner |
+| **Vitest** | API test runner |
 | **TypeScript** | Type safety |
 | **Axios** | HTTP client |
 | **AJV** | JSON Schema validation |
 | **Faker.js** | Realistic test data |
 | **pg/mysql2/mongodb** | Database clients |
+| **Playwright** | Browser automation for E2E tests |
+| **@cucumber/gherkin** | Gherkin feature file parsing |
 
 ---
 

@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": [],
+    "baseUrl": ".",
+    "paths": {
+      "@helpers/*": ["../generated/helpers/*"],
+      "@config/*": ["../config/*"],
+      "@steps/*": ["./steps/*"],
+      "@pages/*": ["./pages/*"]
+    }
+  },
+  "include": ["./**/*.ts", "../generated/helpers/**/*.ts"],
+  "exclude": ["node_modules"]
+}

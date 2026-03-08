@@ -17,15 +17,23 @@
     "typecheck": "tsc --noEmit",
     "extract-endpoints": "tsx scripts/extract-endpoints.ts",
     "view-report": "npx vite preview --outDir reports/html",
-    "view-evidence": "open reports/detailed-evidence.html"
+    "view-evidence": "open reports/detailed-evidence.html",
+    "e2e": "npx playwright test --config=e2e/playwright.config.ts",
+    "e2e:headed": "npx playwright test --config=e2e/playwright.config.ts --headed",
+    "e2e:debug": "npx playwright test --config=e2e/playwright.config.ts --debug",
+    "e2e:trace": "npx playwright show-trace"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@cucumber/gherkin": "^39.0.0",
+    "@cucumber/messages": "^32.2.0",
     "@faker-js/faker": "^9.9.0",
+    "@playwright/test": "^1.58.2",
     "@types/js-yaml": "^4.0.9",
+    "@types/pg": "^8.18.0",
     "@vitest/ui": "^4.0.18",
     "ajv": "^8.18.0",
     "ajv-formats": "^3.0.1",
@@ -37,6 +45,8 @@
   },
   "dependencies": {
     "js-yaml": "^4.1.1",
-    "mysql2": "^3.18.2"
+    "mysql2": "^3.18.2",
+    "otpauth": "^9.5.0",
+    "pg": "^8.20.0"
   }
 }

@@ -1,0 +1,18 @@
+{
+  "_comment": "E2E config. appUrl = web app frontend URL (NOT API URL). Pages map friendly names to URL paths.",
+  "appUrl": "https://app.upmount.sotatek.works",
+  "browser": "chromium",
+  "headless": true,
+  "viewport": { "width": 1280, "height": 720 },
+  "timeout": 30000,
+  "selectorStrategy": "data-testid",
+  "screenshots": "on-failure",
+  "video": "retain-on-failure",
+  "tracing": "retain-on-failure",
+  "pages": {
+    "login": "/auth/login",
+    "dashboard": "/dashboard",
+    "kyc/status": "/kyb",
+    "vault/accounts": "/vaults"
+  }
+}
