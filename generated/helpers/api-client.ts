@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import apiConfig from '../../config/api.config.json';
+import apiConfig from '../../config/api.config.json' with { type: 'json' };
 
 /**
  * Evidence record for test reporting

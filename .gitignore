@@ -2,5 +2,11 @@ node_modules
 
 # E2E artifacts
 e2e/test-results/
+e2e/wallet-test-results/
 e2e/playwright-report/
 reports/e2e/
+reports/e2e-wallet/
+
+# Wallet secrets and cache
+.env
+e2e/.wallet-cache/

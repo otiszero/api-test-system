@@ -26,6 +26,8 @@ export function emitSpecFile(feature: ParsedFeature, featureFileName: string): E
   const allStepTexts = collectAllStepTexts(feature);
   const hasApiSteps = allStepTexts.some((t) => t.startsWith('API:'));
   const hasUiSteps = allStepTexts.some((t) => !t.startsWith('API:'));
+  const hasTotpSteps = allStepTexts.some((t) => t.includes('TOTP') || t.includes('with 2FA'));
+  const hasWalletSteps = allStepTexts.some((t) => t.includes('MetaMask'));
   const isApiOnly = feature.tags.includes('@api-only');
 
   // Build imports
@@ -34,14 +36,21 @@ export function emitSpecFile(feature: ParsedFeature, featureFileName: string): E
   lines.push(`// Generated at: ${new Date().toISOString()}`);
   lines.push(`// DO NOT EDIT — regenerate with /generate-e2e ${featureFileName.replace('.feature', '')}`);
   lines.push('');
-  lines.push("import { test, expect } from '@playwright/test';");
+  if (hasWalletSteps) {
+    lines.push("import { test, expect } from '../fixtures/wallet-fixtures.js';");
+  } else {
+    lines.push("import { test, expect } from '@playwright/test';");
+  }
 
   if (hasUiSteps || !isApiOnly) {
-    lines.push("import e2eConfig from '../../config/e2e.config.json';");
+    lines.push("import e2eConfig from '../../config/e2e.config.json' with { type: 'json' };");
   }
   if (hasApiSteps) {
     lines.push("import { apiClient } from '../../generated/helpers/api-client.js';");
     lines.push("import { authHelper } from '../../generated/helpers/auth-helper.js';");
+  }
+  if (hasTotpSteps) {
+    lines.push("import { generateTOTP } from '../helpers/totp-helper.js';");
   }
 
   lines.push('');
@@ -52,7 +61,7 @@ export function emitSpecFile(feature: ParsedFeature, featureFileName: string): E
   // Background → test.beforeEach
   if (feature.background) {
     lines.push('');
-    const fixture = isApiOnly ? '' : '{ page }';
+    const fixture = isApiOnly ? '' : hasWalletSteps ? '{ page, metamask }' : '{ page }';
     lines.push(`  test.beforeEach(async (${fixture}) => {`);
     for (const step of feature.background.steps) {
       totalSteps++;
@@ -79,8 +88,9 @@ export function emitSpecFile(feature: ParsedFeature, featureFileName: string): E
   for (const scenario of feature.scenarios) {
     lines.push('');
     const scenarioHasUiSteps = scenario.steps.some((s) => !s.text.startsWith('API:'));
+    const scenarioHasWallet = scenario.steps.some((s) => s.text.includes('MetaMask'));
     const scenarioIsApiOnly = !scenarioHasUiSteps || scenario.tags.includes('@api-only');
-    const fixture = scenarioIsApiOnly ? '' : '{ page }';
+    const fixture = scenarioIsApiOnly ? '' : scenarioHasWallet ? '{ page, metamask }' : '{ page }';
 
     lines.push(`  test('${escapeQuotes(scenario.name)}', async (${fixture}) => {`);
     lines.push('    const ctx = { variables: new Map<string, any>(), lastApiResponse: null as any };');

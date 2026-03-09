@@ -9,11 +9,12 @@ export const navigationSteps: StepDef[] = [
   {
     pattern: 'I am on the "{page}" page',
     generateCode: ([page]) =>
-      `await page.goto(e2eConfig.pages['${page}'] || '/${page}');`,
+      `await page.goto(e2eConfig.pages['${page}'] || '/${page}');\nawait page.waitForLoadState('networkidle');`,
   },
   {
     pattern: 'I navigate to "{url}"',
-    generateCode: ([url]) => `await page.goto('${url}');`,
+    generateCode: ([url]) =>
+      `await page.goto('${url}');\nawait page.waitForLoadState('networkidle');`,
   },
   {
     pattern: 'the URL should contain "{path}"',

@@ -1,18 +1,45 @@
 {
   "_comment": "E2E config. appUrl = web app frontend URL (NOT API URL). Pages map friendly names to URL paths.",
-  "appUrl": "https://app.upmount.sotatek.works",
+  "appUrl": "https://dev.upmount.sotatek.works",
   "browser": "chromium",
   "headless": true,
   "viewport": { "width": 1280, "height": 720 },
   "timeout": 30000,
+  "expectTimeout": 15000,
   "selectorStrategy": "data-testid",
   "screenshots": "on-failure",
   "video": "retain-on-failure",
   "tracing": "retain-on-failure",
+  "basicAuth": {
+    "username": "upmount-dev",
+    "password": "secret@ucs"
+  },
   "pages": {
-    "login": "/auth/login",
+    "login": "/",
     "dashboard": "/dashboard",
     "kyc/status": "/kyb",
     "vault/accounts": "/vaults"
+  },
+  "wallet": {
+    "seedPhrase": "ENV:METAMASK_SEED_PHRASE",
+    "password": "ENV:METAMASK_PASSWORD",
+    "network": {
+      "name": "Sepolia",
+      "rpcUrl": "ENV:METAMASK_RPC_URL",
+      "chainId": 11155111,
+      "symbol": "ETH"
+    }
+  },
+  "accounts": {
+    "owner": {
+      "email": "tien.nguyen2@sotatek.com",
+      "password": "123456Aa@",
+      "totpSecret": "J4RVGZCJI5XFWOTEGU2G4SR2KRFWMNBEIZAFEMLYHYYUKZCTMJBA",
+      "emailPlaceholder": "Enter email address",
+      "passwordPlaceholder": "Enter password",
+      "totpPlaceholder": "Enter OTP code",
+      "submitButton": "Continue",
+      "totpSubmitButton": "Verify"
+    }
   }
 }

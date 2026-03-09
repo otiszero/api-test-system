@@ -21,6 +21,13 @@ export interface GeneratorResult {
   generatedCode: string;
 }
 
+/** Check if a .feature file has @wallet tag (first line scan) */
+function isWalletFeature(featurePath: string): boolean {
+  const content = readFileSync(featurePath, 'utf-8');
+  const firstLines = content.split('\n').slice(0, 5).join('\n');
+  return firstLines.includes('@wallet');
+}
+
 /** Generate a .spec.ts from a single .feature file */
 export function generateFromFeature(featurePath: string, outputDir: string): GeneratorResult {
   const content = readFileSync(featurePath, 'utf-8');
@@ -56,20 +63,23 @@ export function generateFromFeature(featurePath: string, outputDir: string): Gen
 }
 
 /** Generate specs for all .feature files in a directory */
-export function generateAll(featuresDir: string, outputDir: string): GeneratorResult[] {
+export function generateAll(featuresDir: string, outputDir: string, walletOutputDir?: string): GeneratorResult[] {
   if (!existsSync(featuresDir)) {
     throw new Error(`Features directory not found: ${featuresDir}`);
   }
 
   const featureFiles = readdirSync(featuresDir)
-    .filter((f) => f.endsWith('.feature'))
+    .filter((f) => f.endsWith('.feature') && !f.startsWith('_'))
     .map((f) => resolve(featuresDir, f));
 
   if (featureFiles.length === 0) {
     throw new Error(`No .feature files found in ${featuresDir}`);
   }
 
-  return featureFiles.map((f) => generateFromFeature(f, outputDir));
+  return featureFiles.map((f) => {
+    const targetDir = walletOutputDir && isWalletFeature(f) ? walletOutputDir : outputDir;
+    return generateFromFeature(f, targetDir);
+  });
 }
 
 /** Print a summary table of generation results */
@@ -109,13 +119,16 @@ export function printSummary(results: GeneratorResult[]): string {
   return output;
 }
 
-// CLI entrypoint: tsx e2e/generator/generator.ts [featureName]
+// CLI entrypoint: tsx e2e/generator/generator.ts [featureName] [--wallet]
 const isCLI = process.argv[1]?.includes('generator');
 if (isCLI) {
   const rootDir = resolve(process.argv[1], '../../..');
   const featuresDir = resolve(rootDir, 'e2e/features');
   const outputDir = resolve(rootDir, 'e2e/generated');
-  const featureName = process.argv[2];
+  const walletOutputDir = resolve(rootDir, 'e2e/generated-wallet');
+  const args = process.argv.slice(2);
+  const walletFlag = args.includes('--wallet');
+  const featureName = args.find((a) => !a.startsWith('--'));
 
   try {
     let results: GeneratorResult[];
@@ -125,9 +138,12 @@ if (isCLI) {
         console.error(`Feature file not found: ${featurePath}`);
         process.exit(1);
       }
-      results = [generateFromFeature(featurePath, outputDir)];
+      // Auto-detect or use --wallet flag to route output
+      const useWalletDir = walletFlag || isWalletFeature(featurePath);
+      const targetDir = useWalletDir ? walletOutputDir : outputDir;
+      results = [generateFromFeature(featurePath, targetDir)];
     } else {
-      results = generateAll(featuresDir, outputDir);
+      results = generateAll(featuresDir, outputDir, walletOutputDir);
     }
 
     console.log(printSummary(results));

@@ -1,4 +1,4 @@
-import dbConfig from '../../config/db.config.json';
+import dbConfig from '../../config/db.config.json' with { type: 'json' };
 
 let pool: any = null;
 

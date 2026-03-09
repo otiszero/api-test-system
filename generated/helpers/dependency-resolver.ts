@@ -1,4 +1,4 @@
-import depGraph from '../dependency-graph.json';
+import depGraph from '../dependency-graph.json' with { type: 'json' };
 
 /**
  * Dependency resolver for test execution ordering

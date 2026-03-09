@@ -1,3 +1,9 @@
+/**
+ * Separate Playwright config for wallet (MetaMask) tests.
+ * Uses persistent browser context — headless:false required for extensions.
+ * Runs sequentially (workers:1) since wallet state is shared per context.
+ */
+
 import { defineConfig, devices } from '@playwright/test';
 import { readFileSync } from 'fs';
 import { dirname, resolve } from 'path';
@@ -5,39 +11,31 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-// Load E2E config
 const e2eConfigPath = resolve(__dirname, '../config/e2e.config.json');
 const e2eConfig = JSON.parse(readFileSync(e2eConfigPath, 'utf-8'));
 
-const browserDeviceMap: Record<string, string> = {
-  chromium: 'Desktop Chrome',
-  firefox: 'Desktop Firefox',
-  webkit: 'Desktop Safari',
-};
-
 export default defineConfig({
-  testDir: './generated',
-  fullyParallel: true,
+  testDir: './generated-wallet',
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  timeout: e2eConfig.timeout,
+  retries: 0,
+  workers: 1,
+  timeout: e2eConfig.timeout ?? 30000,
   expect: {
-    timeout: e2eConfig.expectTimeout || 10000,
+    timeout: e2eConfig.expectTimeout ?? 15000,
   },
 
   reporter: [
     ['list'],
-    ['html', { outputFolder: '../reports/e2e', open: 'never' }],
+    ['html', { outputFolder: '../reports/e2e-wallet', open: 'never' }],
   ],
 
   use: {
     baseURL: e2eConfig.appUrl,
-    trace: e2eConfig.tracing,
-    screenshot: e2eConfig.screenshots,
-    video: e2eConfig.video,
+    trace: e2eConfig.tracing ?? 'retain-on-failure',
+    screenshot: e2eConfig.screenshots ?? 'on-failure',
+    video: e2eConfig.video ?? 'retain-on-failure',
     viewport: e2eConfig.viewport,
-    // Basic Auth for protected environments (e.g., staging behind HTTP auth)
     ...(e2eConfig.basicAuth && {
       httpCredentials: {
         username: e2eConfig.basicAuth.username,
@@ -47,12 +45,13 @@ export default defineConfig({
     ignoreHTTPSErrors: true,
   },
 
+  // Synpress only supports Chromium (extension API required)
   projects: [
     {
-      name: e2eConfig.browser,
-      use: { ...devices[browserDeviceMap[e2eConfig.browser] || 'Desktop Chrome'] },
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
     },
   ],
 
-  outputDir: './test-results',
+  outputDir: './wallet-test-results',
 });

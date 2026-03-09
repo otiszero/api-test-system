@@ -1,4 +1,4 @@
-import authConfig from '../../config/auth.config.json';
+import authConfig from '../../config/auth.config.json' with { type: 'json' };
 import { apiClient } from './api-client';
 
 /**

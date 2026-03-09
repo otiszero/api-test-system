@@ -9,4 +9,4 @@ Feature: Health Check
 
   Scenario: Web app is accessible
     Given I navigate to "/"
-    Then I should see "Login"
+    Then I should see "Welcome back,"

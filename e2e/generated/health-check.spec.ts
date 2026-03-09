@@ -1,9 +1,9 @@
 // Auto-generated from: features/health-check.feature
-// Generated at: 2026-03-08T13:28:08.992Z
+// Generated at: 2026-03-09T03:50:54.137Z
 // DO NOT EDIT — regenerate with /generate-e2e health-check
 
 import { test, expect } from '@playwright/test';
-import e2eConfig from '../../config/e2e.config.json';
+import e2eConfig from '../../config/e2e.config.json' with { type: 'json' };
 import { apiClient } from '../../generated/helpers/api-client.js';
 import { authHelper } from '../../generated/helpers/auth-helper.js';
 
@@ -20,6 +20,7 @@ test.describe('Health Check', () => {
   test('Web app is accessible', async ({ page }) => {
     const ctx = { variables: new Map<string, any>(), lastApiResponse: null as any };
     await page.goto('/');
-    await expect(page.getByText('Login')).toBeVisible();
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByText('Welcome back,').first()).toBeVisible();
   });
 });

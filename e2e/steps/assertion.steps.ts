@@ -8,12 +8,12 @@ export const assertionSteps: StepDef[] = [
   {
     pattern: 'I should see "{text}"',
     generateCode: ([text]) =>
-      `await expect(page.getByText('${text}')).toBeVisible();`,
+      `await expect(page.getByText('${text}').first()).toBeVisible();`,
   },
   {
     pattern: 'I should not see "{text}"',
     generateCode: ([text]) =>
-      `await expect(page.getByText('${text}')).not.toBeVisible();`,
+      `await expect(page.getByText('${text}').first()).not.toBeVisible();`,
   },
   {
     pattern: 'element "{selector}" should be visible',
