@@ -50,4 +50,34 @@ export const assertionSteps: StepDef[] = [
     generateCode: ([count, sel]) =>
       `await expect(page.locator('${sel}')).toHaveCount(${count});`,
   },
+  {
+    pattern: 'element "{selector}" should have text "{text}"',
+    generateCode: ([sel, text]) =>
+      `await expect(page.locator('${sel}')).toHaveText('${text}');`,
+  },
+  {
+    pattern: 'element "{selector}" should not be visible',
+    generateCode: ([sel]) =>
+      `await expect(page.locator('${sel}')).not.toBeVisible();`,
+  },
+  {
+    pattern: 'I should see error "{message}"',
+    generateCode: ([msg]) =>
+      `await expect(page.locator('[role="alert"], .error, [data-testid*="error"]').first()).toContainText('${msg}');`,
+  },
+  {
+    pattern: 'I should see toast "{message}"',
+    generateCode: ([msg]) =>
+      `await expect(page.locator('[role="status"], [role="alert"]').first()).toContainText('${msg}');`,
+  },
+  {
+    pattern: 'I should be redirected to "{path}"',
+    generateCode: ([path]) =>
+      `await page.waitForURL('**${path}');\nawait expect(page).toHaveURL(new RegExp('${path.replace(/[.*+?^${}()|[\]\\]/g, '\\\\$&')}'));`,
+  },
+  {
+    pattern: 'the submit button should be disabled',
+    generateCode: () =>
+      `await expect(page.getByRole('button', { name: /submit|continue/i })).toBeDisabled();`,
+  },
 ];

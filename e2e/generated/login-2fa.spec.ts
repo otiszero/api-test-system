@@ -1,5 +1,5 @@
 // Auto-generated from: features/login-2fa.feature
-// Generated at: 2026-03-09T08:42:25.394Z
+// Generated at: 2026-03-10T01:47:20.473Z
 // DO NOT EDIT — regenerate with /generate-e2e login-2fa
 
 import { test, expect } from '@playwright/test';

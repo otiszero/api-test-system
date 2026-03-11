@@ -11,6 +11,7 @@ import { assertionSteps } from './assertion.steps.js';
 import { apiSteps } from './api.steps.js';
 import { authSteps } from './auth.steps.js';
 import { walletSteps } from './wallet.steps.js';
+import { cleanupSteps } from './cleanup.steps.js';
 
 const registry: StepTemplate[] = [];
 
@@ -131,6 +132,9 @@ function initCatalog(): void {
   }
   for (const step of walletSteps) {
     registerStep(step.pattern, 'wallet', step.generateCode);
+  }
+  for (const step of cleanupSteps) {
+    registerStep(step.pattern, 'cleanup', step.generateCode);
   }
 
   // Inline action steps (small set)

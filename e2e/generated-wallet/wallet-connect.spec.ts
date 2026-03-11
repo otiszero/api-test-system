@@ -1,5 +1,5 @@
 // Auto-generated from: features/wallet-connect.feature
-// Generated at: 2026-03-09T07:01:07.541Z
+// Generated at: 2026-03-10T01:47:20.478Z
 // DO NOT EDIT — regenerate with /generate-e2e wallet-connect
 
 import { test, expect } from '../fixtures/wallet-fixtures.js';

@@ -1,0 +1,33 @@
+{
+  "_comment": "Reusable prerequisite suites for E2E tests. Features declare @needs(suite-name) to auto-inject these steps into Background.",
+  "suites": {
+    "login-owner": {
+      "description": "Login as owner with 2FA",
+      "steps": [
+        { "keyword": "Given", "text": "I login as \"owner\" with 2FA" }
+      ]
+    },
+    "login-owner-no2fa": {
+      "description": "Login as owner without 2FA",
+      "steps": [
+        { "keyword": "Given", "text": "I login as \"owner\"" }
+      ]
+    },
+    "navigate-dashboard": {
+      "description": "Navigate to dashboard page",
+      "steps": [
+        { "keyword": "Given", "text": "I am on the \"dashboard\" page" }
+      ]
+    },
+    "navigate-login": {
+      "description": "Navigate to login page",
+      "steps": [
+        { "keyword": "Given", "text": "I am on the \"login\" page" }
+      ]
+    },
+    "logged-in-dashboard": {
+      "description": "Login as owner with 2FA + navigate to dashboard",
+      "needs": ["login-owner", "navigate-dashboard"]
+    }
+  }
+}

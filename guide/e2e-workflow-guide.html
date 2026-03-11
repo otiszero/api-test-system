@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E2E Testing Workflow — Playwright + Gherkin</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #030712; color: #e5e7eb; padding: 20px 20px 60px; min-height: 100vh; line-height: 1.6; }
+
+  h1 { font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .subtitle { font-size: 0.85rem; color: #9ca3af; margin-bottom: 24px; }
+  h2 { font-size: 1.15rem; font-weight: 700; color: #fff; margin: 28px 0 12px; display: flex; align-items: center; gap: 8px; }
+  h3 { font-size: 0.95rem; font-weight: 600; color: #e5e7eb; margin: 16px 0 8px; }
+
+  /* Legend */
+  .legend { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #9ca3af; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-qc { background: #f472b6; }
+  .dot-ai { background: #22d3ee; }
+  .dot-auto { background: #34d399; }
+
+  /* Flow diagram */
+  .flow { display: flex; align-items: center; gap: 0; margin: 16px 0 24px; flex-wrap: wrap; }
+  .flow-step { padding: 10px 16px; border-radius: 10px; font-size: 0.82rem; font-weight: 600; text-align: center; min-width: 120px; }
+  .flow-arrow { color: #4b5563; font-size: 1.2rem; padding: 0 4px; }
+  .flow-qc { background: rgba(244,114,182,0.12); border: 1px solid rgba(244,114,182,0.3); color: #f472b6; }
+  .flow-ai { background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,0.3); color: #22d3ee; }
+  .flow-auto { background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.3); color: #34d399; }
+
+  /* Cards */
+  .card { border: 1px solid #1f2937; border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
+  .card-header { padding: 12px 16px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: rgba(17,24,39,0.6); user-select: none; }
+  .card-header:hover { background: rgba(17,24,39,0.9); }
+  .card-title { font-weight: 600; font-size: 0.9rem; color: #fff; display: flex; align-items: center; gap: 8px; }
+  .card-chevron { transition: transform 0.2s; color: #6b7280; }
+  .card.open .card-chevron { transform: rotate(90deg); }
+  .card-body { padding: 14px 16px; display: none; border-top: 1px solid #1f2937; }
+  .card.open .card-body { display: block; }
+
+  /* Code blocks */
+  pre { background: #111827; border: 1px solid #1f2937; border-radius: 8px; padding: 12px 14px; overflow-x: auto; margin: 8px 0; font-size: 0.82rem; line-height: 1.5; }
+  code { font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace; }
+  .inline-code { background: rgba(34,211,238,0.1); color: #22d3ee; padding: 2px 6px; border-radius: 4px; font-size: 0.82rem; font-family: monospace; }
+
+  /* Step catalog table */
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 0.82rem; }
+  th { text-align: left; padding: 8px 10px; background: #111827; color: #9ca3af; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #1f2937; }
+  td { padding: 7px 10px; border-bottom: 1px solid #111827; vertical-align: top; }
+  td code { color: #22d3ee; font-size: 0.8rem; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* Category badge */
+  .cat-badge { font-size: 0.7rem; padding: 2px 8px; border-radius: 999px; font-weight: 600; display: inline-block; }
+  .cat-nav { background: rgba(96,165,250,0.15); color: #60a5fa; }
+  .cat-form { background: rgba(251,191,36,0.15); color: #fbbf24; }
+  .cat-assert { background: rgba(52,211,153,0.15); color: #34d399; }
+  .cat-action { background: rgba(167,139,250,0.15); color: #a78bfa; }
+  .cat-auth { background: rgba(244,114,182,0.15); color: #f472b6; }
+  .cat-api { background: rgba(34,211,238,0.15); color: #22d3ee; }
+  .cat-data { background: rgba(156,163,175,0.15); color: #9ca3af; }
+  .cat-wallet { background: rgba(251,146,60,0.15); color: #fb923c; }
+
+  /* Tips */
+  .tip { background: rgba(34,211,238,0.06); border-left: 3px solid #22d3ee; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 10px 0; font-size: 0.82rem; }
+  .tip-label { font-weight: 700; color: #22d3ee; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 4px; }
+  .warn { background: rgba(251,191,36,0.06); border-left: 3px solid #fbbf24; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 10px 0; font-size: 0.82rem; }
+  .warn-label { font-weight: 700; color: #fbbf24; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 4px; }
+
+  p { margin: 6px 0; font-size: 0.85rem; }
+  ul, ol { margin: 6px 0 6px 20px; font-size: 0.85rem; }
+  li { margin: 4px 0; }
+
+  .config-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 0; border: 1px solid #1f2937; border-radius: 8px; overflow: hidden; margin: 8px 0; font-size: 0.82rem; }
+  .config-key { padding: 8px 12px; background: #111827; color: #22d3ee; font-family: monospace; font-weight: 600; border-bottom: 1px solid #1f2937; }
+  .config-val { padding: 8px 12px; border-bottom: 1px solid #0f1729; color: #d1d5db; }
+</style>
+</head>
+<body>
+
+<h1>E2E Testing Workflow</h1>
+<p class="subtitle">Playwright + Gherkin — Write .feature files, generate .spec.ts, run tests</p>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot dot-qc"></div> QC (manual)</div>
+  <div class="legend-item"><div class="legend-dot dot-ai"></div> AI (Claude)</div>
+  <div class="legend-item"><div class="legend-dot dot-auto"></div> Auto (Playwright)</div>
+</div>
+
+<!-- ==================== FLOW DIAGRAM ==================== -->
+<h3>Option A: Write Gherkin directly</h3>
+<div class="flow">
+  <div class="flow-step flow-qc">1. Write .feature</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step flow-ai">2. /generate-e2e</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step flow-auto">3. /run-e2e</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step flow-qc">4. Review results</div>
+</div>
+
+<h3>Option B: Describe in natural language (Vietnamese/English)</h3>
+<div class="flow">
+  <div class="flow-step flow-qc">1. Describe test</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step flow-ai">2. /describe-e2e</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step flow-ai">3. /generate-e2e</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step flow-auto">4. /run-e2e</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step flow-qc">5. Review results</div>
+</div>
+
+<!-- ==================== SECTION 1: SETUP ==================== -->
+<h2>📁 1. Project Structure</h2>
+<pre><code>e2e/
+├── features/           ← QC writes .feature files here
+│   ├── _template.feature   (copy this to start)
+│   ├── login.feature
+│   ├── login-2fa.feature
+│   └── dashboard-access.feature
+├── steps/              ← Step catalog (pattern → Playwright code)
+│   ├── catalog.ts          (central registry)
+│   ├── navigation.steps.ts
+│   ├── form.steps.ts
+│   ├── assertion.steps.ts
+│   ├── auth.steps.ts
+│   ├── api.steps.ts
+│   └── wallet.steps.ts
+├── generator/          ← Feature → .spec.ts generator
+│   ├── generator.ts        (orchestrator + CLI)
+│   ├── feature-parser.ts   (Gherkin → AST)
+│   ├── code-emitter.ts     (AST → .spec.ts)
+│   └── suite-injector.ts   (@needs tag resolver)
+├── generated/          ← Auto-generated specs (DO NOT EDIT)
+├── helpers/
+│   └── totp-helper.ts  ← TOTP code generation
+└── playwright.config.ts
+
+config/
+├── e2e.config.json     ← App URL, accounts, pages, browser settings
+└── suites.config.json  ← Reusable prerequisite suites (@needs tags)</code></pre>
+
+<!-- ==================== SECTION 2: CONFIG ==================== -->
+<h2>⚙️ 2. Config <span class="inline-code">config/e2e.config.json</span></h2>
+
+<div class="card open">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+    <span class="card-title">Key config fields</span>
+    <span class="card-chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <div class="config-grid">
+      <div class="config-key">appUrl</div>
+      <div class="config-val">Frontend URL (e.g. <code>https://dev.upmount.sotatek.works</code>)</div>
+      <div class="config-key">basicAuth</div>
+      <div class="config-val">HTTP Basic Auth for protected environments</div>
+      <div class="config-key">pages</div>
+      <div class="config-val">Friendly name → URL path map. Used by <code>I am on the "{page}" page</code></div>
+      <div class="config-key">accounts</div>
+      <div class="config-val">Named accounts with email, password, totpSecret for 2FA login</div>
+      <div class="config-key">browser</div>
+      <div class="config-val"><code>chromium</code> | <code>firefox</code> | <code>webkit</code></div>
+      <div class="config-key">timeout</div>
+      <div class="config-val">Test timeout in ms (default: 30000)</div>
+      <div class="config-key">screenshots</div>
+      <div class="config-val"><code>on-failure</code> | <code>on</code> | <code>off</code></div>
+    </div>
+
+    <h3>Adding a test account</h3>
+    <pre><code>"accounts": {
+  "owner": {
+    "email": "user@example.com",
+    "password": "SecurePass1!",
+    "totpSecret": "BASE32_SECRET_KEY_HERE",
+    "emailPlaceholder": "Enter email address",
+    "passwordPlaceholder": "Enter password",
+    "submitButton": "Continue",
+    "totpSubmitButton": "Verify"
+  },
+  "viewer": {
+    "email": "viewer@example.com",
+    "password": "ViewerPass1!",
+    "totpSecret": "ANOTHER_SECRET"
+  }
+}</code></pre>
+
+    <h3>Adding a page</h3>
+    <pre><code>"pages": {
+  "login": "/",
+  "dashboard": "/dashboard",
+  "settings": "/settings/profile"
+}</code></pre>
+  </div>
+</div>
+
+<!-- ==================== SECTION 2B: SUITES CONFIG ==================== -->
+<h2>🔗 2b. Reusable Suites <span class="inline-code">config/suites.config.json</span></h2>
+
+<p>Define reusable prerequisite steps (login, navigation, setup) that features can include via <span class="inline-code">@needs(suite-name)</span> tags. Steps are injected into <code>test.beforeEach()</code> at generation time.</p>
+
+<div class="card open">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+    <span class="card-title">Available suites</span>
+    <span class="card-chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <table>
+      <thead><tr><th>Suite name</th><th>What it does</th><th>Type</th></tr></thead>
+      <tbody>
+        <tr><td><code>login-owner</code></td><td>Login as owner with 2FA</td><td>Steps</td></tr>
+        <tr><td><code>login-owner-no2fa</code></td><td>Login as owner without 2FA</td><td>Steps</td></tr>
+        <tr><td><code>navigate-dashboard</code></td><td>Navigate to dashboard page</td><td>Steps</td></tr>
+        <tr><td><code>navigate-login</code></td><td>Navigate to login page</td><td>Steps</td></tr>
+        <tr><td><code>logged-in-dashboard</code></td><td>Login + navigate to dashboard (combined)</td><td>Composite</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Usage in .feature files</h3>
+    <pre><code># Single suite — login before all scenarios
+@smoke @needs(login-owner)
+Feature: Dashboard Access
+  Scenario: Dashboard visible
+    Then I should see "Dashboard"
+
+# Multiple suites — chain dependencies
+@needs(login-owner, navigate-dashboard)
+Feature: Dashboard Widgets
+  Scenario: Widgets loaded
+    Then I should see "Vault"
+
+# Composite suite — shorthand for multiple suites
+@needs(logged-in-dashboard)
+Feature: Dashboard Settings
+  Scenario: Settings link visible
+    Then I should see "Settings"</code></pre>
+
+    <div class="tip">
+      <div class="tip-label">How it works</div>
+      The generator sees <code>@needs(login-owner)</code>, looks up the suite in <code>suites.config.json</code>, and injects its steps into <code>test.beforeEach()</code>. Composite suites (like <code>logged-in-dashboard</code>) resolve nested dependencies automatically. No duplicate steps — deduplication is built in.
+    </div>
+
+    <h3>Adding custom suites</h3>
+    <pre><code>// In config/suites.config.json
+{
+  "suites": {
+    "my-custom-suite": {
+      "description": "What this suite does",
+      "steps": [
+        { "keyword": "Given", "text": "I am on the \"login\" page" },
+        { "keyword": "When", "text": "I fill input \"Email\" with \"test@test.com\"" }
+      ]
+    },
+    "my-composite-suite": {
+      "description": "Combines other suites",
+      "needs": ["login-owner", "navigate-dashboard"]
+    }
+  }
+}</code></pre>
+  </div>
+</div>
+
+<!-- ==================== SECTION 3: NATURAL LANGUAGE ==================== -->
+<h2>💬 3. Natural Language → .feature <span class="inline-code">/describe-e2e</span></h2>
+
+<p>Don't know Gherkin syntax? Describe your tests in plain Vietnamese or English, and AI generates a valid <span class="inline-code">.feature</span> file optimized for the step catalog.</p>
+
+<div class="card open">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+    <span class="card-title">How to use /describe-e2e</span>
+    <span class="card-chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <pre><code># Run the command with a feature name
+/describe-e2e dashboard-access</code></pre>
+    <p>Then describe what you want to test:</p>
+
+    <h3>Vietnamese example</h3>
+    <pre><code>Kiểm tra trang dashboard sau khi đăng nhập:
+- Đăng nhập bằng tài khoản owner có 2FA
+- Sau khi login, kiểm tra thấy text "Dashboard"
+- URL phải chứa /dashboard
+- Kiểm tra có nút "Settings" hiển thị</code></pre>
+
+    <h3>English example</h3>
+    <pre><code>Test login validation:
+- Go to login page
+- Try with invalid email format → should see "Email is invalid"
+- Try with wrong password → should see "Incorrect credentials"
+- Try with valid credentials → should redirect to dashboard</code></pre>
+
+    <h3>Output</h3>
+    <p>AI generates <span class="inline-code">e2e/features/dashboard-access.feature</span>:</p>
+    <pre><code>@smoke @needs(login-owner)
+Feature: Dashboard Access
+  Verify dashboard page is accessible after login.
+
+  Scenario: Dashboard visible after login
+    Then I should see "Dashboard"
+    And the URL should contain "/dashboard"
+
+  Scenario: Settings button visible
+    Then I should see "Settings"</code></pre>
+
+    <div class="tip">
+      <div class="tip-label">Smart behaviors</div>
+      <ul>
+        <li>Auto-detects login prerequisites → adds <code>@needs</code> tags</li>
+        <li>Uses catalog step patterns for maximum match rate (= lower cost)</li>
+        <li>Converts similar cases into <code>Scenario Outline</code> with Examples table</li>
+        <li>Uses page/account names from <code>e2e.config.json</code></li>
+      </ul>
+    </div>
+
+    <p>After generating the .feature file, continue with:</p>
+    <pre><code>/generate-e2e dashboard-access    # → .spec.ts
+/run-e2e dashboard-access --headed  # → run with browser visible</code></pre>
+  </div>
+</div>
+
+<!-- ==================== SECTION 4: WRITE FEATURES ==================== -->
+<h2>✍️ 4. Write .feature Files (Manual)</h2>
+
+<p>Create files in <span class="inline-code">e2e/features/</span> using Gherkin syntax. Use step patterns from the catalog below.</p>
+
+<div class="card">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+    <span class="card-title">Example: Login validation</span>
+    <span class="card-chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <pre><code>@smoke
+Feature: Login Flow
+  Users can log in with valid credentials and see validation errors.
+
+  Background:
+    Given I am on the "login" page
+
+  Scenario: Login page is visible
+    Then I should see "Welcome back,"
+
+  Scenario Outline: Login validation - &lt;case&gt;
+    When I fill input "Enter email address" with "&lt;email&gt;"
+    And I fill input "Enter password" with "&lt;password&gt;"
+    And I click button "Continue"
+    Then I should see "&lt;message&gt;"
+
+    Examples:
+      | case                 | email           | password       | message                                        |
+      | invalid email format | notanemail      | TestPassword1! | Email address is invalid                       |
+      | wrong credentials    | bad@example.com | TestPassword1! | Your email or password is incorrect, try again.|</code></pre>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+    <span class="card-title">Example: Login with 2FA</span>
+    <span class="card-chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <pre><code>@smoke
+Feature: Login with 2FA
+  Users can log in with email, password and TOTP 2FA code.
+
+  Scenario: Login with 2FA using account config
+    Given I login as "owner" with 2FA
+    Then I should see "Dashboard"</code></pre>
+    <div class="tip">
+      <div class="tip-label">How 2FA works</div>
+      The <code>I login as "{user}" with 2FA</code> step reads credentials + TOTP secret from <code>e2e.config.json → accounts</code>, generates a real-time OTP code, types it into the 6-digit input, and clicks Verify.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+    <span class="card-title">Example: Hybrid UI + API</span>
+    <span class="card-chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <pre><code>Feature: Create Order
+  Scenario: Submit order and verify via API
+    Given API: user "owner" is authenticated
+    Given I am on the "orders" page
+    When I fill input "Amount" with "100"
+    And I click button "Submit"
+    Then I should see "Order created"
+    When API: GET "/orders" returns 200
+    Then API: response should contain "id"</code></pre>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+    <span class="card-title">Example: Using @needs tag (suite injection)</span>
+    <span class="card-chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <pre><code>@smoke @needs(login-owner)
+Feature: Dashboard Access
+  Verify dashboard page is accessible after login.
+
+  Scenario: Dashboard visible after login
+    Then I should see "Dashboard"
+    And the URL should contain "/dashboard"</code></pre>
+    <div class="tip">
+      <div class="tip-label">How @needs works</div>
+      The <code>@needs(login-owner)</code> tag tells the generator to inject the login-with-2FA steps into <code>test.beforeEach()</code>. No need to write login steps manually — they're pulled from <code>suites.config.json</code>.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+    <span class="card-title">Template (copy to start)</span>
+    <span class="card-chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <pre><code>@smoke
+Feature: [Feature Name]
+  [Brief description]
+
+  Background:
+    Given I am on the "[page]" page
+
+  Scenario: [Happy path]
+    When I fill input "[placeholder]" with "[value]"
+    And I click button "[Button Text]"
+    Then I should see "[expected text]"
+
+  Scenario Outline: [Validation] - &lt;case&gt;
+    When I fill input "[field]" with "&lt;input&gt;"
+    And I click button "[Button]"
+    Then I should see "&lt;message&gt;"
+
+    Examples:
+      | case          | input     | message        |
+      | empty field   |           | Required       |
+      | invalid input | bad-value | Invalid format |</code></pre>
+  </div>
+</div>
+
+<!-- ==================== SECTION 5: STEP CATALOG ==================== -->
+<h2>📖 5. Step Catalog Reference</h2>
+<p>Use these exact patterns in your .feature files. Parameters in <code>"{param}"</code> are replaced with your values.</p>
+
+<div class="card open">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+    <span class="card-title">All available steps (40+ patterns)</span>
+    <span class="card-chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <table>
+      <thead><tr><th>Category</th><th>Pattern</th><th>Description</th></tr></thead>
+      <tbody>
+        <!-- Navigation -->
+        <tr><td><span class="cat-badge cat-nav">Navigation</span></td><td><code>I am on the "{page}" page</code></td><td>Navigate to page (from config pages map)</td></tr>
+        <tr><td><span class="cat-badge cat-nav">Navigation</span></td><td><code>I navigate to "{url}"</code></td><td>Navigate to raw URL path</td></tr>
+        <tr><td><span class="cat-badge cat-nav">Navigation</span></td><td><code>the URL should contain "{path}"</code></td><td>Assert URL contains substring</td></tr>
+        <tr><td><span class="cat-badge cat-nav">Navigation</span></td><td><code>the URL should be "{url}"</code></td><td>Assert exact URL</td></tr>
+        <tr><td><span class="cat-badge cat-nav">Navigation</span></td><td><code>I go back</code></td><td>Browser back</td></tr>
+        <tr><td><span class="cat-badge cat-nav">Navigation</span></td><td><code>I refresh the page</code></td><td>Reload page</td></tr>
+        <!-- Form -->
+        <tr><td><span class="cat-badge cat-form">Form</span></td><td><code>I fill "{field}" with "{value}"</code></td><td>Fill by data-testid</td></tr>
+        <tr><td><span class="cat-badge cat-form">Form</span></td><td><code>I fill input "{placeholder}" with "{value}"</code></td><td>Fill by placeholder text</td></tr>
+        <tr><td><span class="cat-badge cat-form">Form</span></td><td><code>I clear input "{placeholder}"</code></td><td>Clear input by placeholder</td></tr>
+        <tr><td><span class="cat-badge cat-form">Form</span></td><td><code>I clear "{field}"</code></td><td>Clear by data-testid</td></tr>
+        <tr><td><span class="cat-badge cat-form">Form</span></td><td><code>I select "{option}" from "{dropdown}"</code></td><td>Select dropdown option</td></tr>
+        <tr><td><span class="cat-badge cat-form">Form</span></td><td><code>I check "{checkbox}"</code></td><td>Check checkbox</td></tr>
+        <tr><td><span class="cat-badge cat-form">Form</span></td><td><code>I uncheck "{checkbox}"</code></td><td>Uncheck checkbox</td></tr>
+        <tr><td><span class="cat-badge cat-form">Form</span></td><td><code>I upload "{file}" to "{input}"</code></td><td>Upload file</td></tr>
+        <tr><td><span class="cat-badge cat-form">Form</span></td><td><code>I fill input "{placeholder}" with TOTP from secret "{key}"</code></td><td>Fill with generated TOTP (inline secret)</td></tr>
+        <tr><td><span class="cat-badge cat-form">Form</span></td><td><code>I fill input "{placeholder}" with TOTP for user "{user}"</code></td><td>Fill with TOTP from config account</td></tr>
+        <!-- Assertion -->
+        <tr><td><span class="cat-badge cat-assert">Assertion</span></td><td><code>I should see "{text}"</code></td><td>Assert text is visible</td></tr>
+        <tr><td><span class="cat-badge cat-assert">Assertion</span></td><td><code>I should not see "{text}"</code></td><td>Assert text is NOT visible</td></tr>
+        <tr><td><span class="cat-badge cat-assert">Assertion</span></td><td><code>element "{selector}" should be visible</code></td><td>Assert element visible</td></tr>
+        <tr><td><span class="cat-badge cat-assert">Assertion</span></td><td><code>element "{selector}" should be disabled</code></td><td>Assert element disabled</td></tr>
+        <tr><td><span class="cat-badge cat-assert">Assertion</span></td><td><code>element "{selector}" should be enabled</code></td><td>Assert element enabled</td></tr>
+        <tr><td><span class="cat-badge cat-assert">Assertion</span></td><td><code>element "{selector}" should contain "{text}"</code></td><td>Assert element contains text</td></tr>
+        <tr><td><span class="cat-badge cat-assert">Assertion</span></td><td><code>element "{selector}" should have value "{value}"</code></td><td>Assert input value</td></tr>
+        <tr><td><span class="cat-badge cat-assert">Assertion</span></td><td><code>the page title should be "{title}"</code></td><td>Assert page title</td></tr>
+        <tr><td><span class="cat-badge cat-assert">Assertion</span></td><td><code>I should see {count} "{selector}" elements</code></td><td>Assert element count</td></tr>
+        <!-- Action -->
+        <tr><td><span class="cat-badge cat-action">Action</span></td><td><code>I click "{element}"</code></td><td>Click by data-testid</td></tr>
+        <tr><td><span class="cat-badge cat-action">Action</span></td><td><code>I click button "{text}"</code></td><td>Click button by text</td></tr>
+        <tr><td><span class="cat-badge cat-action">Action</span></td><td><code>I click link "{text}"</code></td><td>Click link by text</td></tr>
+        <tr><td><span class="cat-badge cat-action">Action</span></td><td><code>I press "{key}"</code></td><td>Press keyboard key</td></tr>
+        <tr><td><span class="cat-badge cat-action">Action</span></td><td><code>I wait {seconds} seconds</code></td><td>Wait N seconds</td></tr>
+        <tr><td><span class="cat-badge cat-action">Action</span></td><td><code>I wait for "{selector}" to be visible</code></td><td>Wait for element</td></tr>
+        <!-- Auth -->
+        <tr><td><span class="cat-badge cat-auth">Auth</span></td><td><code>I login as "{user}" with 2FA</code></td><td>Full login flow: email + password + TOTP</td></tr>
+        <tr><td><span class="cat-badge cat-auth">Auth</span></td><td><code>I login as "{user}"</code></td><td>Login without 2FA</td></tr>
+        <!-- API -->
+        <tr><td><span class="cat-badge cat-api">API</span></td><td><code>API: user "{role}" is authenticated</code></td><td>Set API auth token</td></tr>
+        <tr><td><span class="cat-badge cat-api">API</span></td><td><code>API: GET "{endpoint}" returns {code}</code></td><td>GET request + status assert</td></tr>
+        <tr><td><span class="cat-badge cat-api">API</span></td><td><code>API: POST "{endpoint}" returns {code}</code></td><td>POST request + status assert</td></tr>
+        <tr><td><span class="cat-badge cat-api">API</span></td><td><code>API: PUT "{endpoint}" returns {code}</code></td><td>PUT request + status assert</td></tr>
+        <tr><td><span class="cat-badge cat-api">API</span></td><td><code>API: DELETE "{endpoint}" returns {code}</code></td><td>DELETE request + status assert</td></tr>
+        <tr><td><span class="cat-badge cat-api">API</span></td><td><code>API: response should contain "{field}"</code></td><td>Assert response has field</td></tr>
+        <tr><td><span class="cat-badge cat-api">API</span></td><td><code>API: response "{field}" should equal "{value}"</code></td><td>Assert response field value</td></tr>
+        <!-- Data -->
+        <tr><td><span class="cat-badge cat-data">Data</span></td><td><code>I save "{value}" as "{variable}"</code></td><td>Store value in context</td></tr>
+        <tr><td><span class="cat-badge cat-data">Data</span></td><td><code>I save element "{selector}" text as "{variable}"</code></td><td>Store element text</td></tr>
+        <tr><td><span class="cat-badge cat-data">Data</span></td><td><code>variable "{name}" should equal "{expected}"</code></td><td>Assert stored variable</td></tr>
+        <!-- Wallet -->
+        <tr><td><span class="cat-badge cat-wallet">Wallet</span></td><td><code>I connect MetaMask wallet</code></td><td>Connect MetaMask to dapp</td></tr>
+        <tr><td><span class="cat-badge cat-wallet">Wallet</span></td><td><code>I approve MetaMask transaction</code></td><td>Confirm transaction</td></tr>
+        <tr><td><span class="cat-badge cat-wallet">Wallet</span></td><td><code>I reject MetaMask transaction</code></td><td>Reject transaction</td></tr>
+        <tr><td><span class="cat-badge cat-wallet">Wallet</span></td><td><code>I sign MetaMask message</code></td><td>Confirm signature</td></tr>
+        <tr><td><span class="cat-badge cat-wallet">Wallet</span></td><td><code>I switch MetaMask to network "{name}"</code></td><td>Switch/add network</td></tr>
+        <tr><td><span class="cat-badge cat-wallet">Wallet</span></td><td><code>I approve MetaMask token permission</code></td><td>Approve token allowance</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip">
+      <div class="tip-label">Pattern rules</div>
+      <code>"{param}"</code> = string value (in double quotes in your .feature)<br>
+      <code>{param}</code> = number value (no quotes, e.g. <code>I wait 3 seconds</code>)<br>
+      Steps not in catalog → marked <code>// TODO: [AI]</code> in generated code for manual completion.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 6: GENERATE ==================== -->
+<h2>🔄 6. Generate Tests</h2>
+
+<pre><code># Generate all features
+/generate-e2e
+
+# Generate single feature
+/generate-e2e login
+/generate-e2e login-2fa
+
+# Or run directly
+npx tsx e2e/generator/generator.ts
+npx tsx e2e/generator/generator.ts login-2fa</code></pre>
+
+<p>Output: <span class="inline-code">e2e/generated/{feature-name}.spec.ts</span></p>
+
+<div class="warn">
+  <div class="warn-label">Important</div>
+  Generated specs are in <code>e2e/generated/</code> — do NOT edit them manually. Change the <code>.feature</code> file and regenerate instead.
+</div>
+
+<!-- ==================== SECTION 7: RUN ==================== -->
+<h2>▶️ 7. Run Tests</h2>
+
+<pre><code># Run all E2E tests
+/run-e2e
+
+# Run specific feature
+/run-e2e login-2fa
+
+# Run with browser visible (headed mode)
+/run-e2e --headed
+
+# Run with trace viewer (debug failed tests)
+/run-e2e --trace
+
+# Run with Playwright debug mode (step-by-step)
+/run-e2e --debug
+
+# Or run directly
+npx playwright test --config=e2e/playwright.config.ts
+npx playwright test --config=e2e/playwright.config.ts e2e/generated/login-2fa.spec.ts --headed</code></pre>
+
+<!-- ==================== SECTION 8: DEBUG ==================== -->
+<h2>🐛 8. Debug Failed Tests</h2>
+
+<div class="card">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+    <span class="card-title">View trace for failed test</span>
+    <span class="card-chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <pre><code># After a failed test, open trace viewer
+npx playwright show-trace e2e/test-results/{test-folder}/trace.zip
+
+# View HTML report
+npx playwright show-report reports/e2e</code></pre>
+    <p>Traces show every action, screenshot at each step, network requests, and console logs.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+    <span class="card-title">Error context files</span>
+    <span class="card-chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <p>On failure, Playwright saves an <span class="inline-code">error-context.md</span> in the test results folder with a DOM snapshot showing exactly what was on the page.</p>
+    <pre><code>cat e2e/test-results/{test-folder}/error-context.md</code></pre>
+  </div>
+</div>
+
+<!-- ==================== SECTION 9: QUICK REFERENCE ==================== -->
+<h2>⚡ 9. Quick Reference</h2>
+
+<div class="card open">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+    <span class="card-title">Common workflows</span>
+    <span class="card-chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <h3>Add a new test scenario (manual Gherkin)</h3>
+    <ol>
+      <li>Create/edit <code>e2e/features/my-feature.feature</code></li>
+      <li>Use step patterns from catalog</li>
+      <li>Add <code>@needs(login-owner)</code> tag if login is required</li>
+      <li>Run <code>/generate-e2e my-feature</code></li>
+      <li>Run <code>/run-e2e my-feature --headed</code></li>
+      <li>Check results, adjust .feature if needed</li>
+    </ol>
+
+    <h3>Add a new test scenario (natural language)</h3>
+    <ol>
+      <li>Run <code>/describe-e2e my-feature</code></li>
+      <li>Describe what you want to test in Vietnamese or English</li>
+      <li>AI generates <code>e2e/features/my-feature.feature</code></li>
+      <li>Run <code>/generate-e2e my-feature</code></li>
+      <li>Run <code>/run-e2e my-feature --headed</code></li>
+    </ol>
+
+    <h3>Add a new page to config</h3>
+    <ol>
+      <li>Add entry to <code>e2e.config.json → pages</code></li>
+      <li>Use <code>Given I am on the "my-page" page</code> in feature</li>
+    </ol>
+
+    <h3>Add a new test account</h3>
+    <ol>
+      <li>Add entry to <code>e2e.config.json → accounts</code></li>
+      <li>Use <code>Given I login as "my-account" with 2FA</code> in feature</li>
+    </ol>
+
+    <h3>Add a reusable suite</h3>
+    <ol>
+      <li>Edit <code>config/suites.config.json</code> → add new suite with steps or nested <code>needs</code></li>
+      <li>Use <code>@needs(my-suite)</code> tag in your .feature file</li>
+      <li>Steps are auto-injected into <code>test.beforeEach()</code> on generation</li>
+    </ol>
+
+    <h3>Test needs a step not in catalog</h3>
+    <ol>
+      <li>Write the step naturally in your .feature</li>
+      <li>Generator marks it as <code>// TODO: [AI]</code></li>
+      <li>Ask AI to implement the missing step or add to <code>e2e/steps/</code></li>
+    </ol>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+    <span class="card-title">Slash commands cheat sheet</span>
+    <span class="card-chevron">▶</span>
+  </div>
+  <div class="card-body">
+    <table>
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>/describe-e2e dashboard</code></td><td>Describe tests in Vietnamese/English → AI generates .feature file</td></tr>
+        <tr><td><code>/generate-e2e</code></td><td>Generate all .spec.ts from all .feature files</td></tr>
+        <tr><td><code>/generate-e2e login</code></td><td>Generate spec for specific feature</td></tr>
+        <tr><td><code>/run-e2e</code></td><td>Run all E2E tests</td></tr>
+        <tr><td><code>/run-e2e login --headed</code></td><td>Run specific feature with visible browser</td></tr>
+        <tr><td><code>/run-e2e --trace</code></td><td>Run with trace recording for debugging</td></tr>
+        <tr><td><code>/run-e2e --debug</code></td><td>Run with Playwright inspector (step-by-step)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// Toggle open/close on card headers
+document.querySelectorAll('.card-header').forEach(h => {
+  h.addEventListener('click', () => h.parentElement.classList.toggle('open'));
+});
+</script>
+</body>
+</html>

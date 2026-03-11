@@ -1,5 +1,5 @@
 // Auto-generated from: features/health-check.feature
-// Generated at: 2026-03-09T03:50:54.137Z
+// Generated at: 2026-03-10T01:47:20.471Z
 // DO NOT EDIT — regenerate with /generate-e2e health-check
 
 import { test, expect } from '@playwright/test';

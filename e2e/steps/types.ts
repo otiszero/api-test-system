@@ -8,7 +8,7 @@ export interface StepTemplate {
   pattern: string;
   regex: RegExp;
   params: string[];
-  category: 'navigation' | 'form' | 'assertion' | 'action' | 'api' | 'data' | 'auth' | 'wallet';
+  category: 'navigation' | 'form' | 'assertion' | 'action' | 'api' | 'data' | 'auth' | 'wallet' | 'cleanup';
   generateCode: (args: string[]) => string;
 }
 

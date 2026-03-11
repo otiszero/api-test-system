@@ -7,8 +7,12 @@ Write human-readable `.feature` files using Gherkin syntax (Given/When/Then). AI
 ## Quick Start
 
 ```bash
-# 1. Write your feature file
+# Option A: Write .feature file directly (if familiar with Gherkin)
 #    e2e/features/my-flow.feature
+
+# Option B: Describe in natural language (Vietnamese/English)
+/describe-e2e my-flow
+# → AI generates e2e/features/my-flow.feature for you
 
 # 2. Generate Playwright test code
 /generate-e2e my-flow
@@ -128,13 +132,19 @@ Steps below are pre-built. Using them costs ZERO AI tokens during generation.
 |------|---------|
 | `I should see "{text}"` | `Then I should see "Welcome"` |
 | `I should not see "{text}"` | `Then I should not see "Error"` |
-| `"{element}" should be visible` | `Then "sidebar" should be visible` |
-| `"{element}" should not be visible` | `Then "loading" should not be visible` |
-| `"{element}" should be disabled` | `Then "submit-btn" should be disabled` |
-| `"{element}" should be enabled` | `Then "submit-btn" should be enabled` |
-| `"{element}" should contain "{text}"` | `Then "status" should contain "Active"` |
-| `"{element}" should have value "{value}"` | `Then "email" should have value "test@test.com"` |
+| `element "{selector}" should be visible` | `Then element "#sidebar" should be visible` |
+| `element "{selector}" should not be visible` | `Then element "#loading" should not be visible` |
+| `element "{selector}" should be disabled` | `Then element "#submit-btn" should be disabled` |
+| `element "{selector}" should be enabled` | `Then element "#submit-btn" should be enabled` |
+| `element "{selector}" should contain "{text}"` | `Then element "#status" should contain "Active"` |
+| `element "{selector}" should have value "{value}"` | `Then element "#email" should have value "test@test.com"` |
+| `element "{selector}" should have text "{text}"` | `Then element "#title" should have text "Dashboard"` |
 | `the page title should be "{title}"` | `Then the page title should be "Dashboard"` |
+| `I should see {count} "{selector}" elements` | `Then I should see 3 ".item" elements` |
+| `I should see error "{message}"` | `Then I should see error "Invalid credentials"` |
+| `I should see toast "{message}"` | `Then I should see toast "Saved successfully"` |
+| `I should be redirected to "{path}"` | `Then I should be redirected to "/dashboard"` |
+| `the submit button should be disabled` | `Then the submit button should be disabled` |
 
 ### API Steps
 
@@ -144,9 +154,41 @@ Steps below are pre-built. Using them costs ZERO AI tokens during generation.
 | `API: GET "{endpoint}" returns {code}` | `When API: GET "/health" returns 200` |
 | `API: POST "{endpoint}" returns {code}` | `When API: POST "/orders" returns 201` |
 | `API: PUT "{endpoint}" returns {code}` | `When API: PUT "/profile" returns 200` |
+| `API: PATCH "{endpoint}" returns {code}` | `When API: PATCH "/profile" returns 200` |
 | `API: DELETE "{endpoint}" returns {code}` | `When API: DELETE "/orders/1" returns 204` |
 | `API: response should contain "{field}"` | `Then API: response should contain "status"` |
 | `API: response "{field}" should equal "{value}"` | `Then API: response "status" should equal "ok"` |
+| `API: response "{field}" should not be empty` | `Then API: response "email" should not be empty` |
+| `API: response should have {count} items in "{field}"` | `Then API: response should have 5 items in "orders"` |
+| `API: response "{field}" should contain "{substring}"` | `Then API: response "name" should contain "John"` |
+| `API: response status should be {code}` | `Then API: response status should be 200` |
+
+### Auth Steps
+
+| Step | Example |
+|------|---------|
+| `I login as "{user}" with 2FA` | `Given I login as "owner" with 2FA` |
+| `I login as "{user}"` | `Given I login as "owner"` |
+| `I fill login form for "{user}"` | `When I fill login form for "owner"` |
+| `I enter invalid OTP "{code}"` | `When I enter invalid OTP "000000"` |
+
+### Cleanup Steps
+
+| Step | Example |
+|------|---------|
+| `cleanup: DELETE "{endpoint}"` | `Then cleanup: DELETE "/orders/123"` |
+| `cleanup: clear localStorage` | `Then cleanup: clear localStorage` |
+| `cleanup: clear cookies` | `Then cleanup: clear cookies` |
+| `cleanup: reset user "{user}" state` | `Then cleanup: reset user "owner" state` |
+
+**Cleanup usage**: Tag a scenario with `@cleanup` or name it "Cleanup". It becomes a `test.afterAll()` block.
+
+```gherkin
+@cleanup
+Scenario: Cleanup
+  Then cleanup: DELETE "/orders/123"
+  And cleanup: clear cookies
+```
 
 ### Data/Variables
 
@@ -211,6 +253,142 @@ npx playwright show-report
 3. **API steps always start with `API:`** — this tells the generator to use HTTP helpers
 4. **Use Scenario Outline** for data-driven tests — avoids duplicate scenarios
 5. **Use Background** for shared setup — avoids repeating Given steps
+
+## Writing Tests in Plain Language
+
+If you're not familiar with Gherkin syntax, use `/describe-e2e` to write tests in natural language:
+
+```bash
+/describe-e2e dashboard-access
+```
+
+Then describe what you want to test in Vietnamese or English:
+
+```
+Kiểm tra trang dashboard sau khi đăng nhập:
+- Đăng nhập bằng tài khoản owner có 2FA
+- Sau khi login, kiểm tra thấy text "Dashboard"
+- URL phải chứa /dashboard
+```
+
+AI will generate a valid `.feature` file optimized for the step catalog. Then run `/generate-e2e` as normal.
+
+### Tips for Good Descriptions
+
+- Be specific about what you're testing
+- Mention which account to use (owner, admin, etc.)
+- Describe expected results clearly
+- If testing multiple similar cases with different data, mention "test with different values"
+
+## Reusable Suites (@needs tags)
+
+Instead of repeating login/navigation steps in every feature, use `@needs` tags to inject prerequisite steps automatically.
+
+### Available Suites
+
+| Suite name | What it does |
+|---|---|
+| `login-owner` | Login as owner with 2FA |
+| `login-owner-no2fa` | Login as owner without 2FA |
+| `navigate-dashboard` | Navigate to dashboard page |
+| `navigate-login` | Navigate to login page |
+| `logged-in-dashboard` | Login + navigate to dashboard (combined) |
+
+### Usage
+
+Add `@needs(suite-name)` tag to your feature:
+
+```gherkin
+@smoke @needs(login-owner)
+Feature: Dashboard Access
+  Verify dashboard after login.
+
+  Scenario: Dashboard visible
+    Then I should see "Dashboard"
+    And the URL should contain "/dashboard"
+```
+
+When generated, the login steps are automatically injected into `test.beforeEach()`.
+
+### Multiple Suites
+
+Chain multiple suites:
+
+```gherkin
+@needs(login-owner, navigate-dashboard)
+Feature: Dashboard Widgets
+```
+
+### Composite Suites
+
+Use a composite suite that combines others:
+
+```gherkin
+@needs(logged-in-dashboard)
+Feature: Dashboard Widgets
+```
+
+`logged-in-dashboard` = `login-owner` + `navigate-dashboard` combined.
+
+### Adding Custom Suites
+
+Edit `config/suites.config.json` to add your own:
+
+```json
+{
+  "suites": {
+    "my-suite": {
+      "description": "What this suite does",
+      "steps": [
+        { "keyword": "Given", "text": "I am on the \"login\" page" }
+      ]
+    },
+    "composite-suite": {
+      "description": "Combines other suites",
+      "needs": ["login-owner", "navigate-dashboard"]
+    }
+  }
+}
+```
+
+## Credentials Best Practice
+
+### Happy Path: Always Use Config References
+
+For login scenarios that should succeed, use config-based steps. Credentials are read from `config/e2e.config.json` at generation time — never hardcoded in `.feature` files.
+
+```gherkin
+# GOOD — reads credentials from config
+Given I login as "owner" with 2FA
+Given I login as "owner"
+When I fill login form for "owner"
+
+# BAD — hardcoded credentials in happy path
+When I fill "email" with "owner@company.com"
+And I fill "password" with "RealPassword123!"
+```
+
+### Negative Tests: Use Literal Values
+
+For error scenarios (wrong password, invalid OTP), use literal values directly. These are intentionally invalid, so there's nothing sensitive to protect.
+
+```gherkin
+# GOOD — intentionally invalid data for negative test
+When I fill "email" with "wrong@email.com"
+And I fill "password" with "WrongPassword!"
+And I enter invalid OTP "000000"
+Then I should see error "Invalid credentials"
+```
+
+### Summary
+
+| Scenario Type | Step to Use | Why |
+|---|---|---|
+| Happy login | `I login as "{user}"` | Reads config, no secrets exposed |
+| Happy login + 2FA | `I login as "{user}" with 2FA` | Reads config + TOTP secret |
+| Fill form only (no submit) | `I fill login form for "{user}"` | Reads config, useful for form validation tests |
+| Wrong password | `I fill "password" with "wrong"` | Literal value, intentionally invalid |
+| Invalid OTP | `I enter invalid OTP "000000"` | Literal value, intentionally invalid |
 
 ## Adding New Steps to Catalog
 

@@ -25,7 +25,8 @@ export function emitSpecFile(feature: ParsedFeature, featureFileName: string): E
   // Detect if any scenario uses API steps (to conditionally import helpers)
   const allStepTexts = collectAllStepTexts(feature);
   const hasApiSteps = allStepTexts.some((t) => t.startsWith('API:'));
-  const hasUiSteps = allStepTexts.some((t) => !t.startsWith('API:'));
+  const hasCleanupSteps = allStepTexts.some((t) => t.startsWith('cleanup:'));
+  const hasUiSteps = allStepTexts.some((t) => !t.startsWith('API:') && !t.startsWith('cleanup:'));
   const hasTotpSteps = allStepTexts.some((t) => t.includes('TOTP') || t.includes('with 2FA'));
   const hasWalletSteps = allStepTexts.some((t) => t.includes('MetaMask'));
   const isApiOnly = feature.tags.includes('@api-only');
@@ -45,7 +46,7 @@ export function emitSpecFile(feature: ParsedFeature, featureFileName: string): E
   if (hasUiSteps || !isApiOnly) {
     lines.push("import e2eConfig from '../../config/e2e.config.json' with { type: 'json' };");
   }
-  if (hasApiSteps) {
+  if (hasApiSteps || hasCleanupSteps) {
     lines.push("import { apiClient } from '../../generated/helpers/api-client.js';");
     lines.push("import { authHelper } from '../../generated/helpers/auth-helper.js';");
   }
@@ -84,8 +85,16 @@ export function emitSpecFile(feature: ParsedFeature, featureFileName: string): E
     lines.push('  });');
   }
 
-  // Each scenario → test block
-  for (const scenario of feature.scenarios) {
+  // Separate cleanup scenarios from test scenarios
+  const cleanupScenarios = feature.scenarios.filter(
+    (s) => s.name.toLowerCase() === 'cleanup' || s.tags.includes('@cleanup')
+  );
+  const testScenarios = feature.scenarios.filter(
+    (s) => s.name.toLowerCase() !== 'cleanup' && !s.tags.includes('@cleanup')
+  );
+
+  // Each test scenario → test block
+  for (const scenario of testScenarios) {
     lines.push('');
     const scenarioHasUiSteps = scenario.steps.some((s) => !s.text.startsWith('API:'));
     const scenarioHasWallet = scenario.steps.some((s) => s.text.includes('MetaMask'));
@@ -128,6 +137,38 @@ export function emitSpecFile(feature: ParsedFeature, featureFileName: string): E
       }
     }
 
+    lines.push('  });');
+  }
+
+  // Cleanup scenarios → test.afterAll block
+  if (cleanupScenarios.length > 0) {
+    lines.push('');
+    const cleanupHasUi = cleanupScenarios.some((s) =>
+      s.steps.some((st) => !st.text.startsWith('API:') && !st.text.startsWith('cleanup:'))
+    );
+    const cleanupFixture = cleanupHasUi ? '{ page, context }' : '';
+
+    lines.push(`  test.afterAll(async (${cleanupFixture}) => {`);
+    for (const scenario of cleanupScenarios) {
+      for (const step of scenario.steps) {
+        totalSteps++;
+        const result = matchStep(step.text);
+        if (result.matched && result.code) {
+          matchedCount++;
+          for (const codeLine of result.code.split('\n')) {
+            lines.push(`    ${codeLine}`);
+          }
+        } else {
+          unmatched.push({
+            scenarioName: scenario.name,
+            keyword: step.keyword,
+            text: step.text,
+            lineNumber: step.line,
+          });
+          lines.push(`    // TODO: [AI] ${step.keyword} ${step.text}`);
+        }
+      }
+    }
     lines.push('  });');
   }
 

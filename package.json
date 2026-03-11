@@ -22,6 +22,7 @@
     "e2e:headed": "npx playwright test --config=e2e/playwright.config.ts --headed",
     "e2e:debug": "npx playwright test --config=e2e/playwright.config.ts --debug",
     "e2e:trace": "npx playwright show-trace",
+    "e2e:ci": "npx tsx e2e/generator/generator.ts && npx playwright test --config=e2e/playwright.config.ts",
     "e2e:wallet": "npx playwright test --config=e2e/playwright-wallet.config.ts --headed",
     "e2e:wallet:debug": "npx playwright test --config=e2e/playwright-wallet.config.ts --headed --debug"
   },

@@ -1,5 +1,5 @@
 // Auto-generated from: features/login.feature
-// Generated at: 2026-03-09T07:01:23.594Z
+// Generated at: 2026-03-10T01:47:20.474Z
 // DO NOT EDIT — regenerate with /generate-e2e login
 
 import { test, expect } from '@playwright/test';

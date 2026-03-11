@@ -1,5 +1,5 @@
 // Auto-generated from: features/vault-management.feature
-// Generated at: 2026-03-09T03:20:23.995Z
+// Generated at: 2026-03-10T01:47:20.478Z
 // DO NOT EDIT — regenerate with /generate-e2e vault-management
 
 import { test, expect } from '@playwright/test';
@@ -16,7 +16,8 @@ test.describe('Vault Management', () => {
   test('View vault list page', async ({ page }) => {
     const ctx = { variables: new Map<string, any>(), lastApiResponse: null as any };
     await page.goto(e2eConfig.pages['vault/accounts'] || '/vault/accounts');
-    await expect(page.getByText('Vault')).toBeVisible();
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByText('Vault').first()).toBeVisible();
   });
 
   test('API vault list returns data', async () => {

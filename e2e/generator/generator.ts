@@ -8,6 +8,7 @@ import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 
 import { resolve, basename } from 'path';
 import { parseFeature } from './feature-parser.js';
 import { emitSpecFile, EmitResult } from './code-emitter.js';
+import { injectSuites, loadSuitesConfig } from './suite-injector.js';
 import { UnmatchedStep } from '../steps/types.js';
 
 export interface GeneratorResult {
@@ -29,13 +30,14 @@ function isWalletFeature(featurePath: string): boolean {
 }
 
 /** Generate a .spec.ts from a single .feature file */
-export function generateFromFeature(featurePath: string, outputDir: string): GeneratorResult {
+export function generateFromFeature(featurePath: string, outputDir: string, suitesConfig?: ReturnType<typeof loadSuitesConfig>): GeneratorResult {
   const content = readFileSync(featurePath, 'utf-8');
   const fileName = basename(featurePath);
   const featureName = fileName.replace('.feature', '');
 
   const parsed = parseFeature(content, fileName);
-  const emitResult = emitSpecFile(parsed, fileName);
+  const withSuites = injectSuites(parsed, suitesConfig ?? null);
+  const emitResult = emitSpecFile(withSuites, fileName);
 
   const outputPath = resolve(outputDir, `${featureName}.spec.ts`);
 
@@ -68,6 +70,10 @@ export function generateAll(featuresDir: string, outputDir: string, walletOutput
     throw new Error(`Features directory not found: ${featuresDir}`);
   }
 
+  // Load suites config once for all features
+  const rootDir = resolve(featuresDir, '../..');
+  const suitesConfig = loadSuitesConfig(rootDir);
+
   const featureFiles = readdirSync(featuresDir)
     .filter((f) => f.endsWith('.feature') && !f.startsWith('_'))
     .map((f) => resolve(featuresDir, f));
@@ -78,7 +84,7 @@ export function generateAll(featuresDir: string, outputDir: string, walletOutput
 
   return featureFiles.map((f) => {
     const targetDir = walletOutputDir && isWalletFeature(f) ? walletOutputDir : outputDir;
-    return generateFromFeature(f, targetDir);
+    return generateFromFeature(f, targetDir, suitesConfig);
   });
 }
 
@@ -132,6 +138,8 @@ if (isCLI) {
 
   try {
     let results: GeneratorResult[];
+    const suitesConfig = loadSuitesConfig(rootDir);
+
     if (featureName) {
       const featurePath = resolve(featuresDir, `${featureName}.feature`);
       if (!existsSync(featurePath)) {
@@ -141,7 +149,7 @@ if (isCLI) {
       // Auto-detect or use --wallet flag to route output
       const useWalletDir = walletFlag || isWalletFeature(featurePath);
       const targetDir = useWalletDir ? walletOutputDir : outputDir;
-      results = [generateFromFeature(featurePath, targetDir)];
+      results = [generateFromFeature(featurePath, targetDir, suitesConfig)];
     } else {
       results = generateAll(featuresDir, outputDir, walletOutputDir);
     }

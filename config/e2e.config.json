@@ -18,7 +18,15 @@
     "login": "/",
     "dashboard": "/dashboard",
     "kyc/status": "/kyb",
-    "vault/accounts": "/vaults"
+    "vault/accounts": "/vaults",
+    "transactions": "/transactions",
+    "whitelist-address": "/custody-and-wallet/whitelist-address",
+    "profile-settings": "/organization/profile-settings",
+    "members": "/organization/members",
+    "vault-account-management": "/organization/vault-account",
+    "ledger": "/organization/ledger",
+    "action-log": "/organization/action-log",
+    "user-profile": "/user-profile"
   },
   "wallet": {
     "seedPhrase": "ENV:METAMASK_SEED_PHRASE",

@@ -39,4 +39,24 @@ export const authSteps: StepDef[] = [
         `await page.waitForLoadState('networkidle');`,
       ].join('\n'),
   },
+  {
+    pattern: 'I fill login form for "{user}"',
+    generateCode: ([user]) =>
+      [
+        `const account = e2eConfig.accounts['${user}'];`,
+        `await page.getByPlaceholder(account.emailPlaceholder || 'Enter email address').fill(account.email);`,
+        `await page.getByPlaceholder(account.passwordPlaceholder || 'Enter password').fill(account.password);`,
+      ].join('\n'),
+  },
+  {
+    pattern: 'I enter invalid OTP "{code}"',
+    generateCode: ([code]) =>
+      [
+        `const otpInput = page.getByRole('textbox', { name: 'Please enter OTP character 1' });`,
+        `await otpInput.waitFor({ state: 'visible', timeout: 15000 });`,
+        `await otpInput.click();`,
+        `await page.keyboard.type('${code}', { delay: 50 });`,
+        `await page.getByRole('button', { name: /verify/i }).click();`,
+      ].join('\n'),
+  },
 ];

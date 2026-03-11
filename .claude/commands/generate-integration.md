@@ -34,3 +34,53 @@ NẾU có test-rules:
 
 Mỗi integration test SELF-CONTAINED: tự setup all data, tự cleanup afterAll.
 
+## withNeeds() — Declarative Data Dependencies
+
+Khi integration test cần data từ resource khác (token, vaultId, orgId...),
+dùng `withNeeds()` wrapper thay vì `let` variables + `if (!id) return` guards.
+
+### Import
+```typescript
+import { withNeeds } from '../../helpers/integration-needs';
+import { apiClient } from '../../helpers/api-client';
+```
+
+### Usage Pattern
+```typescript
+// withNeeds resolves transitive deps automatically.
+// "Vault Accounts" → auto-setup: Users auth → User Profile → Organization Kyb → Vault Accounts
+withNeeds(['Vault Accounts'], (ctx) => {
+  describe('Vault Lifecycle', () => {
+    it('lists vaults', async () => {
+      const res = await apiClient.get('/api/users/vault-accounts');
+      expect(res.status).toBe(200);
+    });
+
+    it('gets vault by id', async () => {
+      const res = await apiClient.get(`/api/users/vault-accounts/${ctx.data.vaultId}`);
+      expect(res.status).toBe(200);
+    });
+  });
+});
+```
+
+### Available ctx fields (set by resource providers)
+- `ctx.ownerToken` — bearer token from auth.config.json
+- `ctx.data.normalUserToken` — second user token (if available)
+- `ctx.data.countryId` — first country ID
+- `ctx.data.profile` — user profile object
+- `ctx.data.orgId` — organization ID
+- `ctx.data.kybStatus` — KYB status object
+- `ctx.data.vaultId` — first vault ID
+- `ctx.data.vaults` — vault list
+- `ctx.data.transactionId` — first transaction ID
+- `ctx.data.roles` — RBAC roles list
+- `ctx.data.fileId` — uploaded file ID
+
+### Rules
+- ALWAYS prefer `withNeeds()` over manual `let` + `beforeAll` token setup
+- List ONLY the leaf resource(s) you need — transitive deps resolved automatically
+- Access data via `ctx.data.*` — never re-fetch what a provider already fetched
+- Cleanup runs automatically in afterAll (reverse dependency order)
+- Providers that fail log warnings but don't block other providers
+

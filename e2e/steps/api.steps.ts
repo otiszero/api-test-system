@@ -41,4 +41,29 @@ export const apiSteps: StepDef[] = [
     generateCode: ([field, value]) =>
       `expect(ctx.lastApiResponse.data.${field}).toBe('${value}');`,
   },
+  {
+    pattern: 'API: PATCH "{endpoint}" returns {code}',
+    generateCode: ([endpoint, code]) =>
+      `ctx.lastApiResponse = await apiClient.patch('${endpoint}');\nexpect(ctx.lastApiResponse.status).toBe(${code});`,
+  },
+  {
+    pattern: 'API: response "{field}" should not be empty',
+    generateCode: ([field]) =>
+      `expect(ctx.lastApiResponse.data.${field}).toBeTruthy();`,
+  },
+  {
+    pattern: 'API: response should have {count} items in "{field}"',
+    generateCode: ([count, field]) =>
+      `expect(ctx.lastApiResponse.data.${field}).toHaveLength(${count});`,
+  },
+  {
+    pattern: 'API: response "{field}" should contain "{substring}"',
+    generateCode: ([field, substring]) =>
+      `expect(ctx.lastApiResponse.data.${field}).toContain('${substring}');`,
+  },
+  {
+    pattern: 'API: response status should be {code}',
+    generateCode: ([code]) =>
+      `expect(ctx.lastApiResponse.status).toBe(${code});`,
+  },
 ];

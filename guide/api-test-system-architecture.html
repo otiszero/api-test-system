@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Test System — Architecture Overview</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --yellow: #d29922; --red: #f85149; --purple: #bc8cff;
+    --orange: #f0883e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; line-height: 1.6; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--accent); }
+  h2 { font-size: 1.4rem; margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); color: var(--green); }
+  h3 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; color: var(--purple); }
+  p, li { color: var(--text); margin-bottom: 0.5rem; }
+  .subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; margin-bottom: 1rem; }
+  .card-title { font-weight: 600; color: var(--accent); margin-bottom: 0.5rem; }
+  code { background: #1c2128; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: var(--orange); }
+  pre { background: #1c2128; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; overflow-x: auto; margin: 0.5rem 0 1rem; font-size: 0.85rem; line-height: 1.5; }
+  pre code { background: none; padding: 0; color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin: 0.5rem 0 1rem; font-size: 0.9rem; }
+  th { background: #1c2128; color: var(--accent); text-align: left; padding: 8px 12px; border: 1px solid var(--border); }
+  td { padding: 8px 12px; border: 1px solid var(--border); }
+  tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-right: 4px; }
+  .tag-green { background: rgba(63,185,80,0.15); color: var(--green); }
+  .tag-blue { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .tag-yellow { background: rgba(210,153,34,0.15); color: var(--yellow); }
+  .tag-red { background: rgba(248,81,73,0.15); color: var(--red); }
+  .tag-purple { background: rgba(188,140,255,0.15); color: var(--purple); }
+  .flow { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 1rem 0; }
+  .flow-step { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 1rem; font-size: 0.85rem; }
+  .flow-arrow { color: var(--muted); font-size: 1.2rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .highlight { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; }
+  .section-icon { margin-right: 0.5rem; }
+  ul { padding-left: 1.5rem; }
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; margin-bottom: 2rem; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc ol { padding-left: 1.5rem; }
+  .toc li { margin-bottom: 4px; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+
+<h1>API Test System</h1>
+<p class="subtitle">Automated API + E2E Testing Framework cho Upmount Custody Platform</p>
+
+<div class="toc">
+<strong>Mục lục</strong>
+<ol>
+  <li><a href="#overview">Tổng quan hệ thống</a></li>
+  <li><a href="#structure">Cấu trúc thư mục</a></li>
+  <li><a href="#workflow">Workflow chính</a></li>
+  <li><a href="#pyramid">Test Pyramid (7 layers)</a></li>
+  <li><a href="#helpers">Helpers — Hạ tầng test</a></li>
+  <li><a href="#anti-hallucination">Anti-Hallucination System</a></li>
+  <li><a href="#e2e">E2E Testing Module</a></li>
+  <li><a href="#withneeds">withNeeds() — Data Dependencies</a></li>
+  <li><a href="#config">Config files</a></li>
+  <li><a href="#commands">Slash Commands</a></li>
+  <li><a href="#reports">Reports & Evidence</a></li>
+</ol>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="overview">1. Tổng quan hệ thống</h2>
+
+<div class="card">
+<p><strong>Mục đích:</strong> Framework tự động sinh và chạy API tests + E2E tests cho Upmount Custody Platform.</p>
+<p><strong>Tech stack:</strong></p>
+<ul>
+  <li><span class="tag tag-blue">Vitest</span> Test runner (API tests)</li>
+  <li><span class="tag tag-blue">Playwright</span> Browser automation (E2E tests)</li>
+  <li><span class="tag tag-blue">Axios</span> HTTP client</li>
+  <li><span class="tag tag-blue">AJV</span> JSON Schema validation (OpenAPI)</li>
+  <li><span class="tag tag-blue">Faker.js</span> Realistic test data</li>
+  <li><span class="tag tag-blue">Gherkin</span> Feature files (Given/When/Then)</li>
+  <li><span class="tag tag-blue">TypeScript</span> Strict mode</li>
+</ul>
+</div>
+
+<div class="highlight">
+<strong>Nguyên tắc cốt lõi:</strong> AI sinh test code MỘT LẦN (authoring-time) → tests chạy trực tiếp (zero runtime AI cost). Mọi endpoint phải có trong <code>canonical-endpoints.json</code> trước khi sinh test.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="structure">2. Cấu trúc thư mục</h2>
+
+<pre><code>api-test-system/
+├── config/                 ← QC điền config trước khi generate
+│   ├── api.config.json          baseUrl, timeout, endpoint filters
+│   ├── auth.config.json         auth type, roles, accounts + tokens
+│   ├── db.config.json           DB connection (optional)
+│   ├── suites.config.json       E2E prerequisite suites (@needs)
+│   ├── e2e.config.json          appUrl, pages map, selectors
+│   └── test-rules.md            Business rules, scenarios
+│
+├── input/                  ← QC upload OpenAPI spec
+│   └── openapi.yaml
+│
+├── generated/              ← AI sinh ra, KHÔNG chỉnh tay
+│   ├── canonical-endpoints.json   SOURCE OF TRUTH (từ /analyze)
+│   ├── helpers/                   13 utility files
+│   │   ├── api-client.ts              HTTP client + evidence
+│   │   ├── auth-helper.ts             Token management
+│   │   ├── schema-validator.ts        AJV validation
+│   │   ├── test-data-factory.ts       Faker.js data builders
+│   │   ├── dependency-resolver.ts     Resource ordering
+│   │   ├── cleanup.ts                 LIFO teardown
+│   │   ├── integration-needs.ts       withNeeds() wrapper ← MỚI
+│   │   ├── resource-providers.ts      8 resource providers ← MỚI
+│   │   └── ...
+│   └── tests/
+│       ├── 01-smoke/
+│       ├── 02-contract/
+│       ├── 03-single/          7 resource files
+│       ├── 04-integration/     2 files (legacy + withNeeds)
+│       ├── 05-rbac/
+│       ├── 06-security/
+│       └── 07-db/
+│
+├── e2e/                    ← E2E module (Playwright + Gherkin)
+│   ├── features/                .feature files (QC viết)
+│   ├── steps/                   Step catalog (37+ patterns)
+│   ├── generator/               Parser → Emitter → .spec.ts
+│   ├── generated/               Output .spec.ts files
+│   └── playwright.config.ts
+│
+├── reports/                ← Test results & evidence
+├── scripts/                ← extract-endpoints.ts
+├── plans/                  ← Design docs & research
+└── .claude/commands/       ← Slash commands cho AI</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="workflow">3. Workflow chính</h2>
+
+<h3>API Testing Flow</h3>
+<div class="flow">
+  <div class="flow-step"><span class="tag tag-yellow">1</span> QC điền <code>config/</code></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><span class="tag tag-yellow">2</span> Upload <code>openapi.yaml</code></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><span class="tag tag-green">3</span> <code>/analyze</code></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><span class="tag tag-green">4</span> <code>/generate-all</code></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><span class="tag tag-blue">5</span> <code>/run [layer]</code></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><span class="tag tag-purple">6</span> <code>/report</code></div>
+</div>
+
+<h3>E2E Testing Flow</h3>
+<div class="flow">
+  <div class="flow-step"><span class="tag tag-yellow">1</span> QC viết <code>.feature</code></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><span class="tag tag-green">2</span> <code>/generate-e2e</code></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><span class="tag tag-blue">3</span> <code>/run-e2e</code></div>
+</div>
+<p style="color:var(--muted); font-size:0.85rem; margin-top:0.5rem;">Hoặc dùng <code>/describe-e2e</code> để viết bằng ngôn ngữ tự nhiên (Tiếng Việt/English) → AI sinh .feature.</p>
+
+<!-- ============================================================ -->
+<h2 id="pyramid">4. Test Pyramid (7 Layers)</h2>
+
+<table>
+<tr>
+  <th>Layer</th><th>Mục đích</th><th>Config cần</th><th>Ví dụ</th>
+</tr>
+<tr>
+  <td><span class="tag tag-green">01 Smoke</span></td>
+  <td>Connectivity — mỗi endpoint trả response</td>
+  <td>OpenAPI</td>
+  <td>GET /health → 200</td>
+</tr>
+<tr>
+  <td><span class="tag tag-blue">02 Contract</span></td>
+  <td>Schema validation — response đúng format</td>
+  <td>OpenAPI</td>
+  <td>Response matches JSON Schema</td>
+</tr>
+<tr>
+  <td><span class="tag tag-yellow">03 Single</span></td>
+  <td>Happy path + validation + errors per endpoint</td>
+  <td>api + auth config</td>
+  <td>POST /vault → 201, invalid body → 400</td>
+</tr>
+<tr>
+  <td><span class="tag tag-purple">04 Integration</span></td>
+  <td>Cross-resource workflows, state transitions</td>
+  <td>test-rules.md</td>
+  <td>Login → Profile → Create Vault → List Transactions</td>
+</tr>
+<tr>
+  <td><span class="tag tag-red">05 RBAC</span></td>
+  <td>Permission enforcement, IDOR</td>
+  <td>auth (2+ roles)</td>
+  <td>User A cannot access User B's vault</td>
+</tr>
+<tr>
+  <td>06 Security</td>
+  <td>SQL injection, XSS, auth bypass</td>
+  <td>api + auth</td>
+  <td>SQLi in query param → no data leak</td>
+</tr>
+<tr>
+  <td>07 DB</td>
+  <td>DB state verification, constraints</td>
+  <td>db.config.json</td>
+  <td>DELETE vault → FK cascade check</td>
+</tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="helpers">5. Helpers — Hạ tầng test</h2>
+
+<div class="grid">
+<div class="card">
+  <div class="card-title">api-client.ts</div>
+  <p>Axios wrapper. Mỗi request tự ghi evidence (method, URL, headers, response, duration, cURL). Token management qua <code>setToken()</code> / <code>clearToken()</code>.</p>
+</div>
+<div class="card">
+  <div class="card-title">auth-helper.ts</div>
+  <p>Đọc <code>auth.config.json</code>. Hỗ trợ: bearer_direct (token sẵn), bearer (login endpoint), api_key, basic. Phân biệt role + label.</p>
+</div>
+<div class="card">
+  <div class="card-title">dependency-resolver.ts</div>
+  <p>Đọc <code>dependency-graph.json</code>. Cung cấp execution order, direct deps, <strong>transitive deps</strong> (mới), priority sorting.</p>
+</div>
+<div class="card">
+  <div class="card-title">cleanup.ts</div>
+  <p>Track created resources → <code>cleanAll()</code> xóa theo thứ tự ngược (LIFO). Tự set admin token khi cleanup.</p>
+</div>
+<div class="card">
+  <div class="card-title">test-data-factory.ts</div>
+  <p>Faker.js builders: register, login, KYB, vault, withdraw, file upload, org invite. Realistic data, không "test123".</p>
+</div>
+<div class="card">
+  <div class="card-title">schema-validator.ts</div>
+  <p>AJV + ajv-formats. Validate response body against OpenAPI schemas. Report mismatches chi tiết.</p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="anti-hallucination">6. Anti-Hallucination System</h2>
+
+<div class="card" style="border-color: var(--red);">
+  <div class="card-title" style="color: var(--red);">Vấn đề</div>
+  <p>AI sinh test cho endpoints không tồn tại (vd: <code>/markets/new-markets</code>) → 404 failures.</p>
+</div>
+
+<div class="card" style="border-color: var(--green);">
+  <div class="card-title" style="color: var(--green);">Giải pháp: Canonical Endpoint Manifest</div>
+  <ol>
+    <li><code>scripts/extract-endpoints.ts</code> parse OpenAPI spec programmatically</li>
+    <li>Apply blacklist/whitelist filters từ <code>api.config.json</code></li>
+    <li>Output: <code>generated/canonical-endpoints.json</code> — SINGLE SOURCE OF TRUTH</li>
+    <li>Mọi generate command PHẢI đọc file này trước</li>
+    <li>CHỈ sinh test cho endpoints có <code>isTestable: true</code></li>
+  </ol>
+</div>
+
+<pre><code>// canonical-endpoints.json
+{
+  "metadata": { "totalEndpoints": 76, "testableEndpoints": 42 },
+  "endpoints": [
+    { "method": "GET", "path": "/api/users/vault-accounts",
+      "isTestable": true, "blacklistReason": null }
+  ],
+  "byResource": { "Vault Accounts": ["GET /api/users/vault-accounts", ...] }
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="e2e">7. E2E Testing Module</h2>
+
+<h3>3 cách tạo E2E test</h3>
+
+<table>
+<tr><th>Cách</th><th>Command</th><th>Input</th><th>Output</th><th>Khi nào dùng</th></tr>
+<tr>
+  <td><span class="tag tag-green">1</span> Viết tay</td>
+  <td>—</td>
+  <td>QC viết <code>.feature</code> trực tiếp</td>
+  <td><code>e2e/features/*.feature</code></td>
+  <td>QC quen Gherkin syntax</td>
+</tr>
+<tr>
+  <td><span class="tag tag-blue">2</span> Natural language</td>
+  <td><code>/describe-e2e [name]</code></td>
+  <td>Mô tả bằng tiếng Việt/English</td>
+  <td><code>e2e/features/{name}.feature</code></td>
+  <td>QC không quen Gherkin, muốn mô tả tự nhiên</td>
+</tr>
+<tr>
+  <td><span class="tag tag-purple">3</span> Generate code</td>
+  <td><code>/generate-e2e [name]</code></td>
+  <td><code>.feature</code> file có sẵn</td>
+  <td><code>e2e/generated/{name}.spec.ts</code></td>
+  <td>Sau bước 1 hoặc 2, sinh Playwright code</td>
+</tr>
+</table>
+
+<h3>/describe-e2e — Natural Language → Feature File</h3>
+
+<div class="card">
+<p>QC mô tả test bằng ngôn ngữ tự nhiên → AI sinh <code>.feature</code> file chuẩn Gherkin.</p>
+<pre><code># QC nói:
+/describe-e2e vault-management
+"Tôi muốn test tạo vault mới, cần login trước,
+ vào trang vault, bấm tạo, điền tên, nhập OTP,
+ verify vault xuất hiện trong danh sách"
+
+# AI sinh ra: e2e/features/vault-management.feature
+@needs(login-owner)
+Feature: Vault Management
+  Scenario: Create new vault
+    Given I am on the "vault" page
+    When I click the "Create Vault" button
+    And I fill "vault name" with "My New Vault"
+    And I fill "OTP" with "123456"
+    And I click the "Submit" button
+    Then I should see "My New Vault"</code></pre>
+<p style="color:var(--muted); font-size:0.85rem;">
+  <strong>Key features:</strong> Auto-detect login prerequisites → suggest <code>@needs</code> tags.
+  Map natural language → catalog step patterns cho maximum match rate.
+  Hỗ trợ tiếng Việt lẫn English.
+</p>
+</div>
+
+<h3>Full E2E Flow</h3>
+<div class="flow">
+  <div class="flow-step"><span class="tag tag-blue">/describe-e2e</span><br><span style="color:var(--muted);font-size:0.8rem;">NL → .feature</span></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><span class="tag tag-purple">/generate-e2e</span><br><span style="color:var(--muted);font-size:0.8rem;">.feature → .spec.ts</span></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><span class="tag tag-green">/run-e2e</span><br><span style="color:var(--muted);font-size:0.8rem;">Playwright chạy</span></div>
+</div>
+<p style="color:var(--muted); font-size:0.85rem;">Hoặc QC viết <code>.feature</code> tay → skip bước 1 → bắt đầu từ <code>/generate-e2e</code>.</p>
+
+<h3>Generator Pipeline</h3>
+<div class="flow">
+  <div class="flow-step">QC viết <code>.feature</code></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><strong>Feature Parser</strong><br><span style="color:var(--muted);font-size:0.8rem;">@cucumber/gherkin → AST</span></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><strong>Suite Injector</strong><br><span style="color:var(--muted);font-size:0.8rem;">@needs(login-owner) → inject steps</span></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><strong>Code Emitter</strong><br><span style="color:var(--muted);font-size:0.8rem;">AST → .spec.ts</span></div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-step"><strong>Playwright</strong><br><span style="color:var(--muted);font-size:0.8rem;">Run tests</span></div>
+</div>
+
+<h3>Step Catalog (37+ patterns)</h3>
+<table>
+<tr><th>Category</th><th>Ví dụ pattern</th></tr>
+<tr><td>Navigation</td><td><code>I am on the "{page}" page</code>, <code>I navigate to "{url}"</code></td></tr>
+<tr><td>Form</td><td><code>I fill "{field}" with "{value}"</code>, <code>I click the "{button}" button</code></td></tr>
+<tr><td>Assertion</td><td><code>I should see "{text}"</code>, <code>the page title should be "{title}"</code></td></tr>
+<tr><td>Auth</td><td><code>API: user "{role}" is authenticated</code></td></tr>
+<tr><td>API</td><td><code>API: GET "{endpoint}" returns {code}</code></td></tr>
+</table>
+<p><span class="tag tag-green">~70%</span> steps match catalog (cost = $0). <span class="tag tag-yellow">~30%</span> unmatched → AI-interpreted (marked <code>// TODO: [AI]</code>).</p>
+
+<h3>Suite Injection (@needs tags)</h3>
+<pre><code># Feature file:
+@needs(login-owner) @needs(navigate-dashboard)
+Feature: Dashboard Access
+  Scenario: View dashboard
+    Then I should see "Dashboard"
+
+# suites.config.json resolves:
+# login-owner → Given I am on "login" page + fill email + fill password + click Login
+# navigate-dashboard → When I navigate to "/dashboard"
+# Steps injected into Background automatically</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="withneeds">8. withNeeds() — Integration Data Dependencies</h2>
+
+<div class="card" style="border-color: var(--purple);">
+<div class="card-title">Vấn đề trước đây</div>
+<pre><code>// Fragile pattern:
+let vaultId: string | null = null;
+beforeAll(() => { apiClient.setToken(token); });
+it('test', () => {
+  if (!vaultId) return;  // ← silent skip, unreliable
+});</code></pre>
+</div>
+
+<div class="card" style="border-color: var(--green);">
+<div class="card-title">Giải pháp: withNeeds() wrapper</div>
+<pre><code>import { withNeeds } from '../../helpers/integration-needs';
+
+// Chỉ khai báo leaf resource — transitive deps tự resolve
+withNeeds(['Vault Accounts'], (ctx) => {
+  // Auto-setup chain:
+  //   Country → Users auth → User Profile → Organization Kyb → Vault Accounts
+  describe('Vault tests', () => {
+    it('list vaults', async () => {
+      // ctx.ownerToken đã có sẵn
+      // ctx.data.vaultId đã được populate
+      const res = await apiClient.get('/api/users/vault-accounts');
+      expect(res.status).toBe(200);
+    });
+  });
+  // afterAll: cleanup.cleanAll() tự động
+});</code></pre>
+</div>
+
+<h3>Cơ chế hoạt động</h3>
+<ol>
+  <li><code>withNeeds(['Vault Accounts'])</code> gọi <code>dependencyResolver.getTransitiveDependencies()</code></li>
+  <li>Resolve đệ quy: Vault Accounts → deps: User Profile, Organization Kyb → deps: Users auth, Files, Country...</li>
+  <li>Sort theo priority (từ dependency-graph.json)</li>
+  <li><code>beforeAll</code>: chạy từng provider theo thứ tự → populate <code>ctx</code></li>
+  <li>Tests dùng <code>ctx.data.*</code> — không cần <code>let</code> variables</li>
+  <li><code>afterAll</code>: <code>cleanup.cleanAll()</code> xóa theo thứ tự ngược</li>
+</ol>
+
+<h3>Available ctx fields</h3>
+<table>
+<tr><th>Resource</th><th>ctx fields</th></tr>
+<tr><td>Users auth</td><td><code>ctx.ownerToken</code>, <code>ctx.data.normalUserToken</code></td></tr>
+<tr><td>Country</td><td><code>ctx.data.countryId</code>, <code>ctx.data.countries</code></td></tr>
+<tr><td>User Profile</td><td><code>ctx.data.profile</code>, <code>ctx.data.orgId</code></td></tr>
+<tr><td>Files</td><td><code>ctx.data.fileId</code>, <code>ctx.data.presignedPost</code></td></tr>
+<tr><td>Organization Kyb</td><td><code>ctx.data.kybStatus</code></td></tr>
+<tr><td>Organization RBAC</td><td><code>ctx.data.roles</code></td></tr>
+<tr><td>Vault Accounts</td><td><code>ctx.data.vaultId</code>, <code>ctx.data.vaults</code></td></tr>
+<tr><td>User Transactions</td><td><code>ctx.data.transactionId</code>, <code>ctx.data.transactions</code></td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="config">9. Config Files</h2>
+
+<div class="grid">
+<div class="card">
+  <div class="card-title">api.config.json</div>
+  <p><code>baseUrl</code>, <code>timeout</code>, <code>headers</code>, <code>endpointFilter</code> (blacklist/whitelist patterns).</p>
+</div>
+<div class="card">
+  <div class="card-title">auth.config.json</div>
+  <p>Auth type: <code>bearer_direct</code>. Roles: admin, user. Accounts có token, refreshToken, totpSecret.</p>
+</div>
+<div class="card">
+  <div class="card-title">suites.config.json</div>
+  <p>5 E2E suites: login-owner, login-owner-no2fa, navigate-dashboard, navigate-login, logged-in-dashboard. Hỗ trợ composite (<code>needs</code> lồng nhau).</p>
+</div>
+<div class="card">
+  <div class="card-title">test-rules.md</div>
+  <p>Business rules + integration scenarios. Template → QC cần điền trước khi generate integration tests.</p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="commands">10. Slash Commands</h2>
+
+<table>
+<tr><th>Command</th><th>Mục đích</th></tr>
+<tr><td><code>/init</code></td><td>Setup project, npm install, tạo config templates</td></tr>
+<tr><td><code>/assess</code></td><td>Chấm điểm config completeness, ước tính coverage</td></tr>
+<tr><td><code>/analyze</code></td><td>Parse OpenAPI → canonical-endpoints.json + dependency-graph.json</td></tr>
+<tr><td><code>/generate-all</code></td><td>Sinh toàn bộ 7 layers</td></tr>
+<tr><td><code>/generate-[layer]</code></td><td>Sinh 1 layer: smoke, contract, single, integration, rbac, security, db</td></tr>
+<tr><td><code>/run [layer]</code></td><td>Chạy tests qua Vitest</td></tr>
+<tr><td><code>/report</code></td><td>Sinh 4 report files</td></tr>
+<tr><td><code>/coverage</code></td><td>Endpoint × layer matrix</td></tr>
+<tr><td><code>/describe-e2e [name]</code></td><td>Mô tả bằng ngôn ngữ tự nhiên (Việt/English) → sinh .feature file</td></tr>
+<tr><td><code>/generate-e2e [name]</code></td><td>.feature → .spec.ts (Playwright code)</td></tr>
+<tr><td><code>/run-e2e</code></td><td>Chạy Playwright tests</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="reports">11. Reports & Evidence</h2>
+
+<div class="card">
+<p>Mỗi API call qua <code>apiClient</code> tự ghi evidence:</p>
+<ul>
+  <li>Request: method, URL, headers, body, cURL command</li>
+  <li>Response: status, headers, body (truncated nếu >2KB)</li>
+  <li>Timing: duration (ms), timestamp</li>
+</ul>
+<p>Output files:</p>
+<ul>
+  <li><code>reports/latest-report.md</code> — Test summary</li>
+  <li><code>reports/coverage-matrix.md</code> — Endpoint × layer heatmap</li>
+  <li><code>reports/bugs-found.md</code> — Failures & bugs</li>
+  <li><code>reports/detailed-evidence.html</code> — Interactive evidence viewer</li>
+  <li><code>reports/html/index.html</code> — Vitest HTML dashboard</li>
+</ul>
+</div>
+
+<hr style="margin: 3rem 0; border-color: var(--border);">
+<p style="color: var(--muted); font-size: 0.85rem; text-align: center;">
+  Generated 2026-03-10 — API Test System Architecture Overview
+</p>
+
+</body>
+</html>

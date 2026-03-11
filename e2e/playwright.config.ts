@@ -32,7 +32,7 @@ export default defineConfig({
   ],
 
   use: {
-    baseURL: e2eConfig.appUrl,
+    baseURL: process.env.E2E_APP_URL || e2eConfig.appUrl,
     trace: e2eConfig.tracing,
     screenshot: e2eConfig.screenshots,
     video: e2eConfig.video,
